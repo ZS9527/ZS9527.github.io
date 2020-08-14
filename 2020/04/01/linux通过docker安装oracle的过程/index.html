@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="oracle," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="linux通过docker安装oracle的过程 业务需要，要在linux服务器上装一个oracle。作为一个没有安装经验的我来说，首先想到的就是整一个docker镜像，run一下岂不是很快乐。但是oracle公司早就防了一手，也才有的这个记录过程。如果仅仅是个人使用，第一次的尝试就可以安装好oracle数据库。但是里面的数据太杂乱，就有了后面的尝试。">
+<meta name="keywords" content="oracle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux通过docker安装oracle的过程">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/04/01/linux通过docker安装oracle的过程/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="linux通过docker安装oracle的过程 业务需要，要在linux服务器上装一个oracle。作为一个没有安装经验的我来说，首先想到的就是整一个docker镜像，run一下岂不是很快乐。但是oracle公司早就防了一手，也才有的这个记录过程。如果仅仅是个人使用，第一次的尝试就可以安装好oracle数据库。但是里面的数据太杂乱，就有了后面的尝试。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2020/04/01/linux通过docker安装oracle的过程/b1.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2020/04/01/linux通过docker安装oracle的过程/b2.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2020/04/01/linux通过docker安装oracle的过程/b3.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2020/04/01/linux通过docker安装oracle的过程/b4.png">
+<meta property="og:updated_time" content="2020-04-03T12:52:51.655Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux通过docker安装oracle的过程">
+<meta name="twitter:description" content="linux通过docker安装oracle的过程 业务需要，要在linux服务器上装一个oracle。作为一个没有安装经验的我来说，首先想到的就是整一个docker镜像，run一下岂不是很快乐。但是oracle公司早就防了一手，也才有的这个记录过程。如果仅仅是个人使用，第一次的尝试就可以安装好oracle数据库。但是里面的数据太杂乱，就有了后面的尝试。">
+<meta name="twitter:image" content="http://www.worldofwarcraftchina.cn/2020/04/01/linux通过docker安装oracle的过程/b1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/04/01/linux通过docker安装oracle的过程/"/>
+
+
+
+
+
+  <title>linux通过docker安装oracle的过程 | blogs</title>
+  
+
+
+
+
+
+
+
+
+  
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+<script type="text/javascript"
+color="0,0,255" opacity='1' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	<a href="https://github.com/ZS9527"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/04/01/linux通过docker安装oracle的过程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">linux通过docker安装oracle的过程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-01T15:17:30+08:00">
+                2020-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="linux通过docker安装oracle的过程"><a href="#linux通过docker安装oracle的过程" class="headerlink" title="linux通过docker安装oracle的过程"></a>linux通过docker安装oracle的过程</h1><blockquote>
+<p>业务需要，要在linux服务器上装一个oracle。作为一个没有安装经验的我来说，首先想到的就是整一个docker镜像，run一下岂不是很快乐。但是oracle公司早就防了一手，也才有的这个记录过程。<br>如果仅仅是个人使用，第一次的尝试就可以安装好oracle数据库。但是里面的数据太杂乱，就有了后面的尝试。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="第一次尝试"><a href="#第一次尝试" class="headerlink" title="第一次尝试"></a>第一次尝试</h2><p>首先熟练的打开百度，打算去找一个镜像文档。排位最靠前的是<code>sath89/oracle</code>这个镜像的使用博客。但是可惜的是直接用<code>docker search oracle</code>命令已经搜不到这个镜像了。</p>
+<p>改用第二个镜像<code>registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g</code></p>
+<p>参考<a href="https://blog.csdn.net/qq_27050005/article/details/81479171" target="_blank" rel="noopener">https://blog.csdn.net/qq_27050005/article/details/81479171</a> 这篇博客来进行设置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">#pull镜像</span><br><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g</span><br><span class="line">#数据持久化：</span><br><span class="line">docker run -d -p 49160:22 -p 49161:1521 -v /jie:/u01/app/oracle/ --name xe  registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g</span><br><span class="line"> </span><br><span class="line">#====数据库默认信息</span><br><span class="line">#hostname: localhost</span><br><span class="line">#port: 1521</span><br><span class="line">#sid: helowin</span><br><span class="line">#username: system</span><br><span class="line">#password: helowin</span><br><span class="line"> </span><br><span class="line">docker exec -it xe bash</span><br><span class="line">su root # 密码：  helowin</span><br><span class="line">#====vi /etc/profile 并在文件最后添加如下命令</span><br><span class="line">#begin</span><br><span class="line">export ORACLE_HOME=/home/oracle/app/oracle/product/11.2.0/dbhome_2</span><br><span class="line">export ORACLE_SID=helowin</span><br><span class="line">export PATH=$ORACLE_HOME/bin:$PATH</span><br><span class="line"># esc :wq</span><br><span class="line"></span><br><span class="line">#这条保存配置命令如果不配合，在~/.bashrc里面加一句source /etc/profile的话。再次进入后会失效</span><br><span class="line">source /etc/profile</span><br><span class="line"></span><br><span class="line"># 加个软连接</span><br><span class="line">ln -s $ORACLE_HOME/bin/sqlplus /usr/bin</span><br><span class="line"> </span><br><span class="line">#====登录oracle数据库 ，修改密码</span><br><span class="line">su oracle ;</span><br><span class="line">sqlplus  </span><br><span class="line"># username: system</span><br><span class="line"># password: helowin</span><br><span class="line">alter user system identified by 123456;</span><br><span class="line">ALTER PROFILE DEFAULT LIMIT PASSWORD_LIFE_TIME UNLIMITED;</span><br><span class="line">#退出</span><br><span class="line">#===使用数据库工具 登录oracle</span><br><span class="line">hostname: localhost</span><br><span class="line">#记得开放你云服务的tcp 46161端口</span><br><span class="line">port: 46161</span><br><span class="line">sid: helowin</span><br><span class="line">username: system</span><br><span class="line">password: 123456</span><br></pre></td></tr></table></figure></p>
+<p>但是碰到了容器打开后无法通过服务器ip+49161访问数据库，linux本机用<code>wget</code>命令也无法联通。</p>
+<p>查看防火墙端口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">开启端口</span><br><span class="line">[root@centos7 ~]# firewall-cmd --zone=public --add-port=1521/tcp --permanent</span><br><span class="line"></span><br><span class="line">重启防火墙：</span><br><span class="line"></span><br><span class="line">[root@centos7 ~]# firewall-cmd --reload</span><br><span class="line"></span><br><span class="line">查询端口号1521 是否开启：</span><br><span class="line">[root@centos7 ~]# firewall-cmd --query-port=1521/tcp</span><br><span class="line"></span><br><span class="line">查询有哪些端口是开启的:</span><br><span class="line"></span><br><span class="line">[root@centos7 ~]# firewall-cmd --list-port</span><br><span class="line"></span><br><span class="line">--zone #作用域</span><br><span class="line">--add-port=1521/tcp #添加端口，格式为：端口/通讯协议</span><br><span class="line">--permanent #永久生效，没有此参数重启后失效</span><br></pre></td></tr></table></figure></p>
+<p>而用腾讯云的机器同样配置却可以访问。</p>
+<p>尝试更改网络映射失败后，更换了参数，使用–net=host<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d  --net=host -v /root/oracle:/u01/app/oracle/ --name oracle11g  registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>此处命令如果没有删除端口映射的话，会报一个warning，提示端口映射无效。</p>
+</blockquote>
+<p>这样配置了之后可以成功的在其他局域网机器上访问。</p>
+<p>但是问题来了，这个库里自己存在了很多表。大佬说找找有没有纯净一点的。</p>
+<h2 id="第二次"><a href="#第二次" class="headerlink" title="第二次"></a>第二次</h2><p>又找到一个博客<a href="https://mileslin.github.io/2019/06/%E4%BD%BF%E7%94%A8-Docker-%E5%BB%BA%E7%AB%8B-Oracle-%E6%9C%8D%E5%8B%99/" target="_blank" rel="noopener">https://mileslin.github.io/2019/06/%E4%BD%BF%E7%94%A8-Docker-%E5%BB%BA%E7%AB%8B-Oracle-%E6%9C%8D%E5%8B%99/</a> ，这次用的是dockerhub上的oracle提供的镜像。（夸赞一下某个不存在的搜索引擎）</p>
+<p>打开<a href="https://hub.docker.com/_/oracle-database-enterprise-edition" target="_blank" rel="noopener">Oracle Database Enterprise Edition</a>，需要点击<code>Proceed to Checkout</code> 。因为Oracle将镜像放在了<a href="https://success.docker.com/article/store" target="_blank" rel="noopener">Docker Store</a> （Docker提供给厂商进行商业行为的Repository）<br><img src="/2020/04/01/linux通过docker安装oracle的过程/b1.png" alt="Proceed to Checkout"></p>
+<p>这样的话就需要我们登录dockerhub，点击之后需要填写一下资料<br><img src="/2020/04/01/linux通过docker安装oracle的过程/b2.png" alt="Agreement"></p>
+<p>接下来到Docker Profile的My Content就可以找到Oracle的内容<br><img src="/2020/04/01/linux通过docker安装oracle的过程/b3.png" alt="Added_to_my_content"></p>
+<p>点击<code>Setup</code>，就可以看到Oracle镜像的pull地址。</p>
+<p>问题在于有点卡，下载了8个多小时。这中间还中断了几次，我就去尝试了另外的镜像。</p>
+<p>下载完后，按照官方文档去启动容器.因为之前的端口局域网其他机器不能访问的问题没有解决，所以这里还是使用host模式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -it --name oracle -v /home/OracleDBData:/ORCL --net=host store/oracle/database-enterprise:12.2.0.1</span><br></pre></td></tr></table></figure></p>
+<p>成功启动后，进入容器内部<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 4d7f(容器id简写) bash</span><br></pre></td></tr></table></figure></p>
+<p>测试用户名密码，提示要用sysdba角色登录。于是边用下面的命令登录成功。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sqlplus / as sysdba</span><br><span class="line"></span><br><span class="line">username:system</span><br><span class="line">password:Oradoc_db1</span><br><span class="line"></span><br><span class="line">#sqlplus system/Oradoc_db1 也行</span><br></pre></td></tr></table></figure></p>
+<p>但是用navicat去连的时候，却报<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ORA-12505, TNS:listener does not currently know of SID given in connect descriptor</span><br></pre></td></tr></table></figure></p>
+<p>第一个反应是博客记录有点问题，去找了找官方的评论区。有推荐用<code>ORCLPDB1.localdomain</code>做服务名，也是不行。再看看官方文档，和博客的说法一样。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DB_SID</span><br><span class="line">This parameter changes the ORACLE_SID of the database. The default value is set to ORCLCDB</span><br></pre></td></tr></table></figure></p>
+<p>找了<a href="https://stackoverflow.com/questions/18192521/ora-12505-tnslistener-does-not-currently-know-of-sid-given-in-connect-descript/46848944" target="_blank" rel="noopener">stackoverflow.com</a> 上的一篇博客。测试了一下进入sqlplus后执行<code>ALTER SYSTEM REGISTER</code>命令。还是不行</p>
+<p>大佬提供了一篇博客<a href="https://blog.csdn.net/shen_xiao_wei/article/details/5729463" target="_blank" rel="noopener">https://blog.csdn.net/shen_xiao_wei/article/details/5729463</a><br>通过博客里的<code>find -name listener.ora</code>命令，找到文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi ./u01/app/oracle/product/12.2.0/dbhome_1/network/admin/samples/listener.ora</span><br></pre></td></tr></table></figure></p>
+<p>发现里面全都是被注释的语句，自己加上以下的语句并没有什么变化，依旧无法连接。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">SID_LIST_LISTENER =</span><br><span class="line">        (SID_LIST =</span><br><span class="line">             (SID_DESC =</span><br><span class="line">                   (SID_NAME = ORCLCDB)</span><br><span class="line">                   (ORACLE_HOME = /private/app/oracle/product/8.0.3)</span><br><span class="line">                   (PROGRAM = ORCLCDB)</span><br><span class="line">             )</span><br><span class="line">      </span><br><span class="line">        )</span><br></pre></td></tr></table></figure></p>
+<p>再看一看另外一个同名文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /u01/app/oracle/product/12.2.0/dbhome_1/admin/ORCLCDB/listener.ora</span><br></pre></td></tr></table></figure></p>
+<p>里面只有以下的语句，把上面的语句加入后反而<code>lsnrctl</code>无法启动了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">LISTENER =   (DESCRIPTION_LIST =     (DESCRIPTION =       (ADDRESS = (PROTOCOL = TCP)(HOST = 0.0.0.0)(PORT = 1521))       (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))     )   )</span><br><span class="line"></span><br><span class="line">#报错</span><br><span class="line">TNS-01150: The address of the specified listener name is incorrect</span><br></pre></td></tr></table></figure></p>
+<p>再次仔细阅读了<strong>stackoverflow.com</strong>的博客，发现评论里有一条说法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Now you can see the service</span><br><span class="line">Even if don&apos;t see try this one out</span><br><span class="line"></span><br><span class="line">sqlplus /nolog  </span><br><span class="line">conn system  </span><br><span class="line">alter system set local_listener = &apos;(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521))&apos; scope = both;  </span><br><span class="line">alter system register;  </span><br><span class="line">exit  </span><br><span class="line">lsnrctl status</span><br></pre></td></tr></table></figure></p>
+<p>尝试了一下，效果十分明显。错误已经变成了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ORA-01017： invalid username/password;logon denied</span><br></pre></td></tr></table></figure></p>
+<p>在navicat里面重新输入了一遍SID、账号、密码和角色。点击测试连接，显示成功。点击确认，显示错误。<br><img src="/2020/04/01/linux通过docker安装oracle的过程/b4.png" alt=""><br>忽略中间大起大落的心态问题，去百度了一下。简单的在navicat中删除了之前第一次成功时建立的服务器连接解决问题。</p>
+<h2 id="第三次"><a href="#第三次" class="headerlink" title="第三次"></a>第三次</h2><p>大佬提供了另外的一个博客<a href="https://www.35youth.cn/685.html" target="_blank" rel="noopener">使用Docker安装oracle 11g</a> 。<br>这篇使用的镜像是jaspeen/oracle-11g。之前曾经直接下载过，但是run后直接闪退，就放弃了。这次按照博客的步骤来<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull jaspeen/oracle-11g</span><br></pre></td></tr></table></figure></p>
+<p>准备oracle压缩包，在<a href="https://www.oracle.com/database/technologies/oracle-database-software-downloads.html" target="_blank" rel="noopener">Oracle官网</a> 分别下载 linux.x64_11gR2_database_1of2.zip 和 linux.x64_11gR2_database_2of2.zip两个压缩包，下载完成后解压到home目录(如下目录结构)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">home</span><br><span class="line">  └─database</span><br><span class="line">      ├─doc</span><br><span class="line">      ├─install</span><br><span class="line">      ├─response</span><br><span class="line">      ├─rpm</span><br><span class="line">      ├─sshsetup</span><br><span class="line">      ├─stage</span><br><span class="line">      ├─runInstaller</span><br><span class="line">      └─welcome.html</span><br></pre></td></tr></table></figure></p>
+<p>略过为什么要解压在这个包下，我直接启动容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --privileged -d -v /home/oracle:/install/database --name jaspeen --net=host jaspeen/oracle-11g</span><br></pre></td></tr></table></figure>
+<p>这次的命令是我输入错了。我的压缩包解压在home目录，我指定/home/oracle后导致启动报错<br><strong>/install/database/runInstaller: No such file or directory</strong>。</p>
+<p>再次启动还是不行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --privileged --name jaspeen --net=host -v /home:/install jaspeen/oracle-11g</span><br></pre></td></tr></table></figure></p>
+<p>报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Database is not installed. Installing...</span><br><span class="line">Installing Oracle Database 11g</span><br><span class="line">bash: /install/database/runInstaller: Permission denied</span><br></pre></td></tr></table></figure></p>
+<p>不知道是<code>--privileged</code>没有生效，还是权限不足。尝试Selinux临时关闭，<code>setenforce 0</code>也不能解决问题。</p>
+<h2 id="第四次"><a href="#第四次" class="headerlink" title="第四次"></a>第四次</h2><p>又换了一个镜像，这次我看到镜像描述里说是sath89/oracle-12c的复制。就尝试一下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker pull truevoly/oracle-12c</span><br><span class="line">docker run -d --privileged --net=host -v /home/oracle:/u01/app/oracle/ --name sath89  truevoly/oracle-12c</span><br></pre></td></tr></table></figure></p>
+<p>结果启动容器失败<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Database not initialized. Initializing database.</span><br><span class="line">Starting tnslsnr</span><br><span class="line">Cannot create directory &quot;/u01/app/oracle/cfgtoollogs/dbca&quot;.</span><br><span class="line"></span><br><span class="line">Unique database identifier check passed.</span><br><span class="line">Error writing into silent log -- /u01/app/oracle/cfgtoollogs/dbca/silent.log_2020-04-01_07-33-18-AM (No such file or directory)</span><br><span class="line"></span><br><span class="line">/u01/app/oracle/ has enough space. Required space is 6140 MB , available space is 40222 MB.</span><br><span class="line">File Validations Successful.</span><br><span class="line">Error writing into silent log -- /u01/app/oracle/cfgtoollogs/dbca/silent.log_2020-04-01_07-33-18-AM (No such file or directory)</span><br><span class="line">Cannot create directory &quot;/u01/app/oracle/cfgtoollogs/dbca/xe&quot;.</span><br><span class="line">Error writing into silent log -- /u01/app/oracle/cfgtoollogs/dbca/silent.log_2020-04-01_07-33-18-AM (No such file or directory)</span><br><span class="line">Look at the log file &quot;/u01/app/oracle/cfgtoollogs/dbca/silent.log_2020-04-01_07-33-18-AM&quot; for further details.</span><br><span class="line">Error in file copy from &lt;/u01/app/oracle/cfgtoollogs/dbca/silent.log_2020-04-01_07-33-18-AM&gt; to &lt;/u01/app/oracle/cfgtoollogs/dbca/xe.log&gt;</span><br></pre></td></tr></table></figure></p>
+<p>再次选择放弃。返回第二个官方镜像</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/oracle/" rel="tag"># oracle</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/21/java虚拟机的锁优化技术/" rel="next" title="java虚拟机的锁优化技术">
+                <i class="fa fa-chevron-left"></i> java虚拟机的锁优化技术
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/03/linux安装mongoDB/" rel="prev" title="linux通过docker安装mongoDB">
+                linux通过docker安装mongoDB <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Ezio" />
+            
+              <p class="site-author-name" itemprop="name">Ezio</p>
+              <p class="site-description motion-element" itemprop="description">java</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux通过docker安装oracle的过程"><span class="nav-number">1.</span> <span class="nav-text">linux通过docker安装oracle的过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一次尝试"><span class="nav-number">1.1.</span> <span class="nav-text">第一次尝试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二次"><span class="nav-number">1.2.</span> <span class="nav-text">第二次</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三次"><span class="nav-number">1.3.</span> <span class="nav-text">第三次</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四次"><span class="nav-number">1.4.</span> <span class="nav-text">第四次</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">灵魂在路上的Ezio</span>
+
+  
+</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+  <div class="powered-by">由 hexo 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; Next v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
