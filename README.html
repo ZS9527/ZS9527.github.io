@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="日常累计博客记录一下平时碰到的业务上的问题，业余时间的学习，以及技术的积累。  PS：偶尔也是会记录一下自己与编程有关的日常生活，就当做是一个朋友圈吧。PS：用云服务器搭建的网站，访问速度比github快多了。但是现在发现这个域名有点长，自己用起来不太方便。https://www.worldofwarcraftchina.cn  更新时间每周的周五晚上，周六或者周日。为了整理一周中的问题，也是有一">
+<meta property="og:type" content="website">
+<meta property="og:title" content="blogs">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/README.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="日常累计博客记录一下平时碰到的业务上的问题，业余时间的学习，以及技术的积累。  PS：偶尔也是会记录一下自己与编程有关的日常生活，就当做是一个朋友圈吧。PS：用云服务器搭建的网站，访问速度比github快多了。但是现在发现这个域名有点长，自己用起来不太方便。https://www.worldofwarcraftchina.cn  更新时间每周的周五晚上，周六或者周日。为了整理一周中的问题，也是有一">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-08-24T11:28:20.530Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="blogs">
+<meta name="twitter:description" content="日常累计博客记录一下平时碰到的业务上的问题，业余时间的学习，以及技术的积累。  PS：偶尔也是会记录一下自己与编程有关的日常生活，就当做是一个朋友圈吧。PS：用云服务器搭建的网站，访问速度比github快多了。但是现在发现这个域名有点长，自己用起来不太方便。https://www.worldofwarcraftchina.cn  更新时间每周的周五晚上，周六或者周日。为了整理一周中的问题，也是有一">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.worldofwarcraftchina.cn/README.html"/>
+
+
+
+
+
+  <title> | blogs</title>
+  
+
+
+
+
+
+
+
+
+  
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	<a href="https://github.com/ZS9527"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <h1 id="日常累计博客"><a href="#日常累计博客" class="headerlink" title="日常累计博客"></a>日常累计博客</h1><p>记录一下平时碰到的业务上的问题，业余时间的学习，以及技术的积累。</p>
+<blockquote>
+<p>PS：偶尔也是会记录一下自己与编程有关的日常生活，就当做是一个朋友圈吧。<br>PS：用云服务器搭建的网站，访问速度比github快多了。但是现在发现这个域名有点长，自己用起来不太方便。<a href="https://www.worldofwarcraftchina.cn">https://www.worldofwarcraftchina.cn</a></p>
+</blockquote>
+<h2 id="更新时间"><a href="#更新时间" class="headerlink" title="更新时间"></a>更新时间</h2><p>每周的周五晚上，周六或者周日。为了整理一周中的问题，也是有一个回忆巩固的过程。有些问题可能碰到的时候就记录在markdown文档里，周末再进行整理发布。</p>
+<h2 id="已更新相关"><a href="#已更新相关" class="headerlink" title="已更新相关"></a>已更新相关</h2><p>将目前已经更新的内容标签化。记录在下面<br><code>mysql</code>、<code>Springboot-Jpa</code>、<code>Lombok</code>、<code>Mycat</code>、<code>Gradle</code>、<code>Swagger</code>、<code>WebSocket</code>、<code>Docker</code>、<code>Windows Server</code>、<code>Linux</code>、<code>Idea</code>、<code>Hbase</code>、<code>Java8</code>、<code>RebbitMQ</code>、<code>BUG</code>。</p>
+<h2 id="2020"><a href="#2020" class="headerlink" title="2020"></a>2020</h2><p><strong>八月一号</strong><br><a href="http://worldofwarcraftchina.cn/2020/08/01/LxRunOffline%E5%AE%89%E8%A3%85CentOS/" target="_blank" rel="noopener">LxRunOffline安装CentOS</a></p>
+<p><strong>七月三十一号</strong><br><a href="http://worldofwarcraftchina.cn/2020/07/31/win10%E4%BD%BF%E7%94%A8docker%E5%92%8CvirtualBox%E5%86%B2%E7%AA%81%E7%9A%84%E8%BF%87%E7%A8%8B/#more" target="_blank" rel="noopener">win10使用docker和virtualBox冲突的过程（失败过程记录）</a></p>
+<p><strong>七月三十一号</strong><br><a href="http://worldofwarcraftchina.cn/2020/07/31/%E5%9C%A8win%E4%B8%8A%E4%BD%BF%E7%94%A8VMware%E5%AE%89%E8%A3%85%E8%99%9A%E6%8B%9F%E6%9C%BA%E8%BF%90%E8%A1%8Ctippecanoe%E5%88%87%E7%89%87/#more" target="_blank" rel="noopener">在win上使用VMware安装虚拟机运行tippecanoe切片（失败过程记录）</a></p>
+<p><strong>七月四号</strong><br><a href="http://worldofwarcraftchina.cn/2020/07/04/%E5%9C%A8Java%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%89%93%E5%8D%B0%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF%EF%BC%8C%E6%8E%92%E6%9F%A5%E9%97%AE%E9%A2%98%E6%9B%B4%E6%96%B9%E4%BE%BF%EF%BC%8C%E9%9D%9E%E5%B8%B8%E5%AE%9E%E7%94%A8%EF%BC%88%E4%B8%8B%EF%BC%89/" target="_blank" rel="noopener">在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（下）</a></p>
+<p><strong>七月四号</strong><br><a href="http://worldofwarcraftchina.cn/2020/07/04/%E5%9C%A8Java%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%89%93%E5%8D%B0%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF%EF%BC%8C%E6%8E%92%E6%9F%A5%E9%97%AE%E9%A2%98%E6%9B%B4%E6%96%B9%E4%BE%BF%EF%BC%8C%E9%9D%9E%E5%B8%B8%E5%AE%9E%E7%94%A8%EF%BC%88%E4%B8%8A%EF%BC%89/#more" target="_blank" rel="noopener">在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）</a></p>
+<p><strong>六月二十七号</strong><br><a href="http://worldofwarcraftchina.cn/2020/06/27/LeetCode%E7%AC%AC5%E9%A2%98%E8%A7%A3%E4%BD%93%E6%80%9D%E8%B7%AF/#more" target="_blank" rel="noopener">LeetCode第5题解体思路</a></p>
+<p><strong>六月十九号</strong><br><a href="http://worldofwarcraftchina.cn/2020/06/19/LeetCode%E7%AC%AC4%E9%A2%98%E7%BB%93%E9%A2%98%E6%80%9D%E8%B7%AF/#more" target="_blank" rel="noopener">LeetCode第4题结题思路</a></p>
+<p><strong>六月十二号</strong><br><a href="http://worldofwarcraftchina.cn/2020/06/12/%E8%AE%B0%E4%BC%98%E5%8C%96%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E6%81%A2%E5%A4%8D%E6%97%B6%E9%97%B4%E7%9A%84%E8%BF%87%E7%A8%8B/#more" target="_blank" rel="noopener">记优化主从同步恢复时间的过程</a></p>
+<p><strong>六月五号</strong><br><a href="http://worldofwarcraftchina.cn/2020/06/05/Redis%E7%BC%93%E5%AD%98%E4%B8%89%E5%A4%A7%E9%97%AE%E9%A2%98/#more" target="_blank" rel="noopener">Redis缓存三大问题</a></p>
+<p><strong>五月三十号</strong><br><a href="http://worldofwarcraftchina.cn/2020/05/30/%E8%8E%B7%E5%BE%97%E8%85%BE%E8%AE%AF%E4%BA%91%E7%A4%BE%E5%8C%BA%E5%A5%96%E5%93%81/#more" target="_blank" rel="noopener">获得腾讯云社区奖品</a></p>
+<p><strong>五月三十号</strong><br><a href="http://worldofwarcraftchina.cn/2020/05/30/%E4%BD%BF%E7%94%A8JPA%E5%92%8CMycat%E4%BF%9D%E5%AD%98%E5%88%86%E8%A1%A8%E6%95%B0%E6%8D%AE%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B8%BB%E9%94%AE%E5%86%B2%E7%AA%81/#more" target="_blank" rel="noopener">使用JPA和Mycat保存分表数据时出现主键冲突</a></p>
+<p><strong>五月二十五号</strong><br><a href="http://worldofwarcraftchina.cn/2020/05/25/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9A%84%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B/#more" target="_blank" rel="noopener">分布式的架构演进</a></p>
+<p><strong>五月十五号</strong><br><a href="http://worldofwarcraftchina.cn/2020/05/15/mysql%E7%AE%80%E6%B4%81%E9%85%8D%E7%BD%AE%E5%8F%AA%E8%AF%BB%E7%94%A8%E6%88%B7/" target="_blank" rel="noopener">mysql简洁配置只读用户</a></p>
+<p><strong>五月九号</strong><br><a href="http://worldofwarcraftchina.cn/2020/05/09/%E6%B0%94%E8%B1%A1%E7%9B%B8%E5%85%B3MeteoInfo%E5%A4%B1%E8%B4%A5%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95/#more" target="_blank" rel="noopener">气象相关MeteoInfo失败使用过程记录</a></p>
+<p><strong>五月一号</strong><br><a href="http://worldofwarcraftchina.cn/2020/05/01/hexo-next%E6%B7%BB%E5%8A%A0live2d%E5%92%8C%E6%90%9C%E7%B4%A2%E5%8A%9F%E8%83%BD/#more" target="_blank" rel="noopener">hexo+next添加live2d和搜索功能</a></p>
+<p><strong>四月三十号</strong><br><a href="http://worldofwarcraftchina.cn/2020/04/30/%E6%B0%94%E8%B1%A1%E7%9B%B8%E5%85%B3Python%E7%89%88NCL%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E6%9C%AA%E6%88%90%E5%8A%9F%E4%BD%BF%E7%94%A8/#more" target="_blank" rel="noopener">气象相关Python版NCL的安装和未成功使用</a><br><strong>四月二十五号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/04/25/%E5%BE%AE%E8%BD%AF%20Office%20Online%20Server%202016%20%E6%9C%8D%E5%8A%A1%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/" target="_blank" rel="noopener">微软 Office Online Server 2016 服务安装部署</a></p>
+<p><strong>四月十八号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/04/18/Windows%20Server%202012%20R2%E5%AE%89%E8%A3%85%E5%9F%9F%E6%8E%A7%E5%88%B6%E5%99%A8/" target="_blank" rel="noopener">Windows Server 2012 R2安装域控制器</a></p>
+<p><strong>四月十一号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/04/11/office%20online%20+%20wopiHost%E5%AE%9E%E7%8E%B0%E5%9C%A8%E7%BA%BF%E7%BC%96%E8%BE%91office%E6%96%87%E6%A1%A3/" target="_blank" rel="noopener">office online + wopiHost实现在线编辑office文档</a></p>
+<p><strong>四月四号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/04/04/linux%E9%80%9A%E8%BF%87docker%E5%AE%89%E8%A3%85oracle%E7%9A%84%E8%BF%87%E7%A8%8B/" target="_blank" rel="noopener">linux通过docker安装oracle的过程</a></p>
+<p><strong>三月二十八号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/03/28/linux%E5%AE%89%E8%A3%85mongoDB/" target="_blank" rel="noopener">linux通过docker安装mongoDB</a></p>
+<p><strong>三月二十一号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/03/21/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E9%94%81%E4%BC%98%E5%8C%96%E6%8A%80%E6%9C%AF/" target="_blank" rel="noopener">java虚拟机的锁优化技术</a></p>
+<p><strong>三月十四号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/03/14/%E4%BB%8EStringBuffer%E5%92%8CStringBuilder%E6%89%A9%E5%B1%95%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98/" target="_blank" rel="noopener">从StringBuffer和StringBuilder扩展开的问题</a></p>
+<p><strong>三月七号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/03/07/jaocb%E7%9A%84%E7%AC%AC%E4%BA%8C%E6%AC%A1%E7%A0%94%E7%A9%B6/" target="_blank" rel="noopener">jacob的第二次研究</a></p>
+<p><strong>二月二十九号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/02/29/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%B8%83%E7%A7%8D%E5%86%99%E6%B3%95/" target="_blank" rel="noopener">单例模式的七种写法</a></p>
+<p><strong>二月二十二号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/02/22/InnoDB%20%E4%B8%AD%E4%B8%80%E6%A3%B5%20B+%E6%A0%91%E8%83%BD%E5%AD%98%E5%A4%9A%E5%B0%91%E8%A1%8C%E6%95%B0%E6%8D%AE%EF%BC%9F/" target="_blank" rel="noopener">InnoDB 中一棵 B+ 树能存多少行数据？</a></p>
+<p><strong>二月十五号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/02/15/linux%E6%90%AD%E5%BB%BAftp/" target="_blank" rel="noopener">linux搭建ftp</a></p>
+<p><strong>二月一号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/02/01/spring-boot%E5%8F%82%E8%80%83%E6%8C%87%E5%8D%97%E6%91%98%E6%8A%84%E4%BA%8C/" target="_blank" rel="noopener">spring boot参考指南摘抄二</a></p>
+<p><strong>一月十八号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/01/18/spring-boot%E5%8F%82%E8%80%83%E6%8C%87%E5%8D%97%E6%91%98%E6%8A%84%E4%B8%80/" target="_blank" rel="noopener">spring boot参考指南摘抄</a></p>
+<p><strong>一月十一号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/01/11/SpringIoc介绍" target="_blank" rel="noopener">SpringIoc介绍</a></p>
+<p><strong>一月四号：</strong><br><a href="http://worldofwarcraftchina.cn/2020/01/04/SpringBoot-单元测试过程" target="_blank" rel="noopener">SpringBoot-单元测试过程</a></p>
+<h2 id="2019"><a href="#2019" class="headerlink" title="2019"></a>2019</h2><p><strong>十二月二十一号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/12/21/MySQL主从复制，启动slave时报错" target="_blank" rel="noopener">MySQL主从复制，启动slave时报错</a></p>
+<p><strong>十二月十四号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/12/14/简述对比%20Kafka、RabbitMQ、RocketMQ、ActiveMQ%20四个分布式消息队列" target="_blank" rel="noopener">简述对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列</a></p>
+<p><strong>十二月七号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/12/07/linux服务器搭配win7客户端的frp" target="_blank" rel="noopener">linux服务器搭配win7客户端的frp</a></p>
+<p><strong>十一月三十号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/11/30/mysql错误：Incorrect%20key%20file%20for%20table" target="_blank" rel="noopener">mysql错误：Incorrect key file for table</a></p>
+<p><strong>十一月二十三号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/11/23/SpringBoot-Mybatis-Swagger2环境搭建" target="_blank" rel="noopener">SpringBoot-Mybatis-Swagger2环境搭建</a></p>
+<p><strong>十一月十六号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/11/16/rabbitMQ远程连接失败问题" target="_blank" rel="noopener">rabbitMQ远程连接失败问题</a></p>
+<p><strong>十一月九号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/11/09/build时出现的乱码问题" target="_blank" rel="noopener">gradle build时出现的乱码问题</a></p>
+<p><strong>十月二十六号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/10/26/使用rabbitmq时出现的Channel-shutdown-channel-error" target="_blank" rel="noopener">使用rabbitmq时出现的Channel shutdown: channel error;</a></p>
+<p><a href="http://worldofwarcraftchina.cn/2019/10/26/使用mycat分表后的A-different-object-with-the-same-identifier-value错误" target="_blank" rel="noopener">使用mycat分表后的A different object with the same identifier value错误</a></p>
+<p><strong>十月二十号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/10/20/简单记录JPA自定义删除方法" target="_blank" rel="noopener">简单记录JPA自定义删除方法</a></p>
+<p><strong>十月十九号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/10/19/RabbitMQ中的stomp初步部署" target="_blank" rel="noopener">RabbitMQ中的stomp初步部署</a></p>
+<p><strong>九月二十七号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/09/27/反序列化错误" target="_blank" rel="noopener">反序列化错误</a></p>
+<p><strong>九月二十号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/09/20/mysql配置主从复制" target="_blank" rel="noopener">mysql配置主从复制</a></p>
+<p><strong>九月十四号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/09/14/mycat服务器部署" target="_blank" rel="noopener">mycat服务器部署</a></p>
+<p><strong>八月十四号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/08/14/rebbitmq安装与使用场景" target="_blank" rel="noopener">rebbitmq安装与使用场景</a></p>
+<p><strong>八月十号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/08/10/小米note3解锁失败" target="_blank" rel="noopener">小米note3解锁失败</a></p>
+<p><strong>八月九号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/08/09/由lombok引发的一次gradle版本问题" target="_blank" rel="noopener">由lombok引发的一次gradle版本问题</a></p>
+<p><strong>八月二号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/08/02/一次geotools%20jar包内报错的解决方式" target="_blank" rel="noopener">一次geotools jar包内报错的解决方式</a></p>
+<p><strong>七月二十六号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/07/26/使用geotools时遇到的NoClassDefFoundError" target="_blank" rel="noopener">使用geotools时遇到的NoClassDefFoundError</a></p>
+<p><strong>七月十九号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/07/19/一个普通的日常bug" target="_blank" rel="noopener">一个普通的日常bug</a></p>
+<p><strong>六月二十八号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/06/28/java连接hbase摸索过程" target="_blank" rel="noopener">java连接hbase摸索过程</a></p>
+<p><strong>六月二十一号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/06/21/在windows7上安装docker和hbase镜像" target="_blank" rel="noopener">在windows7上安装docker和hbase镜像和hadoop镜像</a></p>
+<p><strong>六月八号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/06/08/hbase在windows上安装踩坑记录" target="_blank" rel="noopener">hbase在windows上安装踩坑记录</a></p>
+<p><strong>六月一号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/06/01/日常业务和hadoop初学" target="_blank" rel="noopener">日常业务和hadoop初学</a></p>
+<p><strong>五月十七号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/05/17/jpa的一次自定义find方法的使用过程" target="_blank" rel="noopener">jpa的一次自定义find方法的使用过程</a></p>
+<p><strong>五月八号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/05/08/记录一次主从同步崩溃后的拯救行动" target="_blank" rel="noopener">记录一次主从同步崩溃后的拯救行动</a></p>
+<p><a href="http://worldofwarcraftchina.cn/2019/05/08/遇到的bug修复" target="_blank" rel="noopener">遇到的bug修复</a></p>
+<p><strong>四月二号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/04/02/SpringBoot2-0%E9%9B%86%E6%88%90WebSocket%EF%BC%8C%E5%AE%9E%E7%8E%B0%E5%90%8E%E5%8F%B0%E5%90%91%E5%89%8D%E7%AB%AF%E6%8E%A8%E9%80%81%E4%BF%A1%E6%81%AF/" target="_blank" rel="noopener">SpringBoot2.0集成WebSocket，实现后台向前端推送信息</a></p>
+<p><strong>三月二十八号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/03/28/idea常用插件记录" target="_blank" rel="noopener">idea常用插件记录</a></p>
+<p><strong>三月二十一号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/03/21/Spring-Boot中使用Swagger2构建RESTful-API文档" target="_blank" rel="noopener">Spring Boot中使用Swagger2构建 API文档</a></p>
+<p><strong>三月十二号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/03/12/Java-8-中的-Streams-API" target="_blank" rel="noopener">Java 8 中的 Streams API</a></p>
+<p><a href="http://worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务" target="_blank" rel="noopener">windows同时安装多个mysql8.0服务</a></p>
+<p><strong>二月二十七号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/02/27/Navicat-Premium-12激活" target="_blank" rel="noopener">Navicat Premium 12激活</a></p>
+<p><strong>二月二十二号：</strong><br><a href="http://worldofwarcraftchina.cn/2019/02/22/【定时任务-开机启动】Windows-Server-2008-2012-计划任务配置（任务计划程序）每分钟执行BAT" target="_blank" rel="noopener">【定时任务|开机启动】Windows Server 2008/2012 计划任务配置（任务计划程序）每分钟执行BAT</a></p>
+<p><a href="http://worldofwarcraftchina.cn/2019/02/22/sql代码规范" target="_blank" rel="noopener">sql代码规范</a></p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Ezio" />
+            
+              <p class="site-author-name" itemprop="name">Ezio</p>
+              <p class="site-description motion-element" itemprop="description">java</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#日常累计博客"><span class="nav-number">1.</span> <span class="nav-text">日常累计博客</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#更新时间"><span class="nav-number">1.1.</span> <span class="nav-text">更新时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#已更新相关"><span class="nav-number">1.2.</span> <span class="nav-text">已更新相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2020"><span class="nav-number">1.3.</span> <span class="nav-text">2020</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2019"><span class="nav-number">1.4.</span> <span class="nav-text">2019</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">灵魂在路上的Ezio</span>
+
+  
+</div>
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; Next v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

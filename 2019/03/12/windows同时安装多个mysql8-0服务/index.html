@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="sql," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="windows同时安装多个mysql8.0服务 原作者地址为https://blog.csdn.net/m0_37890289/article/details/80003994。 我在mysql主从复制时使用的这篇文章，这里做一个备份。">
+<meta name="keywords" content="sql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="windows同时安装多个mysql8.0服务">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="windows同时安装多个mysql8.0服务 原作者地址为https://blog.csdn.net/m0_37890289/article/details/80003994。 我在mysql主从复制时使用的这篇文章，这里做一个备份。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务/b1.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务/b2.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务/b3.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务/b4.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务/b5.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务/b6.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务/b7.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务/b8.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务/b9.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务/b10.png">
+<meta property="og:updated_time" content="2019-10-22T08:41:29.065Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="windows同时安装多个mysql8.0服务">
+<meta name="twitter:description" content="windows同时安装多个mysql8.0服务 原作者地址为https://blog.csdn.net/m0_37890289/article/details/80003994。 我在mysql主从复制时使用的这篇文章，这里做一个备份。">
+<meta name="twitter:image" content="http://www.worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务/b1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务/"/>
+
+
+
+
+
+  <title>windows同时安装多个mysql8.0服务 | blogs</title>
+  
+
+
+
+
+
+
+
+
+  
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	<a href="https://github.com/ZS9527"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2019/03/12/windows同时安装多个mysql8-0服务/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">windows同时安装多个mysql8.0服务</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-12T14:44:51+08:00">
+                2019-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="windows同时安装多个mysql8-0服务"><a href="#windows同时安装多个mysql8-0服务" class="headerlink" title="windows同时安装多个mysql8.0服务"></a>windows同时安装多个mysql8.0服务</h1><blockquote>
+<p>原作者地址为<a href="https://blog.csdn.net/m0_37890289/article/details/80003994。" target="_blank" rel="noopener">https://blog.csdn.net/m0_37890289/article/details/80003994。</a> 我在mysql主从复制时使用的这篇文章，这里做一个备份。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="官网下载-mysql文件。官网下载链接：https-dev-mysql-com-downloads-mysql"><a href="#官网下载-mysql文件。官网下载链接：https-dev-mysql-com-downloads-mysql" class="headerlink" title="官网下载 mysql文件。官网下载链接：https://dev.mysql.com/downloads/mysql/"></a>官网下载 mysql文件。官网下载链接：<a href="https://dev.mysql.com/downloads/mysql/" target="_blank" rel="noopener">https://dev.mysql.com/downloads/mysql/</a></h2><p><img src="/2019/03/12/windows同时安装多个mysql8-0服务/b1.png" alt=""><br>　　1. 选择mysql下载的系统版本。<br>　　2. 此处可以下载MSI安装包，图简单的朋友可以下载，然后“下一步”安装即可。<br>　　3. 此处下载ZIP压缩包版（这次记录ZIP压缩包安装方法）</p>
+<h2 id="解压下载好的ZIP文件，到自己喜欢的位置。"><a href="#解压下载好的ZIP文件，到自己喜欢的位置。" class="headerlink" title="解压下载好的ZIP文件，到自己喜欢的位置。"></a>解压下载好的ZIP文件，到自己喜欢的位置。</h2><p><img src="/2019/03/12/windows同时安装多个mysql8-0服务/b2.png" alt=""><br>　　1. 因为我这次要安装多个mysql服务，为mysql的主从复制做准备，所以我的文件结构如上。<br>　　2. 官网下载的ZIP压缩包。<br>　　3. 解压3次副本。</p>
+<h2 id="在解压后的文件夹下新建my-ini文件。内容参考如下："><a href="#在解压后的文件夹下新建my-ini文件。内容参考如下：" class="headerlink" title="在解压后的文件夹下新建my.ini文件。内容参考如下："></a>在解压后的文件夹下新建my.ini文件。内容参考如下：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">[mysql]</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"># 设置mysql客户端默认字符集</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">default-character-set=utf8 </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">[mysqld]</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">#设置3306端口</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">port = 3306 </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"># 设置mysql的安装目录</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">basedir=E:\mysql\mysql3\mysql-8.0.11-winx64</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"># 设置mysql数据库的数据的存放目录</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">datadir=E:\mysql\mysql3\mysql-8.0.11-winx64\data</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">character-set-server = utf8mb4</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">performance_schema_max_table_instances = 600</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">table_definition_cache = 400</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">table_open_cache = 256</span><br></pre></td></tr></table></figure>
+<p>处理完目录结构如下。<br><img src="/2019/03/12/windows同时安装多个mysql8-0服务/b3.png" alt=""></p>
+<h2 id="管理员身份运行cmd-并将切换到你解压过后的文件的bin目录下。"><a href="#管理员身份运行cmd-并将切换到你解压过后的文件的bin目录下。" class="headerlink" title="管理员身份运行cmd,并将切换到你解压过后的文件的bin目录下。"></a>管理员身份运行cmd,并将切换到你解压过后的文件的bin目录下。</h2><p><img src="/2019/03/12/windows同时安装多个mysql8-0服务/b4.png" alt=""></p>
+<h2 id="初始化mysql"><a href="#初始化mysql" class="headerlink" title="初始化mysql"></a>初始化mysql</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">    mysqld --defaults-file=D:\mysql\mysql3\mysql-8.0.11-winx64\my.ini --initialize --console</span><br></pre></td></tr></table></figure>
+<p>注意路径的填写，要和自己的解压安装包路径一致。<br>执行完毕后，文件结构多了一个data目录。并记录初始化密码（后面第一次进入mysql修改密码需要）。</p>
+<h2 id="初始化mysql服务。"><a href="#初始化mysql服务。" class="headerlink" title="初始化mysql服务。"></a>初始化mysql服务。</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">    mysqld install MySQL3 --defaults-file=&quot;D:\mysql\mysql3\mysql-8.0.11-winx64\my.ini&quot;</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/03/12/windows同时安装多个mysql8-0服务/b5.png" alt=""></p>
+<h2 id="启动mysql服务。"><a href="#启动mysql服务。" class="headerlink" title="启动mysql服务。"></a>启动mysql服务。</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">    net start MySQL3</span><br></pre></td></tr></table></figure>
+<p>这里的服务名字和上面的命令中起的服务名一致</p>
+<p><img src="/2019/03/12/windows同时安装多个mysql8-0服务/b6.png" alt=""></p>
+<h3 id="删除服务"><a href="#删除服务" class="headerlink" title="删除服务"></a>删除服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sc delete MySQL3（服务名称）</span><br></pre></td></tr></table></figure>
+<p>为了防止出现一不小心把命令行关闭了，而且还没记录密码，需要重新开始的情况。在此记录一下删除命令</p>
+<h2 id="以root身份进入mysql。"><a href="#以root身份进入mysql。" class="headerlink" title="以root身份进入mysql。"></a>以root身份进入mysql。</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">    mysql -u root -p --protocol=tcp --host=localhost --port=3308（选择端口）</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/03/12/windows同时安装多个mysql8-0服务/b7.png" alt=""><br>此处就需要上面初始化mysql时候系统生成的密码了。<br><img src="/2019/03/12/windows同时安装多个mysql8-0服务/b8.png" alt=""></p>
+<h2 id="修改root密码。"><a href="#修改root密码。" class="headerlink" title="修改root密码。"></a>修改root密码。</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">    ALTER USER &apos;root&apos;@&apos;localhost&apos; IDENTIFIED WITH mysql_native_password BY &apos;newpassword&apos;;</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/03/12/windows同时安装多个mysql8-0服务/b9.png" alt=""></p>
+<h2 id="密码修改后刷新权限，就可以使用mysql了。"><a href="#密码修改后刷新权限，就可以使用mysql了。" class="headerlink" title="密码修改后刷新权限，就可以使用mysql了。"></a>密码修改后刷新权限，就可以使用mysql了。</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">    flush privileges;</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/03/12/windows同时安装多个mysql8-0服务/b10.png" alt=""></p>
+<p><strong>这个方法可以在一台电脑上安装N个mysql服务，注意修改不同的端口号即可。</strong></p>
+<h2 id="后记："><a href="#后记：" class="headerlink" title="后记："></a>后记：</h2><p>在一次安装时，新建完my.ini文件执行时。出现了一下的这个错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">error: Found option without preceding group in config file: D:\mysql-5.6.24-win32\my.ini at line: 1  </span><br><span class="line">Fatal error in defaults handling. Program aborted</span><br></pre></td></tr></table></figure>
+<p>查询后发现是文件的编码问题，从utf-8改为ANSI后就可以了。</p>
+<h2 id="9月更新"><a href="#9月更新" class="headerlink" title="9月更新"></a>9月更新</h2><p>发现这个博客应该配合<strong>配置mysql远程访问</strong>一起使用会比较好。加入后续步骤</p>
+<h3 id="更改root用户访问ip限制"><a href="#更改root用户访问ip限制" class="headerlink" title="更改root用户访问ip限制"></a>更改root用户访问ip限制</h3><p>首先要进入你想要更改的mysql：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p <span class="comment">--protocol=tcp --host=localhost --port=3308（选择端口）</span></span><br></pre></td></tr></table></figure></p>
+<p>然后查询和修改<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> mysql;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> host, <span class="keyword">user</span>, authentication_string, <span class="keyword">plugin</span> <span class="keyword">from</span> <span class="keyword">user</span>;</span><br></pre></td></tr></table></figure>
+<p>可以看到现在的root用户的host是localhost<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> <span class="keyword">user</span> <span class="keyword">set</span> host = <span class="string">'%'</span> <span class="keyword">where</span> <span class="keyword">user</span> = <span class="string">'root'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>修改后需要刷新一下权限<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</span><br></pre></td></tr></table></figure></p>
+<p>然后开启全部访问权限<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> ALL <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'root'</span>@<span class="string">'%'</span> <span class="keyword">WITH</span> <span class="keyword">GRANT</span> <span class="keyword">OPTION</span>;</span><br></pre></td></tr></table></figure></p>
+<p>再次刷新<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</span><br></pre></td></tr></table></figure></p>
+<p>完成以上步骤后就可以从本机中测试连接服务器的mysql了。</p>
+<p>如果还是连接失败的话，记得开启服务器防火墙上的入站规则中的端口3306和3308（我自己配置的mysql端口就是这两个）</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sql/" rel="tag"># sql</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/27/Navicat-Premium-12激活/" rel="next" title="Navicat Premium 12激活">
+                <i class="fa fa-chevron-left"></i> Navicat Premium 12激活
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/12/Java-8-中的-Streams-API/" rel="prev" title="Java 8 中的 Streams API">
+                Java 8 中的 Streams API <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Ezio" />
+            
+              <p class="site-author-name" itemprop="name">Ezio</p>
+              <p class="site-description motion-element" itemprop="description">java</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#windows同时安装多个mysql8-0服务"><span class="nav-number">1.</span> <span class="nav-text">windows同时安装多个mysql8.0服务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#官网下载-mysql文件。官网下载链接：https-dev-mysql-com-downloads-mysql"><span class="nav-number">1.1.</span> <span class="nav-text">官网下载 mysql文件。官网下载链接：https://dev.mysql.com/downloads/mysql/</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压下载好的ZIP文件，到自己喜欢的位置。"><span class="nav-number">1.2.</span> <span class="nav-text">解压下载好的ZIP文件，到自己喜欢的位置。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在解压后的文件夹下新建my-ini文件。内容参考如下："><span class="nav-number">1.3.</span> <span class="nav-text">在解压后的文件夹下新建my.ini文件。内容参考如下：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理员身份运行cmd-并将切换到你解压过后的文件的bin目录下。"><span class="nav-number">1.4.</span> <span class="nav-text">管理员身份运行cmd,并将切换到你解压过后的文件的bin目录下。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化mysql"><span class="nav-number">1.5.</span> <span class="nav-text">初始化mysql</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化mysql服务。"><span class="nav-number">1.6.</span> <span class="nav-text">初始化mysql服务。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动mysql服务。"><span class="nav-number">1.7.</span> <span class="nav-text">启动mysql服务。</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#删除服务"><span class="nav-number">1.7.1.</span> <span class="nav-text">删除服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#以root身份进入mysql。"><span class="nav-number">1.8.</span> <span class="nav-text">以root身份进入mysql。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改root密码。"><span class="nav-number">1.9.</span> <span class="nav-text">修改root密码。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#密码修改后刷新权限，就可以使用mysql了。"><span class="nav-number">1.10.</span> <span class="nav-text">密码修改后刷新权限，就可以使用mysql了。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记："><span class="nav-number">1.11.</span> <span class="nav-text">后记：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9月更新"><span class="nav-number">1.12.</span> <span class="nav-text">9月更新</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#更改root用户访问ip限制"><span class="nav-number">1.12.1.</span> <span class="nav-text">更改root用户访问ip限制</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">灵魂在路上的Ezio</span>
+
+  
+</div>
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; Next v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
