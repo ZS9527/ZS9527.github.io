@@ -12,7 +12,53 @@
 `mysql`、`Springboot-Jpa`、`Lombok`、`Mycat`、`Gradle`、`Swagger`、`WebSocket`、`Docker`、`Windows Server`、`Linux`、`Idea`、`Hbase`、`Java8`、`RebbitMQ`、`BUG`。
 
 ## 2020
+**八月一号**
+[LxRunOffline安装CentOS](http://worldofwarcraftchina.cn/2020/08/01/LxRunOffline%E5%AE%89%E8%A3%85CentOS/)
 
+**七月三十一号**
+[win10使用docker和virtualBox冲突的过程（失败过程记录）](http://worldofwarcraftchina.cn/2020/07/31/win10%E4%BD%BF%E7%94%A8docker%E5%92%8CvirtualBox%E5%86%B2%E7%AA%81%E7%9A%84%E8%BF%87%E7%A8%8B/#more)
+
+**七月三十一号**
+[在win上使用VMware安装虚拟机运行tippecanoe切片（失败过程记录）](http://worldofwarcraftchina.cn/2020/07/31/%E5%9C%A8win%E4%B8%8A%E4%BD%BF%E7%94%A8VMware%E5%AE%89%E8%A3%85%E8%99%9A%E6%8B%9F%E6%9C%BA%E8%BF%90%E8%A1%8Ctippecanoe%E5%88%87%E7%89%87/#more)
+
+**七月四号**
+[在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（下）](http://worldofwarcraftchina.cn/2020/07/04/%E5%9C%A8Java%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%89%93%E5%8D%B0%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF%EF%BC%8C%E6%8E%92%E6%9F%A5%E9%97%AE%E9%A2%98%E6%9B%B4%E6%96%B9%E4%BE%BF%EF%BC%8C%E9%9D%9E%E5%B8%B8%E5%AE%9E%E7%94%A8%EF%BC%88%E4%B8%8B%EF%BC%89/)
+
+**七月四号**
+[在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）](http://worldofwarcraftchina.cn/2020/07/04/%E5%9C%A8Java%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%89%93%E5%8D%B0%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF%EF%BC%8C%E6%8E%92%E6%9F%A5%E9%97%AE%E9%A2%98%E6%9B%B4%E6%96%B9%E4%BE%BF%EF%BC%8C%E9%9D%9E%E5%B8%B8%E5%AE%9E%E7%94%A8%EF%BC%88%E4%B8%8A%EF%BC%89/#more)
+
+**六月二十七号**
+[LeetCode第5题解体思路](http://worldofwarcraftchina.cn/2020/06/27/LeetCode%E7%AC%AC5%E9%A2%98%E8%A7%A3%E4%BD%93%E6%80%9D%E8%B7%AF/#more)
+
+**六月十九号**
+[LeetCode第4题结题思路](http://worldofwarcraftchina.cn/2020/06/19/LeetCode%E7%AC%AC4%E9%A2%98%E7%BB%93%E9%A2%98%E6%80%9D%E8%B7%AF/#more)
+
+**六月十二号**
+[记优化主从同步恢复时间的过程](http://worldofwarcraftchina.cn/2020/06/12/%E8%AE%B0%E4%BC%98%E5%8C%96%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E6%81%A2%E5%A4%8D%E6%97%B6%E9%97%B4%E7%9A%84%E8%BF%87%E7%A8%8B/#more)
+
+**六月五号**
+[Redis缓存三大问题](http://worldofwarcraftchina.cn/2020/06/05/Redis%E7%BC%93%E5%AD%98%E4%B8%89%E5%A4%A7%E9%97%AE%E9%A2%98/#more)
+
+**五月三十号**
+[获得腾讯云社区奖品](http://worldofwarcraftchina.cn/2020/05/30/%E8%8E%B7%E5%BE%97%E8%85%BE%E8%AE%AF%E4%BA%91%E7%A4%BE%E5%8C%BA%E5%A5%96%E5%93%81/#more)
+
+**五月三十号**
+[使用JPA和Mycat保存分表数据时出现主键冲突](http://worldofwarcraftchina.cn/2020/05/30/%E4%BD%BF%E7%94%A8JPA%E5%92%8CMycat%E4%BF%9D%E5%AD%98%E5%88%86%E8%A1%A8%E6%95%B0%E6%8D%AE%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B8%BB%E9%94%AE%E5%86%B2%E7%AA%81/#more)
+
+**五月二十五号**
+[分布式的架构演进](http://worldofwarcraftchina.cn/2020/05/25/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9A%84%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B/#more)
+
+**五月十五号**
+[mysql简洁配置只读用户](http://worldofwarcraftchina.cn/2020/05/15/mysql%E7%AE%80%E6%B4%81%E9%85%8D%E7%BD%AE%E5%8F%AA%E8%AF%BB%E7%94%A8%E6%88%B7/)
+
+**五月九号**
+[气象相关MeteoInfo失败使用过程记录](http://worldofwarcraftchina.cn/2020/05/09/%E6%B0%94%E8%B1%A1%E7%9B%B8%E5%85%B3MeteoInfo%E5%A4%B1%E8%B4%A5%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95/#more)
+
+**五月一号**
+[hexo+next添加live2d和搜索功能](http://worldofwarcraftchina.cn/2020/05/01/hexo-next%E6%B7%BB%E5%8A%A0live2d%E5%92%8C%E6%90%9C%E7%B4%A2%E5%8A%9F%E8%83%BD/#more)
+
+**四月三十号**
+[气象相关Python版NCL的安装和未成功使用](http://worldofwarcraftchina.cn/2020/04/30/%E6%B0%94%E8%B1%A1%E7%9B%B8%E5%85%B3Python%E7%89%88NCL%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E6%9C%AA%E6%88%90%E5%8A%9F%E4%BD%BF%E7%94%A8/#more)
 **四月二十五号：**
 [微软 Office Online Server 2016 服务安装部署](http://worldofwarcraftchina.cn/2020/04/25/%E5%BE%AE%E8%BD%AF%20Office%20Online%20Server%202016%20%E6%9C%8D%E5%8A%A1%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/)
 
