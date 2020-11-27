@@ -288,7 +288,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/05/30/使用JPA和Mycat保存分表数据时出现主键冲突/">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/07/31/win10使用docker和virtualBox冲突的过程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ezio">
@@ -307,7 +307,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/05/30/使用JPA和Mycat保存分表数据时出现主键冲突/" itemprop="url">使用JPA和Mycat保存分表数据时出现主键冲突</a></h1>
+                <a class="post-title-link" href="/2020/07/31/win10使用docker和virtualBox冲突的过程/" itemprop="url">win10使用docker和virtualBox冲突的过程</a></h1>
         
 
         <div class="post-meta">
@@ -319,7 +319,1141 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-30T09:14:54+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-31T20:11:23+08:00">
+                2020-07-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="win10使用docker和virtualBox冲突的过程"><a href="#win10使用docker和virtualBox冲突的过程" class="headerlink" title="win10使用docker和virtualBox冲突的过程"></a>win10使用docker和virtualBox冲突的过程</h1><blockquote>
+<p>本文并没有解决 win10 同时使用 docker 和 virtualBox 时起冲突的问题。只是记录一下解决的过程。<br>系统版本：Windows 10 专业版 2004<br>操作系统版本：19041.329<br>CPU：i5-4590。内存：16GB</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/31/win10使用docker和virtualBox冲突的过程/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/07/31/在win上使用VMware安装虚拟机运行tippecanoe切片/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/31/在win上使用VMware安装虚拟机运行tippecanoe切片/" itemprop="url">在win上使用VMware安装虚拟机运行tippecanoe切片</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-31T19:21:48+08:00">
+                2020-07-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="在win上使用VMware安装虚拟机运行tippecanoe切片"><a href="#在win上使用VMware安装虚拟机运行tippecanoe切片" class="headerlink" title="在win上使用VMware安装虚拟机运行tippecanoe切片"></a>在win上使用VMware安装虚拟机运行tippecanoe切片</h1><blockquote>
+<p>记录自己安装 tippecanoe 的过程<br>tippecanoe 为生成本地矢量瓦片的开源工具，介绍文章在<a href="https://zhuanlan.zhihu.com/p/31185974" target="_blank" rel="noopener">Mapbox GL JS学习笔记四：开源工具生成本地矢量瓦片</a> 、<a href="https://zhuanlan.zhihu.com/p/31760283" target="_blank" rel="noopener">Mapbox GL JS学习笔记七：mb-util工具使用</a>。<br>步骤为使用 VMware 安装 Linux 虚拟机，将 tippecanoe 部署在虚拟机上。再将启动服务部署在虚拟机上，使用命令调用切片。用另外的 FoxGIS Server Lite 部署在 Windows 主机上来访问切片后的瓦片文件<br>参考文章：<a href="https://jingsam.github.io" target="_blank" rel="noopener">FoxGIS安装部署</a> 、<a href="https://zhuanlan.zhihu.com/p/32306317" target="_blank" rel="noopener">Mapbox GL JS 学习笔记八：tippecanoe在centos上安装以及使用补充说明</a><br>在安装过程中出现错误，无法继续在本机安装。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/31/在win上使用VMware安装虚拟机运行tippecanoe切片/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/07/11/转载，为何有的大厂技术弱爆了/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/11/转载，为何有的大厂技术弱爆了/" itemprop="url">转载，为何有的大厂技术弱爆了</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-11T10:04:54+08:00">
+                2020-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="转载，为何有的大厂技术弱爆了"><a href="#转载，为何有的大厂技术弱爆了" class="headerlink" title="转载，为何有的大厂技术弱爆了"></a>转载，为何有的大厂技术弱爆了</h1><blockquote>
+<p>这篇文章转自 <a href="https://mp.weixin.qq.com/s/UGVzS86-iSsXqc08eRUrFQ" target="_blank" rel="noopener">简单聊聊为什么有些大公司技术弱爆了？</a><br>这里是想记录一些常见的让自己代码看起来很 low 的点，逐渐的在有时间的情况下把自己的代码写的好一点。<br>当忙起来的时候还真的是忙啊，真的是能完成功能就行，哪里还能想那么多优化，全凭之前的经验，哪个快速开发用哪个。感觉就像是一个无情的打字机器。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/11/转载，为何有的大厂技术弱爆了/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/07/04/在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/04/在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）/" itemprop="url">在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-04T17:53:04+08:00">
+                2020-07-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）"><a href="#在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）" class="headerlink" title="在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）"></a>在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）</h1><blockquote>
+<p>在看公众号的时候发现的，拆成了两篇文章。阅读起来方便一点<br>作者：琴水玉<br>cnblogs.com/lovesqcc/p/4319594.html</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/04/在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/07/04/在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（下）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/04/在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（下）/" itemprop="url">在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（下）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-04T17:53:04+08:00">
+                2020-07-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（下）"><a href="#在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（下）" class="headerlink" title="在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（下）"></a>在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（下）</h1><blockquote>
+<p>在看公众号的时候发现的，拆成了两篇文章。阅读起来方便一点<br>作者：琴水玉<br>cnblogs.com/lovesqcc/p/4319594.html</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/04/在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（下）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/06/27/LeetCode第5题解体思路/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/27/LeetCode第5题解体思路/" itemprop="url">LeetCode第5题解体思路</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-27T09:40:14+08:00">
+                2020-06-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="LeetCode第5题解体思路"><a href="#LeetCode第5题解体思路" class="headerlink" title="LeetCode第5题解体思路"></a>LeetCode第5题解体思路</h1><blockquote>
+<p>最近这忙于换工作电脑，换工作场地消耗了不少的时间。通勤时间也从10分钟增长到了来回1小时，每天也要7点钟起来去吃早餐了。<br>原文地址<a href="https://leetcode.wang/leetCode-5-Longest-Palindromic-Substring.html" target="_blank" rel="noopener">https://leetcode.wang</a> 感觉我的排版不行，可以选择直接去看原版。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/27/LeetCode第5题解体思路/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/06/19/LeetCode第4题结题思路/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/19/LeetCode第4题结题思路/" itemprop="url">LeetCode第4题结题思路</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-19T17:24:32+08:00">
+                2020-06-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="LeetCode第4题结题思路"><a href="#LeetCode第4题结题思路" class="headerlink" title="LeetCode第4题结题思路"></a>LeetCode第4题结题思路</h1><blockquote>
+<p>最近开始刷起了算法题，发现在白天做完业务功能后。晚上刷刷题有种换换思路的感觉。<br>下面全是从原文哪里搬来的，来自(wind-liang的github)[<a href="https://leetcode.wang/leetCode-4-Median-of-Two-Sorted-Arrays.html]" target="_blank" rel="noopener">https://leetcode.wang/leetCode-4-Median-of-Two-Sorted-Arrays.html]</a> 。我自己的解法就是第一种的思路。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/19/LeetCode第4题结题思路/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/06/12/记优化主从同步恢复时间的过程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/12/记优化主从同步恢复时间的过程/" itemprop="url">记优化主从同步恢复时间的过程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-12T21:11:31+08:00">
+                2020-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="记优化主从同步恢复时间的过程"><a href="#记优化主从同步恢复时间的过程" class="headerlink" title="记优化主从同步恢复时间的过程"></a>记优化主从同步恢复时间的过程</h1><blockquote>
+<p>这次再次出现了 Mysql 主从同步时，出现了主键冲突错误。当再次采用Data文件夹复制的时候。发现随着二级制日志文件的越来越多，复制的时间也越来越长。在复制恢复的时候无法启动程序，客户感觉体验极差（虽然原因是因为客户那边的服务器断电了，但是技术方面还是可以去避免这种情况的出现）。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/12/记优化主从同步恢复时间的过程/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/06/05/Redis缓存三大问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/05/Redis缓存三大问题/" itemprop="url">Redis缓存三大问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-05T18:13:49+08:00">
+                2020-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Redis缓存三大问题"><a href="#Redis缓存三大问题" class="headerlink" title="Redis缓存三大问题"></a>Redis缓存三大问题</h1><blockquote>
+<p>最近发现微信公众号里的文章和我自己写的文章还是有很大的不同，我的文章有些表达不清。公众号的文章穿插了一些图片和日常语言，还是让阅读的感觉生动有趣一些。<br>本文来源于公众号非科班的科班，我是从猿天地的转载上看到的<a href="https://mp.weixin.qq.com/s/IBlWjCnmLm9o6QXxa2rOPw" target="_blank" rel="noopener">看完这篇Redis缓存三大问题，保你能和面试官互扯</a> 。标题有点夸张，有些格式问题，但内容还是有点东西的。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/05/Redis缓存三大问题/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/05/30/获得腾讯云社区奖品/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/30/获得腾讯云社区奖品/" itemprop="url">获得腾讯云社区奖品</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-30T20:47:37+08:00">
                 2020-05-30
               </time>
             
@@ -358,1145 +1492,12 @@
 
       
         
-          <h1 id="使用JPA和Mycat保存分表数据时出现主键冲突"><a href="#使用JPA和Mycat保存分表数据时出现主键冲突" class="headerlink" title="使用JPA和Mycat保存分表数据时出现主键冲突"></a>使用JPA和Mycat保存分表数据时出现主键冲突</h1><blockquote>
-<p>将一个百万数据级别的表拆分为几十万数据的表后，保存数据时出现了问题</p>
+          <h1 id="获得腾讯云社区奖品"><a href="#获得腾讯云社区奖品" class="headerlink" title="获得腾讯云社区奖品"></a>获得腾讯云社区奖品</h1><blockquote>
+<p>是开心的一天呀，终于收到了参与的活动奖品。</p>
 </blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/05/30/使用JPA和Mycat保存分表数据时出现主键冲突/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/05/25/分布式的架构演进/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/25/分布式的架构演进/" itemprop="url">分布式的架构演进</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-25T09:48:41+08:00">
-                2020-05-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="分布式的架构演进"><a href="#分布式的架构演进" class="headerlink" title="分布式的架构演进"></a>分布式的架构演进</h1><blockquote>
-<p>最近在浏览微信文章的时候发现了一篇很不错的项目优化路线，和我的项目演进经历很是相像。记录一下，再研究项目之后的优化方向。<br>来自架构师修炼（微信号：jiagouxiulian）的 <a href="https://mp.weixin.qq.com/s?__biz=MzI2MTk1NDY0Mw==&amp;mid=2247484223&amp;idx=1&amp;sn=d8e190e8c199ddf2934e938e4e111d7d&amp;chksm=ea53ce03dd2447150dc582d513e7766e4195569207885192e37e7d3e1a80b0b0f3f871e9907d&amp;mpshare=1&amp;scene=23&amp;srcid=&amp;sharer_sharetime=1590021834076&amp;sharer_shareid=42a3d887c59629d50ec3421c14c20068#rd" target="_blank" rel="noopener">谁能想到，我给技术总监“上了一课”</a><br></p></blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/25/分布式的架构演进/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/05/15/mysql简洁配置只读用户/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/15/mysql简洁配置只读用户/" itemprop="url">mysql简洁配置只读用户</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-15T16:06:22+08:00">
-                2020-05-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="mysql简洁配置只读用户"><a href="#mysql简洁配置只读用户" class="headerlink" title="mysql简洁配置只读用户"></a>mysql简洁配置只读用户</h1><blockquote>
-<p>这里只是记录一下自己对数据库的操作。之后可以直接重新使用。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/15/mysql简洁配置只读用户/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/05/09/气象相关MeteoInfo失败使用过程记录/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/09/气象相关MeteoInfo失败使用过程记录/" itemprop="url">气象相关MeteoInfo失败使用过程记录</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-09T18:21:01+08:00">
-                2020-05-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="气象相关MeteoInfo失败使用过程记录"><a href="#气象相关MeteoInfo失败使用过程记录" class="headerlink" title="气象相关MeteoInfo失败使用过程记录"></a>气象相关MeteoInfo失败使用过程记录</h1><blockquote>
-<p>虽然成功画图，但是依旧是不能够有足够的参数调整。图片一看就是有问题的图，更换文件类型去尝试，未能成功画图。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/09/气象相关MeteoInfo失败使用过程记录/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/05/01/hexo-next添加live2d和搜索功能/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/01/hexo-next添加live2d和搜索功能/" itemprop="url">hexo+next添加live2d和搜索功能</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-01T18:42:48+08:00">
-                2020-05-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="hexo-next添加live2d和搜索功能"><a href="#hexo-next添加live2d和搜索功能" class="headerlink" title="hexo+next添加live2d和搜索功能"></a>hexo+next添加live2d和搜索功能</h1><blockquote>
-<p>之前的网站看腻了，就来换个新的设计。再加上修改自己使用时候出现的一些不方便的地方。都是直接用原文中的步骤进行就可以了。<br>原文地址<a href="https://www.jianshu.com/p/202c9e789c8f" target="_blank" rel="noopener">Hexo Next主题添加搜索功能</a><br><a href="https://github.com/EYHN/hexo-helper-live2d/blob/master/README.zh-CN.md" target="_blank" rel="noopener">hexo-helper-live2d</a></p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/01/hexo-next添加live2d和搜索功能/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/04/30/气象相关Python版NCL的安装和未成功使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/30/气象相关Python版NCL的安装和未成功使用/" itemprop="url">气象相关Python版NCL的安装和未成功使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-30T18:23:26+08:00">
-                2020-04-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="气象相关Python版NCL的安装和未成功使用"><a href="#气象相关Python版NCL的安装和未成功使用" class="headerlink" title="气象相关Python版NCL的安装和未成功使用"></a>气象相关Python版NCL的安装和未成功使用</h1><blockquote>
-<p>业务需要将气象服务文件类型画图，去找了找有关的东西，发现了这个视频简单一些<a href="https://www.bilibili.com/video/av73159125/" target="_blank" rel="noopener">Python版NCL安装及快速入门</a> 。仔细研究了一下发现还是没能入门。但是还是记录一下，之后看看有没有后续研究。<br>这里卡住了之后要去尝试看一下 MeteoInfoLab，暂时停止这个的研究。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/04/30/气象相关Python版NCL的安装和未成功使用/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/04/25/微软 Office Online Server 2016 服务安装部署/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/25/微软 Office Online Server 2016 服务安装部署/" itemprop="url">微软 Office Online Server 2016 服务安装部署</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-25T10:52:38+08:00">
-                2020-04-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="微软-Office-Online-Server-2016-服务安装部署"><a href="#微软-Office-Online-Server-2016-服务安装部署" class="headerlink" title="微软 Office Online Server 2016 服务安装部署"></a>微软 Office Online Server 2016 服务安装部署</h1><blockquote>
-<p>结合了几篇文章。每个文章都用了一部分。<br>一、 <a href="https://blog.csdn.net/jiaqu2177/article/details/81945692" target="_blank" rel="noopener">微软 Office Online Server 2016 服务安装部署 + wopi代码实现</a><br>二、<a href="https://www.netnr.com/home/list/114" target="_blank" rel="noopener">Office Online Server 在线编辑Office文档，安装部署</a><br>三、 <a href="https://www.netnr.com/doc/code/4964095842855914510/4935912187725186675" target="_blank" rel="noopener">https://www.netnr.com/doc/code/4964095842855914510/4935912187725186675</a><br>四、 <a href="https://blog.csdn.net/q386815991/article/details/81705128" target="_blank" rel="noopener">office online server2016详细安装步骤及问题总结</a></p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/04/25/微软 Office Online Server 2016 服务安装部署/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/04/18/Windows Server 2012 R2安装域控制器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/18/Windows Server 2012 R2安装域控制器/" itemprop="url">Windows Server 2012 R2安装域控制器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-18T09:16:42+08:00">
-                2020-04-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Windows-Server-2012-R2安装域控制器"><a href="#Windows-Server-2012-R2安装域控制器" class="headerlink" title="Windows Server 2012 R2安装域控制器"></a>Windows Server 2012 R2安装域控制器</h1><blockquote>
-<p>转载自<a href="https://blog.csdn.net/jiaqu2177/article/details/81943615" target="_blank" rel="noopener">https://blog.csdn.net/jiaqu2177/article/details/81943615</a> 本人已经使用过了。图片有点模糊，不影响使用。<br>主要是用于使用office web apps 和office online server搭建在线Word预览编辑！</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/04/18/Windows Server 2012 R2安装域控制器/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/04/11/office online + wopiHost实现在线编辑office文档/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/11/office online + wopiHost实现在线编辑office文档/" itemprop="url">office online + wopiHost实现在线编辑office文档</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-11T16:00:40+08:00">
-                2020-04-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="office-online-wopiHost实现在线编辑office文档"><a href="#office-online-wopiHost实现在线编辑office文档" class="headerlink" title="office online + wopiHost实现在线编辑office文档"></a>office online + wopiHost实现在线编辑office文档</h1><blockquote>
-<p>跟着博客一步一步走完成的office online server的安装，在此记录一下碰到的问题与解决思路。<br><a href="https://www.netnr.com/home/list/114" target="_blank" rel="noopener">https://www.netnr.com/home/list/114</a> wopi参考文档。<br><a href="https://www.netnr.com/doc/code/4964095842855914510/4688957725858114675" target="_blank" rel="noopener">https://www.netnr.com/doc/code/4964095842855914510/4688957725858114675</a> 配合上面的项目的文档<br><a href="https://blog.csdn.net/jiaqu2177/article/details/81945692" target="_blank" rel="noopener">https://blog.csdn.net/jiaqu2177/article/details/81945692</a> 安装office online server参考文档</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/04/11/office online + wopiHost实现在线编辑office文档/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/04/04/linux通过docker安装oracle的过程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/04/linux通过docker安装oracle的过程/" itemprop="url">linux通过docker安装oracle的过程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-04T15:17:30+08:00">
-                2020-04-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="linux通过docker安装oracle的过程"><a href="#linux通过docker安装oracle的过程" class="headerlink" title="linux通过docker安装oracle的过程"></a>linux通过docker安装oracle的过程</h1><blockquote>
-<p>业务需要，要在linux服务器上装一个oracle。作为一个没有安装经验的我来说，首先想到的就是整一个docker镜像，run一下岂不是很快乐。但是oracle公司早就防了一手，也才有的这个记录过程。<br>如果仅仅是个人使用，第一次的尝试就可以安装好oracle数据库。但是里面的数据太杂乱，就有了后面的尝试。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/04/04/linux通过docker安装oracle的过程/#more" rel="contents">
+            <a class="btn" href="/2020/05/30/获得腾讯云社区奖品/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1538,7 +1539,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1588,7 +1589,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1601,7 +1602,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

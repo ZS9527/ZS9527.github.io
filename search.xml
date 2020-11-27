@@ -1,55 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>InnoDB 中一棵 B+ 树能存多少行数据？</title>
-    <url>/2020/02/22/InnoDB%20%E4%B8%AD%E4%B8%80%E6%A3%B5%20B+%E6%A0%91%E8%83%BD%E5%AD%98%E5%A4%9A%E5%B0%91%E8%A1%8C%E6%95%B0%E6%8D%AE%EF%BC%9F/</url>
-    <content><![CDATA[<h1 id="InnoDB-中一棵-B-树能存多少行数据？"><a href="#InnoDB-中一棵-B-树能存多少行数据？" class="headerlink" title="InnoDB 中一棵 B+ 树能存多少行数据？"></a>InnoDB 中一棵 B+ 树能存多少行数据？</h1><blockquote>
-<p>来自<a href="https://www.cnblogs.com/leefreeman/p/8315844.html" target="_blank" rel="noopener">https://www.cnblogs.com/leefreeman/p/8315844.html</a> ，看到这篇文章后感觉对自己理解mysql索引存储方式有所帮助，记录下来。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="一个问题？"><a href="#一个问题？" class="headerlink" title="一个问题？"></a>一个问题？</h2><p>InnoDB一棵B+树可以存放多少行数据？这个问题的简单回答是：约2千万。为什么是这么多呢？因为这是可以算出来的，要搞清楚这个问题，我们先从InnoDB索引数据结构、数据组织方式说起。</p>
-<p>我们都知道计算机在存储数据的时候，有最小存储单元，这就好比我们今天进行现金的流通最小单位是一毛。在计算机中磁盘存储数据最小单元是扇区，一个扇区的大小是512字节，而文件系统（例如XFS/EXT4）他的最小单元是块，一个块的大小是4k，而对于我们的InnoDB存储引擎也有自己的最小储存单元——页（Page），一个页的大小是16K。</p>
-<p>下面几张图可以帮你理解最小存储单元：</p>
-<p>文件系统中一个文件大小只有1个字节，但不得不占磁盘上4KB的空间。<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b1.png" alt=""><br>innodb的所有数据文件（后缀为ibd的文件），他的大小始终都是16384（16k）的整数倍。<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b2.png" alt=""><br>磁盘扇区、文件系统、InnoDB存储引擎都有各自的最小存储单元。<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b3.png" alt=""><br>在MySQL中我们的InnoDB页的大小默认是16k，当然也可以通过参数设置：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; show variables like &apos;innodb_page_size&apos;;</span><br><span class="line"></span><br><span class="line">+------------------+-------+</span><br><span class="line"></span><br><span class="line">| Variable_name    | Value |</span><br><span class="line"></span><br><span class="line">+------------------+-------+</span><br><span class="line"></span><br><span class="line">| innodb_page_size | 16384 |</span><br><span class="line"></span><br><span class="line">+------------------+-------+</span><br><span class="line"></span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
-<p>数据表中的数据都是存储在页中的，所以一个页中能存储多少行数据呢？假设一行数据的大小是1k，那么一个页可以存放16行这样的数据。</p>
-<p>如果数据库只按这样的方式存储，那么如何查找数据就成为一个问题，因为我们不知道要查找的数据存在哪个页中，也不可能把所有的页遍历一遍，那样太慢了。所以人们想了一个办法，用B+树的方式组织这些数据。如图所示：<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b4.png" alt=""></p>
-<p>我们先将数据记录按主键进行排序，分别存放在不同的页中（为了便于理解我们这里一个页中只存放3条记录，实际情况可以存放很多），除了存放数据的页以外，还有存放键值+指针的页，如图中page number=3的页，该页存放键值和指向数据页的指针，这样的页由N个键值+指针组成。当然它也是排好序的。这样的数据组织形式，我们称为索引组织表。现在来看下，要查找一条数据，怎么查？</p>
-<p>如select * from user where id=5;</p>
-<p>这里id是主键,我们通过这棵B+树来查找，首先找到根页，你怎么知道user表的根页在哪呢？其实每张表的根页位置在表空间文件中是固定的，即page number=3的页（这点我们下文还会进一步证明），找到根页后通过二分查找法，定位到id=5的数据应该在指针P5指向的页中，那么进一步去page number=5的页中查找，同样通过二分查询法即可找到id=5的记录：<br><strong>|</strong> 5 <strong>|</strong> zhao2 <strong>|</strong> 27 <strong>|</strong></p>
-<p>现在我们清楚了InnoDB中主键索引B+树是如何组织数据、查询数据的，我们总结一下：</p>
-<p>1、InnoDB存储引擎的最小存储单元是页，页可以用于存放数据也可以用于存放键值+指针，在B+树中叶子节点存放数据，非叶子节点存放键值+指针。</p>
-<p>2、索引组织表通过非叶子节点的二分查找法以及指针确定数据在哪个页中，进而在去数据页中查找到需要的数据；</p>
-<p>那么回到我们开始的问题，通常一棵B+树可以存放多少行数据？</p>
-<p>这里我们先假设B+树高为2，即存在一个根节点和若干个叶子节点，那么这棵B+树的存放总记录数为：根节点指针数*单个叶子节点记录行数。</p>
-<p>上文我们已经说明单个叶子节点（页）中的记录数=16K/1K=16。（这里假设一行记录的数据大小为1k，实际上现在很多互联网业务数据记录大小通常就是1K左右）。</p>
-<p>那么现在我们需要计算出非叶子节点能存放多少指针，其实这也很好算，我们假设主键ID为bigint类型，长度为8字节，而指针大小在InnoDB源码中设置为6字节，这样一共14字节，我们一个页中能存放多少这样的单元，其实就代表有多少指针，即16384/14=1170。那么可以算出一棵高度为2的B+树，能存放1170*16=18720条这样的数据记录。</p>
-<p>根据同样的原理我们可以算出一个高度为3的B+树可以存放：1170*1170*16=21902400条这样的记录。所以在InnoDB中B+树高度一般为1-3层，它就能满足千万级的数据存储。在查找数据时一次页的查找代表一次IO，所以通过主键索引查询通常只需要1-3次IO操作即可查找到数据。</p>
-<h2 id="怎么得到InnoDB主键索引B-树的高度？"><a href="#怎么得到InnoDB主键索引B-树的高度？" class="headerlink" title="怎么得到InnoDB主键索引B+树的高度？"></a>怎么得到InnoDB主键索引B+树的高度？</h2><p>上面我们通过推断得出B+树的高度通常是1-3，下面我们从另外一个侧面证明这个结论。在InnoDB的表空间文件中，约定page number为3的代表主键索引的根页，而在根页偏移量为64的地方存放了该B+树的page level。如果page level为1，树高为2，page level为2，则树高为3。即B+树的高度=page level+1；下面我们将从实际环境中尝试找到这个page level。</p>
-<p>在实际操作之前，你可以通过InnoDB元数据表确认主键索引根页的page number为3，你也可以从《InnoDB存储引擎》这本书中得到确认。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT</span><br><span class="line">b.name, a.name, index_id, type, a.space, a.PAGE_NO</span><br><span class="line">FROM</span><br><span class="line">information_schema.INNODB_SYS_INDEXES a,</span><br><span class="line">information_schema.INNODB_SYS_TABLES b</span><br><span class="line">WHERE</span><br><span class="line">a.table_id = b.table_id AND a.space &lt;&gt; 0;</span><br></pre></td></tr></table></figure>
-<p>执行结果：<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b5.png" alt=""></p>
-<p>可以看出数据库dbt3下的customer表、lineitem表主键索引根页的page number均为3，而其他的二级索引page number为4。关于二级索引与主键索引的区别请参考MySQL相关书籍，本文不在此介绍。</p>
-<p>下面我们对数据库表空间文件做想相关的解析：<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b6.png" alt=""><br>因为主键索引B+树的根页在整个表空间文件中的第3个页开始，所以可以算出它在文件中的偏移量：16384*3=49152（16384为页大小）。</p>
-<p>另外根据《InnoDB存储引擎》中描述在根页的64偏移量位置前2个字节，保存了page level的值，因此我们想要的page level的值在整个文件中的偏移量为：16384*3+64=49152+64=49216，前2个字节中。</p>
-<p>接下来我们用hexdump工具，查看表空间文件指定偏移量上的数据：<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b7.png" alt=""></p>
-<p>linetem表的page level为2，B+树高度为page level+1=3；</p>
-<p>region表的page level为0，B+树高度为page level+1=1；</p>
-<p>customer表的page level为2，B+树高度为page level+1=3；</p>
-<p>这三张表的数据量如下：<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b8.png" alt=""></p>
-<p>总结：</p>
-<p>lineitem表的数据行数为600多万，B+树高度为3，customer表数据行数只有15万，B+树高度也为3。可以看出尽管数据量差异较大，这两个表树的高度都是3，换句话说这两个表通过索引查询效率并没有太大差异，因为都只需要做3次IO。那么如果有一张表行数是一千万，那么他的B+树高度依旧是3，查询效率仍然不会相差太大。</p>
-<p>region表只有5行数据，当然他的B+树高度为1。</p>
-<h2 id="最后回顾一道面试题"><a href="#最后回顾一道面试题" class="headerlink" title="最后回顾一道面试题"></a>最后回顾一道面试题</h2><p>有一道MySQL的面试题，为什么MySQL的索引要使用B+树而不是其它树形结构?比如B树？</p>
-<p>现在这个问题的复杂版本可以参考本文；</p>
-<p>他的简单版本回答是：</p>
-<p>因为B树不管叶子节点还是非叶子节点，都会保存数据，这样导致在非叶子节点中能保存的指针数量变少（有些资料也称为扇出），指针少的情况下要保存大量数据，只能增加树的高度，导致IO操作变多，查询性能变低；</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本文从一个问题出发，逐步介绍了InnoDB索引组织表的原理、查询方式，并结合已有知识，回答该问题，结合实践来证明。当然为了表述简单易懂，文中忽略了一些细枝末节，比如一个页中不可能所有空间都用于存放数据，它还会存放一些少量的其他字段比如page level，index number等等，另外还有页的填充因子也导致一个页不可能全部用于保存数据。关于二级索引数据存取方式可以参考MySQL相关书籍，他的要点是结合主键索引进行回表查询。</p>
-]]></content>
-      <tags>
-        <tag>mysql</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java 8 中的 Streams API</title>
     <url>/2019/03/12/Java-8-%E4%B8%AD%E7%9A%84-Streams-API/</url>
     <content><![CDATA[<h1 id="Java-8-中的-Streams-API-详解"><a href="#Java-8-中的-Streams-API-详解" class="headerlink" title="Java 8 中的 Streams API 详解"></a>Java 8 中的 Streams API 详解</h1><blockquote>
@@ -282,6 +233,55 @@
 ]]></content>
       <tags>
         <tag>java8</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>InnoDB 中一棵 B+ 树能存多少行数据？</title>
+    <url>/2020/02/22/InnoDB%20%E4%B8%AD%E4%B8%80%E6%A3%B5%20B+%E6%A0%91%E8%83%BD%E5%AD%98%E5%A4%9A%E5%B0%91%E8%A1%8C%E6%95%B0%E6%8D%AE%EF%BC%9F/</url>
+    <content><![CDATA[<h1 id="InnoDB-中一棵-B-树能存多少行数据？"><a href="#InnoDB-中一棵-B-树能存多少行数据？" class="headerlink" title="InnoDB 中一棵 B+ 树能存多少行数据？"></a>InnoDB 中一棵 B+ 树能存多少行数据？</h1><blockquote>
+<p>来自<a href="https://www.cnblogs.com/leefreeman/p/8315844.html" target="_blank" rel="noopener">https://www.cnblogs.com/leefreeman/p/8315844.html</a> ，看到这篇文章后感觉对自己理解mysql索引存储方式有所帮助，记录下来。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="一个问题？"><a href="#一个问题？" class="headerlink" title="一个问题？"></a>一个问题？</h2><p>InnoDB一棵B+树可以存放多少行数据？这个问题的简单回答是：约2千万。为什么是这么多呢？因为这是可以算出来的，要搞清楚这个问题，我们先从InnoDB索引数据结构、数据组织方式说起。</p>
+<p>我们都知道计算机在存储数据的时候，有最小存储单元，这就好比我们今天进行现金的流通最小单位是一毛。在计算机中磁盘存储数据最小单元是扇区，一个扇区的大小是512字节，而文件系统（例如XFS/EXT4）他的最小单元是块，一个块的大小是4k，而对于我们的InnoDB存储引擎也有自己的最小储存单元——页（Page），一个页的大小是16K。</p>
+<p>下面几张图可以帮你理解最小存储单元：</p>
+<p>文件系统中一个文件大小只有1个字节，但不得不占磁盘上4KB的空间。<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b1.png" alt=""><br>innodb的所有数据文件（后缀为ibd的文件），他的大小始终都是16384（16k）的整数倍。<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b2.png" alt=""><br>磁盘扇区、文件系统、InnoDB存储引擎都有各自的最小存储单元。<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b3.png" alt=""><br>在MySQL中我们的InnoDB页的大小默认是16k，当然也可以通过参数设置：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; show variables like &apos;innodb_page_size&apos;;</span><br><span class="line"></span><br><span class="line">+------------------+-------+</span><br><span class="line"></span><br><span class="line">| Variable_name    | Value |</span><br><span class="line"></span><br><span class="line">+------------------+-------+</span><br><span class="line"></span><br><span class="line">| innodb_page_size | 16384 |</span><br><span class="line"></span><br><span class="line">+------------------+-------+</span><br><span class="line"></span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>数据表中的数据都是存储在页中的，所以一个页中能存储多少行数据呢？假设一行数据的大小是1k，那么一个页可以存放16行这样的数据。</p>
+<p>如果数据库只按这样的方式存储，那么如何查找数据就成为一个问题，因为我们不知道要查找的数据存在哪个页中，也不可能把所有的页遍历一遍，那样太慢了。所以人们想了一个办法，用B+树的方式组织这些数据。如图所示：<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b4.png" alt=""></p>
+<p>我们先将数据记录按主键进行排序，分别存放在不同的页中（为了便于理解我们这里一个页中只存放3条记录，实际情况可以存放很多），除了存放数据的页以外，还有存放键值+指针的页，如图中page number=3的页，该页存放键值和指向数据页的指针，这样的页由N个键值+指针组成。当然它也是排好序的。这样的数据组织形式，我们称为索引组织表。现在来看下，要查找一条数据，怎么查？</p>
+<p>如select * from user where id=5;</p>
+<p>这里id是主键,我们通过这棵B+树来查找，首先找到根页，你怎么知道user表的根页在哪呢？其实每张表的根页位置在表空间文件中是固定的，即page number=3的页（这点我们下文还会进一步证明），找到根页后通过二分查找法，定位到id=5的数据应该在指针P5指向的页中，那么进一步去page number=5的页中查找，同样通过二分查询法即可找到id=5的记录：<br><strong>|</strong> 5 <strong>|</strong> zhao2 <strong>|</strong> 27 <strong>|</strong></p>
+<p>现在我们清楚了InnoDB中主键索引B+树是如何组织数据、查询数据的，我们总结一下：</p>
+<p>1、InnoDB存储引擎的最小存储单元是页，页可以用于存放数据也可以用于存放键值+指针，在B+树中叶子节点存放数据，非叶子节点存放键值+指针。</p>
+<p>2、索引组织表通过非叶子节点的二分查找法以及指针确定数据在哪个页中，进而在去数据页中查找到需要的数据；</p>
+<p>那么回到我们开始的问题，通常一棵B+树可以存放多少行数据？</p>
+<p>这里我们先假设B+树高为2，即存在一个根节点和若干个叶子节点，那么这棵B+树的存放总记录数为：根节点指针数*单个叶子节点记录行数。</p>
+<p>上文我们已经说明单个叶子节点（页）中的记录数=16K/1K=16。（这里假设一行记录的数据大小为1k，实际上现在很多互联网业务数据记录大小通常就是1K左右）。</p>
+<p>那么现在我们需要计算出非叶子节点能存放多少指针，其实这也很好算，我们假设主键ID为bigint类型，长度为8字节，而指针大小在InnoDB源码中设置为6字节，这样一共14字节，我们一个页中能存放多少这样的单元，其实就代表有多少指针，即16384/14=1170。那么可以算出一棵高度为2的B+树，能存放1170*16=18720条这样的数据记录。</p>
+<p>根据同样的原理我们可以算出一个高度为3的B+树可以存放：1170*1170*16=21902400条这样的记录。所以在InnoDB中B+树高度一般为1-3层，它就能满足千万级的数据存储。在查找数据时一次页的查找代表一次IO，所以通过主键索引查询通常只需要1-3次IO操作即可查找到数据。</p>
+<h2 id="怎么得到InnoDB主键索引B-树的高度？"><a href="#怎么得到InnoDB主键索引B-树的高度？" class="headerlink" title="怎么得到InnoDB主键索引B+树的高度？"></a>怎么得到InnoDB主键索引B+树的高度？</h2><p>上面我们通过推断得出B+树的高度通常是1-3，下面我们从另外一个侧面证明这个结论。在InnoDB的表空间文件中，约定page number为3的代表主键索引的根页，而在根页偏移量为64的地方存放了该B+树的page level。如果page level为1，树高为2，page level为2，则树高为3。即B+树的高度=page level+1；下面我们将从实际环境中尝试找到这个page level。</p>
+<p>在实际操作之前，你可以通过InnoDB元数据表确认主键索引根页的page number为3，你也可以从《InnoDB存储引擎》这本书中得到确认。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT</span><br><span class="line">b.name, a.name, index_id, type, a.space, a.PAGE_NO</span><br><span class="line">FROM</span><br><span class="line">information_schema.INNODB_SYS_INDEXES a,</span><br><span class="line">information_schema.INNODB_SYS_TABLES b</span><br><span class="line">WHERE</span><br><span class="line">a.table_id = b.table_id AND a.space &lt;&gt; 0;</span><br></pre></td></tr></table></figure>
+<p>执行结果：<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b5.png" alt=""></p>
+<p>可以看出数据库dbt3下的customer表、lineitem表主键索引根页的page number均为3，而其他的二级索引page number为4。关于二级索引与主键索引的区别请参考MySQL相关书籍，本文不在此介绍。</p>
+<p>下面我们对数据库表空间文件做想相关的解析：<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b6.png" alt=""><br>因为主键索引B+树的根页在整个表空间文件中的第3个页开始，所以可以算出它在文件中的偏移量：16384*3=49152（16384为页大小）。</p>
+<p>另外根据《InnoDB存储引擎》中描述在根页的64偏移量位置前2个字节，保存了page level的值，因此我们想要的page level的值在整个文件中的偏移量为：16384*3+64=49152+64=49216，前2个字节中。</p>
+<p>接下来我们用hexdump工具，查看表空间文件指定偏移量上的数据：<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b7.png" alt=""></p>
+<p>linetem表的page level为2，B+树高度为page level+1=3；</p>
+<p>region表的page level为0，B+树高度为page level+1=1；</p>
+<p>customer表的page level为2，B+树高度为page level+1=3；</p>
+<p>这三张表的数据量如下：<br><img src="/2020/02/22/InnoDB 中一棵 B+树能存多少行数据？/b8.png" alt=""></p>
+<p>总结：</p>
+<p>lineitem表的数据行数为600多万，B+树高度为3，customer表数据行数只有15万，B+树高度也为3。可以看出尽管数据量差异较大，这两个表树的高度都是3，换句话说这两个表通过索引查询效率并没有太大差异，因为都只需要做3次IO。那么如果有一张表行数是一千万，那么他的B+树高度依旧是3，查询效率仍然不会相差太大。</p>
+<p>region表只有5行数据，当然他的B+树高度为1。</p>
+<h2 id="最后回顾一道面试题"><a href="#最后回顾一道面试题" class="headerlink" title="最后回顾一道面试题"></a>最后回顾一道面试题</h2><p>有一道MySQL的面试题，为什么MySQL的索引要使用B+树而不是其它树形结构?比如B树？</p>
+<p>现在这个问题的复杂版本可以参考本文；</p>
+<p>他的简单版本回答是：</p>
+<p>因为B树不管叶子节点还是非叶子节点，都会保存数据，这样导致在非叶子节点中能保存的指针数量变少（有些资料也称为扇出），指针少的情况下要保存大量数据，只能增加树的高度，导致IO操作变多，查询性能变低；</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本文从一个问题出发，逐步介绍了InnoDB索引组织表的原理、查询方式，并结合已有知识，回答该问题，结合实践来证明。当然为了表述简单易懂，文中忽略了一些细枝末节，比如一个页中不可能所有空间都用于存放数据，它还会存放一些少量的其他字段比如page level，index number等等，另外还有页的填充因子也导致一个页不可能全部用于保存数据。关于二级索引数据存取方式可以参考MySQL相关书籍，他的要点是结合主键索引进行回表查询。</p>
+]]></content>
+      <tags>
+        <tag>mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -774,6 +774,50 @@
       </tags>
   </entry>
   <entry>
+    <title>SpringBoot-单元测试过程</title>
+    <url>/2020/01/04/SpringBoot-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="SpringBoot-单元测试过程"><a href="#SpringBoot-单元测试过程" class="headerlink" title="SpringBoot-单元测试过程"></a>SpringBoot-单元测试过程</h1><blockquote>
+<p>记录一下在项目中使用过的spring-boot-starter-test</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">         &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">         &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;</span><br><span class="line">         &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>包内自带了junit和mockito，如果自己引入过的话，最好使用包内自带的。</p>
+<h2 id="基本注释"><a href="#基本注释" class="headerlink" title="基本注释"></a>基本注释</h2><p>说明一些我用到的注释和方法。</p>
+<h3 id="类注释和抽象类"><a href="#类注释和抽象类" class="headerlink" title="类注释和抽象类"></a>类注释和抽象类</h3><ul>
+<li><p><strong>@TestExecutionListeners：</strong>是一个类级别的注释，用于指定在测试类执行之前，可以做的一些动作。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@TestExecutionListeners(&#123;TransactionalTestExecutionListener.class, SqlScriptsTestExecutionListener.class&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>@ActiveProfiles：</strong>是一个类级别的注释，用于声明在加载 for测试类时应使用哪些活动bean定义配置文件ApplicationContext。就是指定你这个测试类所用的配置文件。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@ActiveProfiles(&quot;test&quot;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>@SpringBootTest：</strong>是一个类级别的注释，指定启动类和web环境。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>AbstractTestNGSpringContextTests：</strong>抽象基础测试类，该类将Spring TestContext Framework 与TestNG 环境中的显式ApplicationContext测试支持集成在一起。</p>
+</li>
+</ul>
+<h3 id="方法注释和实现方法"><a href="#方法注释和实现方法" class="headerlink" title="方法注释和实现方法"></a>方法注释和实现方法</h3><ul>
+<li><strong>@BeforeMethod：</strong>在测试方法前运行的方法。</li>
+<li><strong>@AfterMethod：</strong>在测试方法后运行的方法。</li>
+<li><p><strong>@Test：</strong>测试方法注释。</p>
+<ol>
+<li><strong>groups：</strong>给方法分组执行。</li>
+<li><strong>dependsOnGroups：</strong>说明这个方法依赖的组列表。这些组的方法都已经在此方法调用前被调用。如果被依赖的方法未执行成功，这个测试方法会被跳过。</li>
+<li><strong>dependsOnMethods：</strong>和（2）类似，是说明依赖的方法列表。</li>
+<li><strong>timeOut：</strong>方法应花费的最大毫秒数。<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Test(groups = &#123;&quot;home&quot;&#125;, dependsOnGroups = &#123;&quot;login&quot;&#125;, dependsOnMethods = &#123;&#125;, timeOut = 300)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p><strong>@Ignore：</strong>这个可以放在类上，将忽略类和其子类的测试。我使用时放在方法上，仅仅只是需要忽略方法。</p>
+</li>
+</ul>
+<h2 id="使用例子"><a href="#使用例子" class="headerlink" title="使用例子"></a>使用例子</h2><p>在这里放一个我使用时的例子。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@TestExecutionListeners(&#123;TransactionalTestExecutionListener.class, SqlScriptsTestExecutionListener.class&#125;)</span><br><span class="line">@ActiveProfiles(&quot;test&quot;)</span><br><span class="line">@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)</span><br><span class="line">public class AuthControllerTest extends AbstractTestNGSpringContextTests &#123;//可以使用AbstractTestNGSpringContextTests来取消事务</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    WebApplicationContext context;</span><br><span class="line"></span><br><span class="line">    private ManualRestDocumentation restDocumentation = new ManualRestDocumentation();</span><br><span class="line">    private MockMvc mockMvc;</span><br><span class="line">    private String token = TestsConstant.DEFAULT_TOKEN;</span><br><span class="line"></span><br><span class="line">    @BeforeMethod</span><br><span class="line">    public void setUp(Method method) &#123;</span><br><span class="line">        mockMvc = ApplicationTests.initMockMvc(context, restDocumentation);</span><br><span class="line">        this.restDocumentation.beforeTest(getClass(), method.getName());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @AfterMethod</span><br><span class="line">    public void tearDown() &#123;</span><br><span class="line">        this.restDocumentation.afterTest();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Transactional</span><br><span class="line">    //@Test(priority = -1)//权重（默认为0，此处需要先登录才能进行下面的操作，所以需要设置为-1，使login先进行测试，再进行下面测试）</span><br><span class="line">    @Test(groups = &#123;&quot;login&quot;&#125;)</span><br><span class="line">    public void login() throws Exception &#123;</span><br><span class="line">        getVerificationCode();</span><br><span class="line">        String url = &quot;/auth/login&quot;;</span><br><span class="line"></span><br><span class="line">        // 登录本身不需要Authorization, 为了统一处理&#123; Header - Authorization &#125;, 登录这里先加上请求头, 在文档输出时再过滤掉</span><br><span class="line">        RequestBuilder builder = post(url)//把所有元素拼接起来组成一个访问url</span><br><span class="line">                .header(JwtUtils.TOKEN_HEADER, JwtUtils.getTokenHeaderValue(this.token))//添加头</span><br><span class="line">                .param(&quot;username&quot;, TestsConstant.USERNAME)</span><br><span class="line">                .param(&quot;password&quot;, TestsConstant.PASSWORD)//参数名称和值</span><br><span class="line">                .param(&quot;code&quot;,TestsConstant.CODE)</span><br><span class="line">                .accept(MediaType.APPLICATION_JSON);</span><br><span class="line"></span><br><span class="line">        String result = mockMvc.perform(builder)</span><br><span class="line">                .andExpect(status().isOk())</span><br><span class="line">                .andExpect(jsonPath(&quot;$.status&quot;).value(HttpStatus.OK.value()))//状态</span><br><span class="line">                .andExpect(jsonPath(&quot;$.body&quot;).exists())//body详细内容</span><br><span class="line">                .andDo(document(TestsConstant.DOCUMENT_IDENTIFIER, preprocessRequest(//打印配置</span><br><span class="line">                        removeHeaders(JwtUtils.TOKEN_HEADER)</span><br><span class="line">                ), requestParameters(</span><br><span class="line">                        parameterWithName(&quot;username&quot;).description(&quot;用户名（手机号）&quot;),</span><br><span class="line">                        parameterWithName(&quot;password&quot;).description(&quot;密码&quot;),</span><br><span class="line">                        parameterWithName(&quot;code&quot;).description(&quot;验证码&quot;),</span><br><span class="line">                        beneathPath(&quot;body&quot;),//解析文件时只解析body内容</span><br><span class="line">                        fieldWithPath(&quot;roles&quot;).description(&quot;角色&quot;)</span><br><span class="line">                )))</span><br><span class="line">                .andDo(print())//打印出测试结果（详细参数以及结果等等）</span><br><span class="line">                .andReturn()</span><br><span class="line">                .getResponse()</span><br><span class="line">                .getContentAsString();</span><br><span class="line"></span><br><span class="line">        this.token = JSONObject.parseObject(result).getJSONObject(&quot;body&quot;).getString(&quot;token&quot;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <tags>
+        <tag>Spring boot</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SpringBoot+Mybatis+Swagger2环境搭建</title>
     <url>/2019/11/23/SpringBoot-Mybatis-Swagger2%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<h1 id="SpringBoot-Mybatis-Swagger2环境搭建"><a href="#SpringBoot-Mybatis-Swagger2环境搭建" class="headerlink" title="SpringBoot+Mybatis+Swagger2环境搭建"></a>SpringBoot+Mybatis+Swagger2环境搭建</h1><blockquote>
@@ -871,50 +915,6 @@
       </tags>
   </entry>
   <entry>
-    <title>SpringBoot-单元测试过程</title>
-    <url>/2020/01/04/SpringBoot-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[<h1 id="SpringBoot-单元测试过程"><a href="#SpringBoot-单元测试过程" class="headerlink" title="SpringBoot-单元测试过程"></a>SpringBoot-单元测试过程</h1><blockquote>
-<p>记录一下在项目中使用过的spring-boot-starter-test</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">         &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">         &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;</span><br><span class="line">         &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-<p>包内自带了junit和mockito，如果自己引入过的话，最好使用包内自带的。</p>
-<h2 id="基本注释"><a href="#基本注释" class="headerlink" title="基本注释"></a>基本注释</h2><p>说明一些我用到的注释和方法。</p>
-<h3 id="类注释和抽象类"><a href="#类注释和抽象类" class="headerlink" title="类注释和抽象类"></a>类注释和抽象类</h3><ul>
-<li><p><strong>@TestExecutionListeners：</strong>是一个类级别的注释，用于指定在测试类执行之前，可以做的一些动作。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@TestExecutionListeners(&#123;TransactionalTestExecutionListener.class, SqlScriptsTestExecutionListener.class&#125;)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>@ActiveProfiles：</strong>是一个类级别的注释，用于声明在加载 for测试类时应使用哪些活动bean定义配置文件ApplicationContext。就是指定你这个测试类所用的配置文件。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@ActiveProfiles(&quot;test&quot;)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>@SpringBootTest：</strong>是一个类级别的注释，指定启动类和web环境。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>AbstractTestNGSpringContextTests：</strong>抽象基础测试类，该类将Spring TestContext Framework 与TestNG 环境中的显式ApplicationContext测试支持集成在一起。</p>
-</li>
-</ul>
-<h3 id="方法注释和实现方法"><a href="#方法注释和实现方法" class="headerlink" title="方法注释和实现方法"></a>方法注释和实现方法</h3><ul>
-<li><strong>@BeforeMethod：</strong>在测试方法前运行的方法。</li>
-<li><strong>@AfterMethod：</strong>在测试方法后运行的方法。</li>
-<li><p><strong>@Test：</strong>测试方法注释。</p>
-<ol>
-<li><strong>groups：</strong>给方法分组执行。</li>
-<li><strong>dependsOnGroups：</strong>说明这个方法依赖的组列表。这些组的方法都已经在此方法调用前被调用。如果被依赖的方法未执行成功，这个测试方法会被跳过。</li>
-<li><strong>dependsOnMethods：</strong>和（2）类似，是说明依赖的方法列表。</li>
-<li><strong>timeOut：</strong>方法应花费的最大毫秒数。<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Test(groups = &#123;&quot;home&quot;&#125;, dependsOnGroups = &#123;&quot;login&quot;&#125;, dependsOnMethods = &#123;&#125;, timeOut = 300)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-</li>
-<li><p><strong>@Ignore：</strong>这个可以放在类上，将忽略类和其子类的测试。我使用时放在方法上，仅仅只是需要忽略方法。</p>
-</li>
-</ul>
-<h2 id="使用例子"><a href="#使用例子" class="headerlink" title="使用例子"></a>使用例子</h2><p>在这里放一个我使用时的例子。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@TestExecutionListeners(&#123;TransactionalTestExecutionListener.class, SqlScriptsTestExecutionListener.class&#125;)</span><br><span class="line">@ActiveProfiles(&quot;test&quot;)</span><br><span class="line">@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)</span><br><span class="line">public class AuthControllerTest extends AbstractTestNGSpringContextTests &#123;//可以使用AbstractTestNGSpringContextTests来取消事务</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    WebApplicationContext context;</span><br><span class="line"></span><br><span class="line">    private ManualRestDocumentation restDocumentation = new ManualRestDocumentation();</span><br><span class="line">    private MockMvc mockMvc;</span><br><span class="line">    private String token = TestsConstant.DEFAULT_TOKEN;</span><br><span class="line"></span><br><span class="line">    @BeforeMethod</span><br><span class="line">    public void setUp(Method method) &#123;</span><br><span class="line">        mockMvc = ApplicationTests.initMockMvc(context, restDocumentation);</span><br><span class="line">        this.restDocumentation.beforeTest(getClass(), method.getName());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @AfterMethod</span><br><span class="line">    public void tearDown() &#123;</span><br><span class="line">        this.restDocumentation.afterTest();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Transactional</span><br><span class="line">    //@Test(priority = -1)//权重（默认为0，此处需要先登录才能进行下面的操作，所以需要设置为-1，使login先进行测试，再进行下面测试）</span><br><span class="line">    @Test(groups = &#123;&quot;login&quot;&#125;)</span><br><span class="line">    public void login() throws Exception &#123;</span><br><span class="line">        getVerificationCode();</span><br><span class="line">        String url = &quot;/auth/login&quot;;</span><br><span class="line"></span><br><span class="line">        // 登录本身不需要Authorization, 为了统一处理&#123; Header - Authorization &#125;, 登录这里先加上请求头, 在文档输出时再过滤掉</span><br><span class="line">        RequestBuilder builder = post(url)//把所有元素拼接起来组成一个访问url</span><br><span class="line">                .header(JwtUtils.TOKEN_HEADER, JwtUtils.getTokenHeaderValue(this.token))//添加头</span><br><span class="line">                .param(&quot;username&quot;, TestsConstant.USERNAME)</span><br><span class="line">                .param(&quot;password&quot;, TestsConstant.PASSWORD)//参数名称和值</span><br><span class="line">                .param(&quot;code&quot;,TestsConstant.CODE)</span><br><span class="line">                .accept(MediaType.APPLICATION_JSON);</span><br><span class="line"></span><br><span class="line">        String result = mockMvc.perform(builder)</span><br><span class="line">                .andExpect(status().isOk())</span><br><span class="line">                .andExpect(jsonPath(&quot;$.status&quot;).value(HttpStatus.OK.value()))//状态</span><br><span class="line">                .andExpect(jsonPath(&quot;$.body&quot;).exists())//body详细内容</span><br><span class="line">                .andDo(document(TestsConstant.DOCUMENT_IDENTIFIER, preprocessRequest(//打印配置</span><br><span class="line">                        removeHeaders(JwtUtils.TOKEN_HEADER)</span><br><span class="line">                ), requestParameters(</span><br><span class="line">                        parameterWithName(&quot;username&quot;).description(&quot;用户名（手机号）&quot;),</span><br><span class="line">                        parameterWithName(&quot;password&quot;).description(&quot;密码&quot;),</span><br><span class="line">                        parameterWithName(&quot;code&quot;).description(&quot;验证码&quot;),</span><br><span class="line">                        beneathPath(&quot;body&quot;),//解析文件时只解析body内容</span><br><span class="line">                        fieldWithPath(&quot;roles&quot;).description(&quot;角色&quot;)</span><br><span class="line">                )))</span><br><span class="line">                .andDo(print())//打印出测试结果（详细参数以及结果等等）</span><br><span class="line">                .andReturn()</span><br><span class="line">                .getResponse()</span><br><span class="line">                .getContentAsString();</span><br><span class="line"></span><br><span class="line">        this.token = JSONObject.parseObject(result).getJSONObject(&quot;body&quot;).getString(&quot;token&quot;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <tags>
-        <tag>Spring boot</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SpringBoot2.0集成WebSocket，实现推送信息</title>
     <url>/2019/04/02/SpringBoot2-0%E9%9B%86%E6%88%90WebSocket%EF%BC%8C%E5%AE%9E%E7%8E%B0%E5%90%8E%E5%8F%B0%E5%90%91%E5%89%8D%E7%AB%AF%E6%8E%A8%E9%80%81%E4%BF%A1%E6%81%AF/</url>
     <content><![CDATA[<h1 id="SpringBoot2-0集成WebSocket，实现推送信息"><a href="#SpringBoot2-0集成WebSocket，实现推送信息" class="headerlink" title="SpringBoot2.0集成WebSocket，实现推送信息"></a>SpringBoot2.0集成WebSocket，实现推送信息</h1><blockquote>
@@ -982,6 +982,97 @@
       </tags>
   </entry>
   <entry>
+    <title>Ubuntu的初次操作记录</title>
+    <url>/2020/09/05/UBuntu%E7%9A%84%E5%88%9D%E6%AC%A1%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h1 id="Ubuntu的初次操作记录"><a href="#Ubuntu的初次操作记录" class="headerlink" title="Ubuntu的初次操作记录"></a>Ubuntu的初次操作记录</h1><blockquote>
+<p>简单的记录一下操作过程，做个存档。主要目的是排查服务器 ssh 关闭，并安装切片程序。<br>包含防火墙检查，ssh安装，更换数据源，解决域名无法解析。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="检查防火墙"><a href="#检查防火墙" class="headerlink" title="检查防火墙"></a>检查防火墙</h2><p>拿到服务器后首先检查了一下防火墙是否开启。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo ufw status</span><br></pre></td></tr></table></figure></p>
+<p>发现防火墙已经关闭。</p>
+<h2 id="检查ssh是否安装"><a href="#检查ssh是否安装" class="headerlink" title="检查ssh是否安装"></a>检查ssh是否安装</h2><p>检查这个机器是否安装了 ssh-server 服务，一般都是只安装了 client。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dpkg -l | grep ssh</span><br></pre></td></tr></table></figure></p>
+<p>发现并没有安装，使用命令开始安装。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install openssh-server</span><br></pre></td></tr></table></figure></p>
+<p>报错 ubuntu 数据源无法下载。准备更换国内的阿里数据源。</p>
+<h2 id="更换数据源之前"><a href="#更换数据源之前" class="headerlink" title="更换数据源之前"></a>更换数据源之前</h2><p>这个服务器不能解析域名，我还是在下面的步骤中的第四步执行时，发现无法解析。<br>修改 resolv.conf 文件<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo gedit /etc/resolv.conf</span><br></pre></td></tr></table></figure></p>
+<p>打开后发现整个文件没有任何配置，在最后一行加入。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure></p>
+<h2 id="更换-apt-默认数据源为阿里"><a href="#更换-apt-默认数据源为阿里" class="headerlink" title="更换 apt 默认数据源为阿里"></a>更换 apt 默认数据源为阿里</h2><p>这里就不得不吐槽一下，拿到得是一个从 ie 浏览器访问 vmware 管理界面，然后再从管理界面访问我们的机器。<br>这就导致无法复制命令，下面的数据源更换愣是靠手打的。</p>
+<ol>
+<li><p>备份源列表</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>命令行打开sources.list文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo gedit /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改sources,list文件【本例更改为阿里镜像源】</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#  阿里镜像源</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>更新并升级</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get update &amp;&amp; sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>在输入了这个更新命令后，等待了一段时间。其中有很多的忽略包，不知道后面会不会需要重新弄。</p>
+<h2 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h2><p>更换完数据源后，即可成功安装 ssh。</p>
+]]></content>
+      <tags>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu上次操作后的继续操作</title>
+    <url>/2020/09/12/Ubuntu%E4%B8%8A%E6%AC%A1%E6%93%8D%E4%BD%9C%E5%90%8E%E7%9A%84%E7%BB%A7%E7%BB%AD/</url>
+    <content><![CDATA[<h1 id="Ubuntu上次操作后的继续操作"><a href="#Ubuntu上次操作后的继续操作" class="headerlink" title="Ubuntu上次操作后的继续操作"></a>Ubuntu上次操作后的继续操作</h1><blockquote>
+<p>上次搞完哪个服务器后，再次使用发现无法用 sftp 传输文件。<br>包含查询系统版本号，更换清华软件数据源，处理文件无法上传。<br><a id="more"></a></p>
+</blockquote>
+<h2 id="apt-无法定位软件包"><a href="#apt-无法定位软件包" class="headerlink" title="apt 无法定位软件包"></a>apt 无法定位软件包</h2><p>当我使用服务器安装 gcc-c++ 时，发现报错。<br>查询后建议换下载数据源。<br>(<a href="https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/)[https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/]" target="_blank" rel="noopener">https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/)[https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/]</a> 通过这个地址来试图更换为清华数据源。<br>查询 Ubuntu 版本信息<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat /proc/version</span><br></pre></td></tr></table></figure></p>
+<p>显示<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Linux version 4.15.0-45-generic (buildd@lcy01-amd64-027) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.10)) #48~16.04.1-Ubuntu SMP Tue Jan 29 18:03:48 UTC 2019</span><br></pre></td></tr></table></figure></p>
+<p>可以选择对应版本的数据源来更换。<br>但是，通过 Xshell 直接操作时发现 sftp 无法传递文件。</p>
+<h2 id="sftp-无法传递文件"><a href="#sftp-无法传递文件" class="headerlink" title="sftp 无法传递文件"></a>sftp 无法传递文件</h2><p>主要问题是可以下载，但是不能上传。首先查看用户权限，发现登录的用户权限不足。无法修改文件夹，只能用命令修改权限后上传。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 /etc/apt/sources.list</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <tags>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu安装tippecanoe</title>
+    <url>/2020/09/19/Ubuntu%E5%AE%89%E8%A3%85tippecanoe/</url>
+    <content><![CDATA[<h1 id="Ubuntu安装tippecanoe"><a href="#Ubuntu安装tippecanoe" class="headerlink" title="Ubuntu安装tippecanoe"></a>Ubuntu安装tippecanoe</h1><blockquote>
+<p>Ubuntu 的命令还是和 centos 有很多出入，没法直接复制。再次整理一份安装过程。<br>参考博客 <a href="https://blog.csdn.net/zxzfcsu/article/details/80836277" target="_blank" rel="noopener">https://blog.csdn.net/zxzfcsu/article/details/80836277</a><br><a id="more"></a></p>
+</blockquote>
+<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><p>安装 gcc<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get  install  build-essential</span><br></pre></td></tr></table></figure></p>
+<p>安装 sqlite-devel<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install sqlite sqlite3</span><br></pre></td></tr></table></figure></p>
+<p>同时还要安装 ruby<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install ruby</span><br></pre></td></tr></table></figure></p>
+<p>安装 zlib zlib-devel<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install zlib1g</span><br><span class="line">sudo apt-get install zlib1g.dev</span><br></pre></td></tr></table></figure></p>
+<p>后来在 <code>make -j</code> 的时候还报错<code>fatal error:sqlite3.h</code> 。又安装了<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install libsqlit3-dev</span><br></pre></td></tr></table></figure></p>
+<p>并没有报<code>fatal error:zlib.h</code> 就没有使用<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install zlib1g-dev</span><br></pre></td></tr></table></figure></p>
+<h2 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h2><p>剩下的步骤就是一样的了，解压后运行命令即可。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make -j</span><br><span class="line">make install</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <tags>
+        <tag>tippecanoe</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gradle build时出现的乱码问题</title>
+    <url>/2019/11/09/build%E6%97%B6%E5%87%BA%E7%8E%B0%E7%9A%84%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="gradle-build时出现的乱码问题"><a href="#gradle-build时出现的乱码问题" class="headerlink" title="gradle build时出现的乱码问题"></a>gradle build时出现的乱码问题</h1><blockquote>
+<p>日常的bug记录。新增一条swagger-ui页面乱码问题</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="问题一"><a href="#问题一" class="headerlink" title="问题一"></a>问题一</h2><p>新开的项目在用idea内自带的gradle去build打包的时候，出现了一系列的乱码，最后FAILED。<br>如下图<br><img src="/2019/11/09/build时出现的乱码问题/b2.png" alt=""></p>
+<blockquote>
+<p>因为我已经修改好了代码中的错误，右边展示的是成功的信息。所以就展示了一下空白</p>
+</blockquote>
+<p>将问题分享给同时开发这个项目的同事后，他找到了处理的方法。<br>通过点击idea最上层的help-&gt;Edit custom VM options可以打开个性化配置虚拟机文件，这里是配置通用项目的jvm虚拟机的启动参数。</p>
+<p><img src="/2019/11/09/build时出现的乱码问题/b1.png" alt=""></p>
+<p>在文件中加入<strong>-Dfile.encoding=UTF-8</strong>，重启idea即可看到控制台的乱码已经恢复了正常的文字。</p>
+<p><img src="/2019/11/09/build时出现的乱码问题/b3.png" alt=""></p>
+<h2 id="问题二"><a href="#问题二" class="headerlink" title="问题二"></a>问题二</h2><p>在我像上面那样配置完后，又进行了一个被我遗忘了的操作。然后我再打开接口html的时候，发现所有的文字都变成了乱码。百度尝试了一下，修改<strong>file –&gt; Settings –&gt; file encodings</strong>这种方法不能解决我这个问题。</p>
+<p>呼叫了一波支援，大佬看了一下网页的编码和idea编辑器中的文件编码是一致的。都是UTF-8。只能把项目目录中的.idea和out和build目录删除，重新导入文件，解决了这个问题。</p>
+]]></content>
+      <tags>
+        <tag>bug</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Windows Server 2012 R2安装域控制器</title>
     <url>/2020/04/18/Windows%20Server%202012%20R2%E5%AE%89%E8%A3%85%E5%9F%9F%E6%8E%A7%E5%88%B6%E5%99%A8/</url>
     <content><![CDATA[<h1 id="Windows-Server-2012-R2安装域控制器"><a href="#Windows-Server-2012-R2安装域控制器" class="headerlink" title="Windows Server 2012 R2安装域控制器"></a>Windows Server 2012 R2安装域控制器</h1><blockquote>
@@ -1013,28 +1104,6 @@
 ]]></content>
       <tags>
         <tag>windows server</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>gradle build时出现的乱码问题</title>
-    <url>/2019/11/09/build%E6%97%B6%E5%87%BA%E7%8E%B0%E7%9A%84%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="gradle-build时出现的乱码问题"><a href="#gradle-build时出现的乱码问题" class="headerlink" title="gradle build时出现的乱码问题"></a>gradle build时出现的乱码问题</h1><blockquote>
-<p>日常的bug记录。新增一条swagger-ui页面乱码问题</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="问题一"><a href="#问题一" class="headerlink" title="问题一"></a>问题一</h2><p>新开的项目在用idea内自带的gradle去build打包的时候，出现了一系列的乱码，最后FAILED。<br>如下图<br><img src="/2019/11/09/build时出现的乱码问题/b2.png" alt=""></p>
-<blockquote>
-<p>因为我已经修改好了代码中的错误，右边展示的是成功的信息。所以就展示了一下空白</p>
-</blockquote>
-<p>将问题分享给同时开发这个项目的同事后，他找到了处理的方法。<br>通过点击idea最上层的help-&gt;Edit custom VM options可以打开个性化配置虚拟机文件，这里是配置通用项目的jvm虚拟机的启动参数。</p>
-<p><img src="/2019/11/09/build时出现的乱码问题/b1.png" alt=""></p>
-<p>在文件中加入<strong>-Dfile.encoding=UTF-8</strong>，重启idea即可看到控制台的乱码已经恢复了正常的文字。</p>
-<p><img src="/2019/11/09/build时出现的乱码问题/b3.png" alt=""></p>
-<h2 id="问题二"><a href="#问题二" class="headerlink" title="问题二"></a>问题二</h2><p>在我像上面那样配置完后，又进行了一个被我遗忘了的操作。然后我再打开接口html的时候，发现所有的文字都变成了乱码。百度尝试了一下，修改<strong>file –&gt; Settings –&gt; file encodings</strong>这种方法不能解决我这个问题。</p>
-<p>呼叫了一波支援，大佬看了一下网页的编码和idea编辑器中的文件编码是一致的。都是UTF-8。只能把项目目录中的.idea和out和build目录删除，重新导入文件，解决了这个问题。</p>
-]]></content>
-      <tags>
-        <tag>bug</tag>
       </tags>
   </entry>
   <entry>
@@ -1122,6 +1191,18 @@
       </tags>
   </entry>
   <entry>
+    <title>idea启动命令过长bug</title>
+    <url>/2020/08/23/idea%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4%E8%BF%87%E9%95%BFbug/</url>
+    <content><![CDATA[<h1 id="idea启动命令过长bug"><a href="#idea启动命令过长bug" class="headerlink" title="idea启动命令过长bug"></a>idea启动命令过长bug</h1><blockquote>
+<p>在引用 MeteoInfoLib jar 包后带来的问题，报错内容为：<br>Error running ‘Application’: Command line is too long. Shorten command line for Application or also for Spring Boot default configuration.</p>
+</blockquote>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>调整运行项目的配置，将 Configuration 中的 Shorten Command Line 修改为 JAR 就可以了。<br>具体原因就是和 bug 所说的一样，启动的命令行过长，idea 通过临时的 classpath.jar 传递长的类路径。原始类路径在MANIFEST.MF中定义为classpath.jar中的类路径属性。就完事了。</p>
+]]></content>
+      <tags>
+        <tag>bug</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>jacob的第二次研究</title>
     <url>/2020/03/07/jaocb%E7%9A%84%E7%AC%AC%E4%BA%8C%E6%AC%A1%E7%A0%94%E7%A9%B6/</url>
     <content><![CDATA[<h1 id="jacob的第二次研究"><a href="#jacob的第二次研究" class="headerlink" title="jacob的第二次研究"></a>jacob的第二次研究</h1><blockquote>
@@ -1149,6 +1230,24 @@
 ]]></content>
       <tags>
         <tag>office</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>jar包冲突后的处理过程</title>
+    <url>/2020/09/26/jar%E5%8C%85%E5%86%B2%E7%AA%81%E5%90%8E%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="jar包冲突后的处理过程"><a href="#jar包冲突后的处理过程" class="headerlink" title="jar包冲突后的处理过程"></a>jar包冲突后的处理过程</h1><blockquote>
+<p>记录一下发现 jar 包冲突后，怎么用 idea 来排查解决</p>
+</blockquote>
+<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">***************************</span><br><span class="line">APPLICATION FAILED TO START</span><br><span class="line">***************************</span><br><span class="line"></span><br><span class="line">Description:</span><br><span class="line"></span><br><span class="line">An attempt was made to call a method that does not exist. The attempt was made from the following location:</span><br><span class="line"></span><br><span class="line">    org.hibernate.snowflake.GenerateLongId.configure(GenerateLongId.java:40)</span><br><span class="line"></span><br><span class="line">The following method did not exist:</span><br><span class="line"></span><br><span class="line">    org.hibernate.snowflake.SnowFlakeIdWorker.getInstance()Lorg/hibernate/snowflake/SnowFlakeIdWorker;</span><br><span class="line"></span><br><span class="line">The method&apos;s class, org.hibernate.snowflake.SnowFlakeIdWorker, is available from the following locations:</span><br><span class="line"></span><br><span class="line">    file:/E:/idea-workspace/web-api/out/production/classes/org/hibernate/snowflake/SnowFlakeIdWorker.class</span><br><span class="line">    jar:file:/E:/idea-workspace/web-api/lib/hibernate-comment-annotation-0.0.2-SNAPSHOT.jar!/org/hibernate/snowflake/SnowFlakeIdWorker.class</span><br><span class="line"></span><br><span class="line">It was loaded from the following location:</span><br><span class="line"></span><br><span class="line">    file:/E:/idea-workspace/web-api/out/production/classes/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Action:</span><br><span class="line"></span><br><span class="line">Correct the classpath of your application so that it contains a single, compatible version of org.hibernate.snowflake.SnowFlakeIdWorker</span><br></pre></td></tr></table></figure>
+<p>通过错误信息我们可以看出来，是引入的 jar 包和我自己本地配置的发生了同类冲突。需要解决的就是找到引入的地方，并且屏蔽。</p>
+<h2 id="idea-jar包关联查询"><a href="#idea-jar包关联查询" class="headerlink" title="idea jar包关联查询"></a>idea jar包关联查询</h2><p>首先说明我用的是 gradle 管理 jar 包。在右侧的 gradle 工具中，可以查看整体的依赖关系图。<br>其中有 <code>Tasks-&gt;help-&gt;dependencies</code>这个工具。运行后，就会输出 jar 包依赖的树状图。根据树状图就可以找到是那两个 jar 包中的依赖冲突。</p>
+<p><img src="/2020/09/26/jar包冲突后的处理过程/b1.png" alt="b1.png"></p>
+<h2 id="屏蔽无关jar包"><a href="#屏蔽无关jar包" class="headerlink" title="屏蔽无关jar包"></a>屏蔽无关jar包</h2><p>据别的博客说，可用以下这种方式移除<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">compile(configuration: &apos;core&apos;, group: &apos;toolbox&apos;, name: &apos;web-tools&apos;, version: &apos;2.0.+&apos;) &#123;</span><br><span class="line">        exclude(module: &apos;spring&apos;)</span><br><span class="line">        exclude(module: &apos;commons-codec&apos;)</span><br><span class="line">        exclude(module: &apos;slf4j&apos;)</span><br><span class="line">        exclude(module: &apos;servlet-api&apos;)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>但是我用这种方式发现无效，只好用这种全局屏蔽方式移除<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">configurations &#123;</span><br><span class="line">    compileOnly &#123;</span><br><span class="line">        extendsFrom annotationProcessor</span><br><span class="line">    &#125;</span><br><span class="line">    all*.exclude group:&apos;javax&apos;, module: &apos;javaee-api&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>注意：</strong>这个方法是因为我是本地导入了一个 jar 包和 gradle 管理的发生了冲突。<br>成功解决。</p>
+]]></content>
+      <tags>
+        <tag>idea</tag>
       </tags>
   </entry>
   <entry>
@@ -1502,31 +1601,6 @@
       </tags>
   </entry>
   <entry>
-    <title>linux服务器搭配win7客户端的frp</title>
-    <url>/2019/12/07/linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E9%85%8Dwin7%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84frp/</url>
-    <content><![CDATA[<h1 id="linux服务端搭配win7客户端的frp"><a href="#linux服务端搭配win7客户端的frp" class="headerlink" title="linux服务端搭配win7客户端的frp"></a>linux服务端搭配win7客户端的frp</h1><blockquote>
-<p>teamviewer安装是方便一些，但是频繁的提示商业用途和不停的掉线太影响使用了。<br>我还是重新找了一个方法来远程电脑。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="下载frp"><a href="#下载frp" class="headerlink" title="下载frp"></a>下载frp</h2><p>从<a href="https://github.com/fatedier/frp/releases" target="_blank" rel="noopener">https://github.com/fatedier/frp/releases</a> 下载最新版本的frp压缩包。因为是两种系统，所以把linux和windows的版本都下载了一份。</p>
-<h2 id="linux服务端"><a href="#linux服务端" class="headerlink" title="linux服务端"></a>linux服务端</h2><p>使用WinSCP工具将压缩包传到了具有公网ip的云服务器上。解压后修改里面的frps.ini。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[common]</span><br><span class="line">bind_port = 7000           #与客户端绑定的进行通信的端口</span><br><span class="line">privilege_token = xxxx</span><br></pre></td></tr></table></figure></p>
-<p>保存后启动服务./frps -c ./frps.ini。</p>
-<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>查看一下防火墙，记得打开7000端口。</p>
-<h4 id="使用systemctl来控制自启动"><a href="#使用systemctl来控制自启动" class="headerlink" title="使用systemctl来控制自启动"></a>使用systemctl来控制自启动</h4><p>参考<a href="https://blog.csdn.net/x7418520/article/details/81077652" target="_blank" rel="noopener">Frp后台自动启动的几个方法</a>这篇博客配置<br>这个方法比较好用，很方便<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/systemd/system/frps.service</span><br></pre></td></tr></table></figure></p>
-<p>在frps.service里写入以下内容<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=fraps service</span><br><span class="line">After=network.target syslog.target</span><br><span class="line">Wants=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">#启动服务的命令（此处写你的frps的实际安装目录）</span><br><span class="line">ExecStart=/your/path/frps -c /your/path/frps.ini</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></p>
-<p>然后就启动frps<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo systemctl start frps</span><br></pre></td></tr></table></figure></p>
-<p>再打开自启动<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo systemctl enable frps</span><br></pre></td></tr></table></figure></p>
-<p>如果要重启应用，可以这样，<strong>sudo systemctl restart frps</strong><br>如果要停止应用，可以输入，<strong>sudo systemctl stop frps</strong><br>如果要查看应用的日志，可以输入，<strong>sudo systemctl status frps</strong></p>
-<h2 id="windows客户端"><a href="#windows客户端" class="headerlink" title="windows客户端"></a>windows客户端</h2><p>解压后修改其中的frpc.ini<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr = 服务器ip</span><br><span class="line">server_port = 7000</span><br><span class="line"></span><br><span class="line">[ssh]</span><br><span class="line">type = tcp</span><br><span class="line">local_ip = 127.0.0.1</span><br><span class="line">local_port = 3389 远程桌面端口</span><br><span class="line">remote_port = 7001 访问时的端口</span><br><span class="line">auth_token = xxxx 与服务器对应的token</span><br></pre></td></tr></table></figure></p>
-<p>保存后启动服务<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">frpc.exe -c frpc.ini</span><br></pre></td></tr></table></figure></p>
-<h3 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h3><p>这里可以配置成开机自动启动。<br>做一个.bat文件，文件内容：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">C:\frp_0.30.0_windows_amd64\frpc.exe -c C:\frp_0.30.0_windows_amd64\frpc.ini</span><br></pre></td></tr></table></figure></p>
-<p>再从任务计划程序中设置启动时运行文件即可。</p>
-]]></content>
-      <tags>
-        <tag>frp</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>linux通过docker安装oracle的过程</title>
     <url>/2020/04/04/linux%E9%80%9A%E8%BF%87docker%E5%AE%89%E8%A3%85oracle%E7%9A%84%E8%BF%87%E7%A8%8B/</url>
     <content><![CDATA[<h1 id="linux通过docker安装oracle的过程"><a href="#linux通过docker安装oracle的过程" class="headerlink" title="linux通过docker安装oracle的过程"></a>linux通过docker安装oracle的过程</h1><blockquote>
@@ -1578,6 +1652,53 @@
 ]]></content>
       <tags>
         <tag>oracle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux服务器搭配win7客户端的frp</title>
+    <url>/2019/12/07/linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E9%85%8Dwin7%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84frp/</url>
+    <content><![CDATA[<h1 id="linux服务端搭配win7客户端的frp"><a href="#linux服务端搭配win7客户端的frp" class="headerlink" title="linux服务端搭配win7客户端的frp"></a>linux服务端搭配win7客户端的frp</h1><blockquote>
+<p>teamviewer安装是方便一些，但是频繁的提示商业用途和不停的掉线太影响使用了。<br>我还是重新找了一个方法来远程电脑。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="下载frp"><a href="#下载frp" class="headerlink" title="下载frp"></a>下载frp</h2><p>从<a href="https://github.com/fatedier/frp/releases" target="_blank" rel="noopener">https://github.com/fatedier/frp/releases</a> 下载最新版本的frp压缩包。因为是两种系统，所以把linux和windows的版本都下载了一份。</p>
+<h2 id="linux服务端"><a href="#linux服务端" class="headerlink" title="linux服务端"></a>linux服务端</h2><p>使用WinSCP工具将压缩包传到了具有公网ip的云服务器上。解压后修改里面的frps.ini。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[common]</span><br><span class="line">bind_port = 7000           #与客户端绑定的进行通信的端口</span><br><span class="line">privilege_token = xxxx</span><br></pre></td></tr></table></figure></p>
+<p>保存后启动服务./frps -c ./frps.ini。</p>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>查看一下防火墙，记得打开7000端口。</p>
+<h4 id="使用systemctl来控制自启动"><a href="#使用systemctl来控制自启动" class="headerlink" title="使用systemctl来控制自启动"></a>使用systemctl来控制自启动</h4><p>参考<a href="https://blog.csdn.net/x7418520/article/details/81077652" target="_blank" rel="noopener">Frp后台自动启动的几个方法</a>这篇博客配置<br>这个方法比较好用，很方便<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vim /lib/systemd/system/frps.service</span><br></pre></td></tr></table></figure></p>
+<p>在frps.service里写入以下内容<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=fraps service</span><br><span class="line">After=network.target syslog.target</span><br><span class="line">Wants=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">#启动服务的命令（此处写你的frps的实际安装目录）</span><br><span class="line">ExecStart=/your/path/frps -c /your/path/frps.ini</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></p>
+<p>然后就启动frps<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo systemctl start frps</span><br></pre></td></tr></table></figure></p>
+<p>再打开自启动<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo systemctl enable frps</span><br></pre></td></tr></table></figure></p>
+<p>如果要重启应用，可以这样，<strong>sudo systemctl restart frps</strong><br>如果要停止应用，可以输入，<strong>sudo systemctl stop frps</strong><br>如果要查看应用的日志，可以输入，<strong>sudo systemctl status frps</strong></p>
+<h2 id="windows客户端"><a href="#windows客户端" class="headerlink" title="windows客户端"></a>windows客户端</h2><p>解压后修改其中的frpc.ini<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr = 服务器ip</span><br><span class="line">server_port = 7000</span><br><span class="line"></span><br><span class="line">[ssh]</span><br><span class="line">type = tcp</span><br><span class="line">local_ip = 127.0.0.1</span><br><span class="line">local_port = 3389 远程桌面端口</span><br><span class="line">remote_port = 7001 访问时的端口</span><br><span class="line">auth_token = xxxx 与服务器对应的token</span><br></pre></td></tr></table></figure></p>
+<p>保存后启动服务<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">frpc.exe -c frpc.ini</span><br></pre></td></tr></table></figure></p>
+<h3 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h3><p>这里可以配置成开机自动启动。<br>做一个.bat文件，文件内容：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">C:\frp_0.30.0_windows_amd64\frpc.exe -c C:\frp_0.30.0_windows_amd64\frpc.ini</span><br></pre></td></tr></table></figure></p>
+<p>再从任务计划程序中设置启动时运行文件即可。</p>
+]]></content>
+      <tags>
+        <tag>frp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mycat全局表错误</title>
+    <url>/2020/08/30/mycat%E5%85%A8%E5%B1%80%E8%A1%A8%E9%94%99%E8%AF%AF/</url>
+    <content><![CDATA[<h1 id="mycat全局表错误"><a href="#mycat全局表错误" class="headerlink" title="mycat全局表错误"></a>mycat全局表错误</h1><blockquote>
+<p>具体报错内容为：can’t find table define in schema DIC_HIDDEN_DANGER_ADM schema:risk</p>
+</blockquote>
+<h2 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h2><p>部署时新加入了字典表，在mycat连接的两个库里都写入了一次。但是在查询时，和第一个库的普通表 join 时可以查询。和在另一个库的分表后的表 join 时会显示无法查询出字典表。</p>
+<h2 id="处理"><a href="#处理" class="headerlink" title="处理"></a>处理</h2><p>在 schemal.xml 中将新写入的字典表加入 node 节点，添加  type=”global” 标记为全局表</p>
+<h2 id="二次报错"><a href="#二次报错" class="headerlink" title="二次报错"></a>二次报错</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	r.dictionary_id <span class="keyword">AS</span> rid,</span><br><span class="line">	r.date_time <span class="keyword">AS</span> dateTime,</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	bs_mountain r</span><br><span class="line">	<span class="keyword">INNER</span> <span class="keyword">JOIN</span> dic_mountain ra <span class="keyword">ON</span> ra.id = r.dictionary_id</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	r.date_time <span class="keyword">BETWEEN</span> <span class="string">'2020-10-14 00:00:00'</span> </span><br><span class="line">	<span class="keyword">AND</span> <span class="string">'2020-10-15 00:00:00'</span> ;</span><br></pre></td></tr></table></figure>
+<p>可以确定的是 bs_mountain 表中是肯定有 dictionary_id 字段和 date_time ，但还是报出了 <code>Unknown column &#39;r.dictionary_id&#39; in &#39;field list&#39;</code> 错误。</p>
+<h2 id="二次处理"><a href="#二次处理" class="headerlink" title="二次处理"></a>二次处理</h2><p>通过 explain 关键字分析在 mycat 中执行的语句，得出结果<br>实际执行语句为<br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	r.dictionary_id <span class="keyword">AS</span> rid,</span><br><span class="line">	r.date_time <span class="keyword">AS</span> dateTime,</span><br><span class="line">	</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	bs_mountain_32 </span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	r.date_time <span class="keyword">BETWEEN</span> <span class="string">'2020-10-14 00:00:00'</span> </span><br><span class="line">	<span class="keyword">AND</span> <span class="string">'2020-10-15 00:00:00'</span></span><br></pre></td></tr></table></figure></p>
+<p>mycat 在改写 sql 语句到分表的时候漏下了别名</p>
+<p>而且当我的语句是：<br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	r.dictionary_id <span class="keyword">AS</span> rid,</span><br><span class="line">	r.date_time <span class="keyword">AS</span> dateTime,</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	bs_mountain r</span><br><span class="line">	<span class="keyword">INNER</span> <span class="keyword">JOIN</span> dic_mountain ra <span class="keyword">ON</span> ra.id = r.dictionary_id</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	r.date_time <span class="keyword">BETWEEN</span> <span class="string">'2020-10-14 00:00:00'</span> </span><br><span class="line">	<span class="keyword">AND</span> <span class="string">'2020-10-15 00:00:00'</span> </span><br><span class="line">	<span class="keyword">AND</span> ra.id = <span class="string">'1'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>会去执行一个全分表查询，不再单单只是定位到32分表的查询。</p>
+<p>开始百度关键字 <code>mycat 别名 全局表 join</code>，发现问题是出在 mycat 在单库分表和未分表关联查询时会出现的别名丢失问题。</p>
+<p>并没有去下载源码修改后重新打包，而是在业务中去过滤了。</p>
+<p>直接使用sql语句将要关联的表手动查询出来后，再代码中拼接关联查询。</p>
+]]></content>
+      <tags>
+        <tag>mycat</tag>
       </tags>
   </entry>
   <entry>
@@ -1741,23 +1862,6 @@
       </tags>
   </entry>
   <entry>
-    <title>rabbitMQ远程连接失败问题</title>
-    <url>/2019/11/16/rabbitMQ%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="rabbitMQ远程连接失败问题"><a href="#rabbitMQ远程连接失败问题" class="headerlink" title="rabbitMQ远程连接失败问题"></a>rabbitMQ远程连接失败问题</h1><blockquote>
-<p>将数据部署到服务器，程序开在本地时出现的远程连接问题。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="问题一"><a href="#问题一" class="headerlink" title="问题一"></a>问题一</h2><p>将rabbitMQ部署在服务器后，同事想要从本地连接web网页查看一下队列情况，发现根本打不开网页。程序连接报错：<strong>Login was refused using authentication mechanism PLAIN. For details see the broker logfile.</strong></p>
-<p>首先检查了一下服务器的端口打开情况，防火墙已经通过了所有的端口。<br>百度后查看了一下guest用户的权限，确认是最高权限的试用账号以及可以全host登录。<br>再次百度查找资料后（不是我找的），找到一个文章说guest用户只能在localhost本地登录。尝试新建用户root并开启所有权限。可以用这个新的账号远程登录了。</p>
-<h2 id="问题二"><a href="#问题二" class="headerlink" title="问题二"></a>问题二</h2><p>但是在程序中连接仍旧报错：<strong>Received ERROR {message=[Bad CONNECT], content-type=[text/plain], version=[1.0,1.1,1.2],<br>content-length=[26]} session=<em>system</em> text/plain payload=non-loopback access denied</strong></p>
-<p>查询到需要添加参数<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">@EnableWebSocketMessageBroker</span><br><span class="line">public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer &#123;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public void configureMessageBroker(MessageBrokerRegistry config) &#123;</span><br><span class="line">    config.enableStompBrokerRelay(&quot;/topic&quot;)</span><br><span class="line">            .setRelayHost(&quot;192.168.1.8&quot;)</span><br><span class="line">            .setRelayPort(61613)</span><br><span class="line">            .setClientLogin(&quot;user&quot;)</span><br><span class="line">            .setClientPasscode(&quot;user&quot;)</span><br><span class="line">            .setSystemLogin(&quot;user&quot;)</span><br><span class="line">            .setSystemPasscode(&quot;user&quot;);</span><br><span class="line"></span><br><span class="line">    //config.enableSimpleBroker(&quot;/topic&quot;);</span><br><span class="line">    config.setApplicationDestinationPrefixes(&quot;/app&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public void registerStompEndpoints(StompEndpointRegistry registry) &#123;</span><br><span class="line">    registry.addEndpoint(&quot;/gs-guide-websocket&quot;).setAllowedOrigins(&quot;*&quot;).withSockJS();   </span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>其中的setClientLogin到setSystemPasscode就是新增加的参数，设置为新建的root用户即可正常连接了。</p>
-]]></content>
-      <tags>
-        <tag>rabbitmq</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>office online + wopiHost实现在线编辑office文档</title>
     <url>/2020/04/11/office%20online%20+%20wopiHost%E5%AE%9E%E7%8E%B0%E5%9C%A8%E7%BA%BF%E7%BC%96%E8%BE%91office%E6%96%87%E6%A1%A3/</url>
     <content><![CDATA[<h1 id="office-online-wopiHost实现在线编辑office文档"><a href="#office-online-wopiHost实现在线编辑office文档" class="headerlink" title="office online + wopiHost实现在线编辑office文档"></a>office online + wopiHost实现在线编辑office文档</h1><blockquote>
@@ -1777,6 +1881,23 @@
 ]]></content>
       <tags>
         <tag>office</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>rabbitMQ远程连接失败问题</title>
+    <url>/2019/11/16/rabbitMQ%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="rabbitMQ远程连接失败问题"><a href="#rabbitMQ远程连接失败问题" class="headerlink" title="rabbitMQ远程连接失败问题"></a>rabbitMQ远程连接失败问题</h1><blockquote>
+<p>将数据部署到服务器，程序开在本地时出现的远程连接问题。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="问题一"><a href="#问题一" class="headerlink" title="问题一"></a>问题一</h2><p>将rabbitMQ部署在服务器后，同事想要从本地连接web网页查看一下队列情况，发现根本打不开网页。程序连接报错：<strong>Login was refused using authentication mechanism PLAIN. For details see the broker logfile.</strong></p>
+<p>首先检查了一下服务器的端口打开情况，防火墙已经通过了所有的端口。<br>百度后查看了一下guest用户的权限，确认是最高权限的试用账号以及可以全host登录。<br>再次百度查找资料后（不是我找的），找到一个文章说guest用户只能在localhost本地登录。尝试新建用户root并开启所有权限。可以用这个新的账号远程登录了。</p>
+<h2 id="问题二"><a href="#问题二" class="headerlink" title="问题二"></a>问题二</h2><p>但是在程序中连接仍旧报错：<strong>Received ERROR {message=[Bad CONNECT], content-type=[text/plain], version=[1.0,1.1,1.2],<br>content-length=[26]} session=<em>system</em> text/plain payload=non-loopback access denied</strong></p>
+<p>查询到需要添加参数<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">@EnableWebSocketMessageBroker</span><br><span class="line">public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer &#123;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public void configureMessageBroker(MessageBrokerRegistry config) &#123;</span><br><span class="line">    config.enableStompBrokerRelay(&quot;/topic&quot;)</span><br><span class="line">            .setRelayHost(&quot;192.168.1.8&quot;)</span><br><span class="line">            .setRelayPort(61613)</span><br><span class="line">            .setClientLogin(&quot;user&quot;)</span><br><span class="line">            .setClientPasscode(&quot;user&quot;)</span><br><span class="line">            .setSystemLogin(&quot;user&quot;)</span><br><span class="line">            .setSystemPasscode(&quot;user&quot;);</span><br><span class="line"></span><br><span class="line">    //config.enableSimpleBroker(&quot;/topic&quot;);</span><br><span class="line">    config.setApplicationDestinationPrefixes(&quot;/app&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public void registerStompEndpoints(StompEndpointRegistry registry) &#123;</span><br><span class="line">    registry.addEndpoint(&quot;/gs-guide-websocket&quot;).setAllowedOrigins(&quot;*&quot;).withSockJS();   </span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中的setClientLogin到setSystemPasscode就是新增加的参数，设置为新建的root用户即可正常连接了。</p>
+]]></content>
+      <tags>
+        <tag>rabbitmq</tag>
       </tags>
   </entry>
   <entry>
@@ -1874,7 +1995,7 @@
 <h2 id="具体RebbitMQ安装"><a href="#具体RebbitMQ安装" class="headerlink" title="具体RebbitMQ安装"></a>具体RebbitMQ安装</h2><p>docker在进行测试和模拟操作的时候还是可以为我们节省不少的时间的，本次就是使用docker下载rebbitMQ镜像来进行使用。</p>
 <p><a href="https://hub.docker.com/_/rabbitmq/" target="_blank" rel="noopener">https://hub.docker.com/_/rabbitmq/</a>  从官网查看到当前版本为3.7.17</p>
 <p>docker下载镜像<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull rabbitmq:3.7.17-management</span><br></pre></td></tr></table></figure></p>
-<p>启动容器<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -d --hostname my-rabbit -p 5672:5672 -p 15672:15672 rabbitmq:3.7.17-management</span><br></pre></td></tr></table></figure></p>
+<p>启动容器<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -d --hostname my-rabbit -p 5672:5672 -p 15672:15672 -p 15674:15674 -p 61613:61613 rabbitmq:3.7.17-management</span><br></pre></td></tr></table></figure></p>
 <p>浏览器访问docker ip ： 15672可以进入管理界面</p>
 <p><img src="/2019/08/14/rebbitmq安装与使用场景/b6.png" alt="6"></p>
 <p>用户名guest，密码guest</p>
@@ -2765,30 +2886,6 @@
       </tags>
   </entry>
   <entry>
-    <title>反序列化错误</title>
-    <url>/2019/09/27/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%94%99%E8%AF%AF/</url>
-    <content><![CDATA[<h1 id="反序列化错误：could-not-deserialize"><a href="#反序列化错误：could-not-deserialize" class="headerlink" title="反序列化错误：could not deserialize"></a>反序列化错误：could not deserialize</h1><blockquote>
-<p>每个实体类都加入了Serializable，然后类与类之间有表关联。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="起源"><a href="#起源" class="headerlink" title="起源"></a>起源</h2><p>一个实体类和另一个实体类的关系为：@OneToMany。在用JPA的findAll方法时，会出现这个错误：<br><strong>org.hibernate.type.SerializationException: could not deserialize</strong><br><strong>java.io.StreamCorruptedException: invalid stream header: 00000000</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">at java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:862) ~[na:1.8.0_161]</span><br><span class="line">	at java.io.ObjectInputStream.&lt;init&gt;(ObjectInputStream.java:354) ~[na:1.8.0_161]</span><br><span class="line">	at org.hibernate.internal.util.SerializationHelper$CustomObjectInputStream.&lt;init&gt;(SerializationHelper.java:309) ~[hibernate-core-5.3.11.Final.jar:5.3.11.Final]</span><br><span class="line">	at org.hibernate.internal.util.SerializationHelper$CustomObjectInputStream.&lt;init&gt;(SerializationHelper.java:299) ~[hibernate-core-5.3.11.Final.jar:5.3.11.Final]</span><br><span class="line">	at org.hibernate.internal.util.SerializationHelper.doDeserialize(SerializationHelper.java:218) ~[hibernate-core-5.3.11.Final.jar:5.3.11.Final]</span><br><span class="line">	... 162 common frames omitted</span><br></pre></td></tr></table></figure></p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><ol>
-<li><p>首先检查是否都加上了</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>然后检查是否在加上这个属性之前往表里写入了数据，如果写入了就把数据删除重新写入一下试试。</p>
-</li>
-<li><p>检查配置文件中的JPA属性</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">jpa:</span><br><span class="line">database-platform: org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>在传递rabbitmq的时候出现了一个类似的情况。当我在数据采集项目里发送一个类的集合到MQ队列，在前端接口项目中去接受的时候报了反序列化失败。将两个类的serialVersionUID调成一致的就可以正常接受了。</p>
-]]></content>
-      <tags>
-        <tag>bug</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）</title>
     <url>/2020/07/04/%E5%9C%A8Java%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%89%93%E5%8D%B0%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF%EF%BC%8C%E6%8E%92%E6%9F%A5%E9%97%AE%E9%A2%98%E6%9B%B4%E6%96%B9%E4%BE%BF%EF%BC%8C%E9%9D%9E%E5%B8%B8%E5%AE%9E%E7%94%A8%EF%BC%88%E4%B8%8A%EF%BC%89/</url>
     <content><![CDATA[<h1 id="在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）"><a href="#在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）" class="headerlink" title="在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）"></a>在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（上）</h1><blockquote>
@@ -2878,6 +2975,30 @@
 ]]></content>
       <tags>
         <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>反序列化错误</title>
+    <url>/2019/09/27/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%94%99%E8%AF%AF/</url>
+    <content><![CDATA[<h1 id="反序列化错误：could-not-deserialize"><a href="#反序列化错误：could-not-deserialize" class="headerlink" title="反序列化错误：could not deserialize"></a>反序列化错误：could not deserialize</h1><blockquote>
+<p>每个实体类都加入了Serializable，然后类与类之间有表关联。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="起源"><a href="#起源" class="headerlink" title="起源"></a>起源</h2><p>一个实体类和另一个实体类的关系为：@OneToMany。在用JPA的findAll方法时，会出现这个错误：<br><strong>org.hibernate.type.SerializationException: could not deserialize</strong><br><strong>java.io.StreamCorruptedException: invalid stream header: 00000000</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">at java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:862) ~[na:1.8.0_161]</span><br><span class="line">	at java.io.ObjectInputStream.&lt;init&gt;(ObjectInputStream.java:354) ~[na:1.8.0_161]</span><br><span class="line">	at org.hibernate.internal.util.SerializationHelper$CustomObjectInputStream.&lt;init&gt;(SerializationHelper.java:309) ~[hibernate-core-5.3.11.Final.jar:5.3.11.Final]</span><br><span class="line">	at org.hibernate.internal.util.SerializationHelper$CustomObjectInputStream.&lt;init&gt;(SerializationHelper.java:299) ~[hibernate-core-5.3.11.Final.jar:5.3.11.Final]</span><br><span class="line">	at org.hibernate.internal.util.SerializationHelper.doDeserialize(SerializationHelper.java:218) ~[hibernate-core-5.3.11.Final.jar:5.3.11.Final]</span><br><span class="line">	... 162 common frames omitted</span><br></pre></td></tr></table></figure></p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><ol>
+<li><p>首先检查是否都加上了</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后检查是否在加上这个属性之前往表里写入了数据，如果写入了就把数据删除重新写入一下试试。</p>
+</li>
+<li><p>检查配置文件中的JPA属性</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">jpa:</span><br><span class="line">database-platform: org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>在传递rabbitmq的时候出现了一个类似的情况。当我在数据采集项目里发送一个类的集合到MQ队列，在前端接口项目中去接受的时候报了反序列化失败。将两个类的serialVersionUID调成一致的就可以正常接受了。</p>
+]]></content>
+      <tags>
+        <tag>bug</tag>
       </tags>
   </entry>
   <entry>
@@ -3713,6 +3834,67 @@
 ]]></content>
   </entry>
   <entry>
+    <title>转载，为何有的大厂技术弱爆了</title>
+    <url>/2020/07/11/%E8%BD%AC%E8%BD%BD%EF%BC%8C%E4%B8%BA%E4%BD%95%E6%9C%89%E7%9A%84%E5%A4%A7%E5%8E%82%E6%8A%80%E6%9C%AF%E5%BC%B1%E7%88%86%E4%BA%86/</url>
+    <content><![CDATA[<h1 id="转载，为何有的大厂技术弱爆了"><a href="#转载，为何有的大厂技术弱爆了" class="headerlink" title="转载，为何有的大厂技术弱爆了"></a>转载，为何有的大厂技术弱爆了</h1><blockquote>
+<p>这篇文章转自 <a href="https://mp.weixin.qq.com/s/UGVzS86-iSsXqc08eRUrFQ" target="_blank" rel="noopener">简单聊聊为什么有些大公司技术弱爆了？</a><br>这里是想记录一些常见的让自己代码看起来很 low 的点，逐渐的在有时间的情况下把自己的代码写的好一点。<br>当忙起来的时候还真的是忙啊，真的是能完成功能就行，哪里还能想那么多优化，全凭之前的经验，哪个快速开发用哪个。感觉就像是一个无情的打字机器。</p>
+</blockquote>
+<a id="more"></a>
+<p>这是知乎的编程领域下面一个非常火的提问。昨天晚上看到之后比较感兴趣，这里分享一下自己的看法。相信这个大家看到这个话题一定很感兴趣。</p>
+<p>问题地址：<a href="https://www.zhihu.com/question/32039226" target="_blank" rel="noopener">https://www.zhihu.com/question/32039226</a> 。</p>
+<h2 id="提问内容"><a href="#提问内容" class="headerlink" title="提问内容"></a>提问内容</h2><p>今年年初，到一家互联网公司实习，该公司是国内行业龙头。不过技术和管理方面，却弱爆了。那里的程序员，每天都在看邮件，查问题工单。这些问题，多半是他们设计不当，造成的。<br>代码写的一团糟，全是复制粘贴，连作者都没改，大家普遍不写注释，也不格式化，代码歪歪扭扭。<br>一个项目里，httpclient竟然出现了四种。一种是该公司研发部写的，一种是老版本的开源项目，一种是新版本的开源项目，还有一种是开发人员造的轮子。<br>打接口请求响应日志，竟然不知道用拦截器。打错误日志竟然不打上下文信息，每个人一种日志风格，千奇百怪。许多重要的中间流程，居然不打日志。<br>idea、eclipse、myeclipse的配置文件竟然全部传到项目里去了。<br>该公司混了两年的程序员，跟快递公司做查询接口，竟然不知道加密运单号。<br>所有服务间通讯，都没有设requestId，导致跟踪会话很困难。<br>一个没什么qps的边缘接口，居然做消费者生产者+阻塞队列的异步模式。显得你技术少是不是。不知道异步会增加维护成本，提高测试难度吗？而且，任务队里没有考虑持久化，赶上发布，丢了好多任务。<br>读取一个小小的xml和exc配置文件，居然用流式解析，没见过这么二逼的，真是醉了。<br>做优化全靠拍脑门拍大腿，难道不会用excel分析日志，用jprofile扫项目？一个100以内的常数集合遍历，他也要写个优化算法进去，算法跟业务还搅在一起，一团乱麻。每个人都在嚷嚷性能、算法、分布式计算……<br>几乎没有文档，全靠从代码反推逻辑。<br>有枚举他不用，非要在每个页面上，把枚举值挨个儿写死，知道后面改代码多么费劲吗？<br>欺骗性的变量名，里面存储的是AES加密的，变量名后缀却写成了DES；里面存的是小写字母，却写成upperStr。<br>一个方法十几个参数，有三分之一是极其简略的缩写，注释肯定也没有的。一个类写到三四千行是常事。<br>开发自测，居然要把代码全丢到公共机器上，而且都是走svn，他们把svn当ftp用。svn里面大量的无意义提交，一多半的提交连都编译不过去。我看到有个应届生，改了两句话，马上提交，说是怕代码丢失。<br>一个运行了两年的项目，spring的包扫描明显配错了，有些bean根本扫不进来，居然没有人发现。一半的bean在spring管理下，另一半的bean他们自己写单例模式来实例化。<br>他们用mysql来做审计系统，出报表，有个报表要跑8分钟。原来是有人用字符串来存多值（逗号分隔），sql里写了like，导致没有利用到索引。为什么不用pg，pg在sql编程方面，功能更丰富，更适合做统计，它本身就支持数组。<br>程序员们都是得过且过的态度，怎么把代码灌进去，跑的通测试，就算交差了。<br>为什么大型互联网公司，技术和管理这么差劲，是怎么形成的？（这家公司是卖机票的，没有明确说出公司名字，是怕给自己惹麻烦）</p>
+<h2 id="热门回答"><a href="#热门回答" class="headerlink" title="热门回答"></a>热门回答</h2><blockquote>
+<p>以下回答来自@陈萌萌。</p>
+</blockquote>
+<p>题主你看到了很多槽点，但我认为你不能只看到槽点和大概怎么解决。有没有想过怎么改进，如果是你的话你怎么做，这些项目里面临的主要挑 战是什么，次要的挑战又是什么？</p>
+<p>不要只告诉我技术A弱爆了，用B就可以完爆这个项目了。<strong>你知道用B的优劣，B的适用场景以及适用B的成本吗？对于一间公司来说，成本是很重要的。</strong></p>
+<p>我这里说的成本不是金钱。而是，假如你看不爽一份代码，你打算重构它，你觉得你需要投入多少时间，多少人力？重构之后，又要花费多少时间和人力去升级依赖这份代码的其他项目？不要以为开会无用，老板就只是在天天发邮件。如果你重构了一份代码，不能通过沟通说服其他组去升级他们的组件，又或者你只是重构了一份虽然很丑陋，但其实并没有多少程序依赖它的代码，又又或者你重构了代码只是让代码技术含量更高了，更好看了，却没给公司带来多少收入甚至KPI，那你的工作和成果就很尴尬了。</p>
+<p>其实上述也解释了为什么你身边的同事都眼睁睁地看着这些丑陋的shit存在而无动于衷。因为他们也是需要投入成本的。先不论他们个人技术水平高低，<strong>试问谁愿意挑一个又艰难，又不能产生多少效益的任务去做？</strong>当然，你会说，写好代码是程序员的节操。抱歉，<strong>节操多少钱一斤</strong>，北京三环商品房多少钱一平？</p>
+<p><strong>编程高手都有真爱，但现实就是编程高手凤毛麟角。我们身边的大部分同事可能只**</strong>是希望养家糊口，他们头上还挂着十几个bug等着修。我们数落他们没追求，但追求从来都不是嘴上说说，吐吐槽就能实现的。**</p>
+<p><strong>人心如此，公司也如是。</strong></p>
+<p>矛盾分主次，公司的目标都是一样的：用最少的成本投入到最能产生效益的项目中去，或者投入大成本去解决公司最需要解决的问题，这间公司才能继续运作。</p>
+<p><strong>所以题主你想想，在你吐槽的个案中，有多少是公司真正关心的？有哪些是你的老板认为可以创造最大效益的？有哪些才是主要矛盾或者挑战需要最牛逼的人挺身而出第一时间解决？去辨别，解决这些关键的问题吧，骚年。必要时带上（忽悠）一队人马（同事）跟你一起干，苟富贵，勿相忘。</strong> 不要像祥林嫂一样，天天抱怨着生活，日日思考着辞职。得罪点说一句：“沦落”到要跟这样的人共事工作，难道自己身上就没有原因？</p>
+<p>这个世界有更好的公司，有更牛逼的人。如果你认为解决这间公司的这堆问题不值得，又或者同事实在太不给力，就远走高飞吧。</p>
+<p>我以前也跟题主一样，看我第一份正式工作的很多技术环节都相当不爽。这份代码写得丑，那个设计像大学生作品，重要的项目居然连单元测试都没有……<strong>但是我后来反观我自己，并没有发现比起那些丑陋代码和糟糕实现强悍多少。我跟我的同事没有质的区别。</strong> 我笑话他们代码混乱bug不尽，我何尝不是少处理了一个field，倒腾错了一个片段的数据搞到要翻工重跑？在我心底里艹了隔壁组那个“我的程序好像不能跑，你帮我debug下”的同事一千次之后，带我做ML让我倒腾数据并且被我的程序搞坏了几份数据（当然后来搞好了）的T9君在会议上说：“她已经很努力了，我承认我有时候也逼得她太紧，她应该有多些时间的。”</p>
+<p>我不是长者，不能share多少人生经验，就留下最后一句话跟诸君共勉（好像有点怪）吧：</p>
+<p><strong>我观别人大傻逼，料别人观我亦如是！</strong></p>
+<h2 id="JavaGuide（作者）的个人感受"><a href="#JavaGuide（作者）的个人感受" class="headerlink" title="JavaGuide（作者）的个人感受"></a>JavaGuide（作者）的个人感受</h2><p>我觉得其实这事情挺常见的，特别是那种已经做了很久很久的老项目（新起的项目应该很少存在说技术比较 Low的情况）。</p>
+<p>我之前接手老项目的时候，也会经常抱怨代码写的是真特么难、分层是真的恶心、使用的框架版本是真特么的老！</p>
+<p>但是，到后面自己做一个项目比较久的时候就会发现：很多事情，并不是像你平时写写 Demo 那么简单！ 特别是像大公司的很多项目都比较复杂，项目的代码量也比较庞大。很多时候，你知道某个地方有问题，但是你没办法改，也不敢改啊！</p>
+<p>为啥没办法改？ 下面最可能的几个原因大家应该都感同身受吧！</p>
+<ol>
+<li>没时间和精力（一个接一个的需求）。</li>
+<li>向项目经历或者技术Leader提出优化需求之后被驳回。</li>
+<li>涉及到的地方太多/工作量太大。</li>
+</ol>
+<p>为啥不敢改？ 我觉得很大一个原因是害怕背锅。万一改出了问题，那年终奖估计都没有了。</p>
+<p>另外，就算是大公司，每个程序员的能力也千差万别，代码能力强的和代码能力差的可能不是一点两点。</p>
+<p>最后，根据自己的经历给刚入职场或者即将入职场的小伙伴一个建议。如果你觉得你当前的项目技术很 Low 的话：</p>
+<ol>
+<li>第一时间记得先换位思考一下，设想假如这个项目是我做的呢（存在即是有原因的）？</li>
+<li>然后，你可以试着去找找这个项目的亮点。</li>
+<li>最后，如果你想好说可以优化的话，可以找 Leader 和项目经理聊聊，在 Code Review 的时候把自己的想法告诉大家一下。记得一定要说清楚：<ul>
+<li>为啥要优化？能带来啥好处？</li>
+<li>有没有什么风险？有风险的话怎么避免线上出问题？</li>
+<li>涉及到哪些地方的改动？</li>
+<li>……</li>
+</ul>
+</li>
+</ol>
+<h2 id="我的感受"><a href="#我的感受" class="headerlink" title="我的感受"></a>我的感受</h2><blockquote>
+<p>似乎是在套娃。</p>
+</blockquote>
+<p><strong>我观别人大傻逼，料别人观我亦如是！</strong></p>
+<p>前些阵子不是太忙的时候在做算法题，那是真的感觉思路的巧妙。我还在第一层，别人已经到了第五层的快乐。</p>
+<p>但是回到现实，最快的速度完成业务需求，最快的速度完成需求更改才是公司需要的东西。至于内部的实现方法，优化的速度，只有在碰到瓶颈的时候（也就是主观上感觉太慢了的时候），才会去花时间优化。不然，等着拉长项目时间赔钱么。</p>
+<p>也是自己对于一些设计模式和底层原理并不是太熟练，第一时间想到的层次太低。对项目需求的解析不是太准确，出现了预估工时太短的问题。工作经验的积累还是要记得及时的整理，新的东西也要敲一敲，熟练起来。、</p>
+<p>总是有优秀的人在前面。</p>
+]]></content>
+      <tags>
+        <tag>bug</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>遇到的bug修复</title>
     <url>/2019/05/08/%E9%81%87%E5%88%B0%E7%9A%84bug%E4%BF%AE%E5%A4%8D/</url>
     <content><![CDATA[<h1 id="业务中遇到的bug积累之A-bean-with-that-name-has-already-been-defined-in-file"><a href="#业务中遇到的bug积累之A-bean-with-that-name-has-already-been-defined-in-file" class="headerlink" title="业务中遇到的bug积累之A bean with that name has already been defined in file"></a>业务中遇到的bug积累之A bean with that name has already been defined in file</h1><blockquote>
@@ -3727,6 +3909,112 @@
 ]]></content>
       <tags>
         <tag>gradle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>部署geojson切片服务</title>
+    <url>/2020/08/08/%E9%83%A8%E7%BD%B2geojson%E5%88%87%E7%89%87%E6%9C%8D%E5%8A%A1/</url>
+    <content><![CDATA[<h1 id="部署geojson文件矢量切片服务"><a href="#部署geojson文件矢量切片服务" class="headerlink" title="部署geojson文件矢量切片服务"></a>部署geojson文件矢量切片服务</h1><blockquote>
+<p>客户答应的 Linux 虚拟机到了，终于可以直接部署 tippecanoe 了。<br>原本的 Geojson 文件太大了，还是需要切片。</p>
+</blockquote>
+<h2 id="安装-tippecanoe"><a href="#安装-tippecanoe" class="headerlink" title="安装 tippecanoe"></a>安装 tippecanoe</h2><p>登录 Linux 服务器</p>
+<ol>
+<li>准备好 tippecanoe 源码。</li>
+<li>将服务器的 yum 源更改为 阿里源</li>
+<li><p>下载依赖</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install gcc-c++</span><br><span class="line">yum install sqlite-devel</span><br><span class="line">yum install -y zlib zlib-devel</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将源码解压好后，在 tippecanoe 文件夹内</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make -j</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>完成<br>具体的命令行参数参考：<a href="https://github.com/mapbox/tippecanoe" target="_blank" rel="noopener">https://github.com/mapbox/tippecanoe</a></p>
+<h2 id="安装-FoxGIS-Server-Lite"><a href="#安装-FoxGIS-Server-Lite" class="headerlink" title="安装 FoxGIS Server Lite"></a>安装 FoxGIS Server Lite</h2><p>直接部署在了原本的 win 服务器上，通过 FTP 读取 tippecanoe 做好的矢量地图文件。</p>
+<p>通过<a href="https://jingsam.github.io/foxgis-server-lite/#/deploy" target="_blank" rel="noopener">https://jingsam.github.io/foxgis-server-lite/#/deploy</a> 下载 win 包，直接启动 exe 文件即可。</p>
+<h2 id="部署调用命令-jar-包"><a href="#部署调用命令-jar-包" class="headerlink" title="部署调用命令 jar 包"></a>部署调用命令 jar 包</h2><p>这个程序是负责调用 Linux 中的切片程序，只需要放在 Linux 任意文件夹中开启来就完事了。只是一个开发接口调用命令而已。</p>
+<h2 id="处理中间关联程序"><a href="#处理中间关联程序" class="headerlink" title="处理中间关联程序"></a>处理中间关联程序</h2><p>切片程序部署在 Linux 服务器上，将原本的 geojson 文件通过 FTP上传到 Linux 文件夹中。<br>再访问接口来启动切片命令，收到完成回复后，将 FTP 中切好的文件拿回 win 服务器。<br>放在 FoxGIS Server Lite 中，得到映射的 url 。</p>
+<p>注意中间我关闭了 Linux 服务器的防火墙和 SeLinux，部署 FTP 的方式是用的之前的文章。</p>
+]]></content>
+      <tags>
+        <tag>Geojson</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>side location conflict错误解决</title>
+    <url>/2020/10/03/SideLocationConflict%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<h1 id="side-location-conflict错误解决"><a href="#side-location-conflict错误解决" class="headerlink" title="side location conflict错误解决"></a>side location conflict错误解决</h1><blockquote>
+<p>在进行两个面集合之间的关系比较时出现的问题<br>有关博文 <a href="http://locationtech.github.io/jts/javadoc/org/locationtech/jts/geom/Geometry.html" target="_blank" rel="noopener">http://locationtech.github.io/jts/javadoc/org/locationtech/jts/geom/Geometry.html</a> jar 包的api 文档。和 <a href="https://github.com/nettopologysuite/nettopologysuite/issues/129" target="_blank" rel="noopener">https://github.com/nettopologysuite/nettopologysuite/issues/129</a> 的一句话。<br><a id="more"></a></p>
+</blockquote>
+<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">org.locationtech.jts.geom.TopologyException: side location conflict [ (112.094482, 25.851795, NaN) ]</span><br></pre></td></tr></table></figure>
+<p>在判断从 geojson 格式转成的 org.locationtech.jts.geom.Polygon 面之间的关系时发生</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>首先贴一下我的 geojson 转 Polygon 面的代码<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private List&lt;Polygon&gt; jsonToGeometry(String jsonFilePath) throws IOException &#123;</span><br><span class="line">        List&lt;Polygon&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">        try (InputStream is = GeoTools.class.getResourceAsStream(jsonFilePath)) &#123;</span><br><span class="line">            JSONObject city = JSON.parseObject(IoUtil.read(is, StandardCharsets.UTF_8));</span><br><span class="line">            list = city.getJSONArray(&quot;features&quot;).stream()</span><br><span class="line">                    .map(obj -&gt; &#123;</span><br><span class="line">                        JSONObject json = (JSONObject) obj;</span><br><span class="line">                        Polygon polygon = null;</span><br><span class="line">                        polygon = (Polygon) new GeoJSONReader().read(json.getJSONObject(&quot;geometry&quot;).toJSONString());</span><br><span class="line">                        polygon.setUserData(json.getJSONObject(&quot;properties&quot;));</span><br><span class="line">                        return polygon;</span><br><span class="line">                    &#125;)</span><br><span class="line">                    .collect(Collectors.toList());</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            throw new HandleException(e);</span><br><span class="line">        &#125;</span><br><span class="line">        return list;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>jsonFilePath 参数就是一个 geojson 的文件。<br>所需引用 jar 包为<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">implementation group: &apos;org.locationtech.jts&apos;, name: &apos;jts-core&apos;, version: &apos;1.16.1&apos;</span><br></pre></td></tr></table></figure></p>
+<p>我所使用的对比面与面之间关系的方法是<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/**</span><br><span class="line">     * 把县级所属城市标记出来</span><br><span class="line">     * @param polygons 县</span><br><span class="line">     * @param citypolygons 市</span><br><span class="line">     */</span><br><span class="line">    private List&lt;Polygon&gt; belongingCity(List&lt;Polygon&gt; polygons, List&lt;Polygon&gt; citypolygons) &#123;</span><br><span class="line">        polygons = polygons.stream().map(polygon -&gt; &#123;</span><br><span class="line">            List&lt;String&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">            citypolygons.stream().forEach(citypolygo -&gt; &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    Polygon union = polygon.isValid() ? polygon : (Polygon)polygon.buffer(0);</span><br><span class="line">                    Polygon cityunion = citypolygo.isValid() ? citypolygo : (Polygon)citypolygo.buffer(0);</span><br><span class="line">                    if (cityunion.contains(union) || cityunion.overlaps(union)) &#123;</span><br><span class="line">                        String name = ((JSONObject)polygon.getUserData()).getString(&quot;name&quot;);</span><br><span class="line">                        String cityName = ((JSONObject)citypolygo.getUserData()).getString(&quot;name&quot;);</span><br><span class="line">                            name = cityName + name;</span><br><span class="line">                        ((JSONObject)polygon.getUserData()).put(&quot;name&quot;, name);</span><br><span class="line">                        list.add(name);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                &#125; catch (TopologyException e) &#123;</span><br><span class="line">                   log.info(e.getMessage(), e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            return polygon;</span><br><span class="line">        &#125;).collect(Collectors.toList());</span><br><span class="line">        return polygons;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个判断面与面之间的关系这里还是有一点问题，将一个县分到了两个市所属下。<br>其中解决这次报错的方法是<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">polygon.isValid() ? polygon : (Polygon)polygon.buffer(0)</span><br></pre></td></tr></table></figure></p>
+<p><code>isValid</code>方法是判断 Geometry 根据OGC SFS规范测试这在拓扑上是否有效。<br>然后再用<code>buffer</code>方法拿出一个面。其中有一些要注意的点，在原文回答中有写：</p>
+<blockquote>
+<p>There are two possible reasons that you are getting this exception:<br>Most likely you have invalid geometries to start with. You can test geometries for validity by either checking feature.Geometry.IsValid property or by using the NetTopologySuite.Operation.Valid.IsValidOp class. The later gives you the location where the validation test failed.<br>If this is the case you can attempt to fix the geometry by assigning feature.Geometry = feature.Geometry.Buffer(0);. While this works for most of the cases, it is not guaranteed to do so. An example where this might not work is a “bow-tie: or “figure-8” polygon, with one very small lobe and one large one. Depending on the orientations of the lobes, the Buffer(0) operation may keep the small lobe and discard the “valid” large lobe.<br>It can also happen during operations on geometries due to some subtle kinds of cross-geometry<br>topology, such as two line segments being almost but not quite coincident. This can be avoided by using the NetTopologySuite.Precision.GeometryPrecisionReducer.<br>I would need to see the geometries to tell more.</p>
+</blockquote>
+<p>要注意自相交面处理后的截取的面是否为小的那个面。<br>成功解决问题</p>
+]]></content>
+      <tags>
+        <tag>jts</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>无侵入式实现API接口统一</title>
+    <url>/2020/08/16/%E6%97%A0%E4%BE%B5%E5%85%A5%E5%BC%8F%E5%AE%9E%E7%8E%B0API%E6%8E%A5%E5%8F%A3%E7%BB%9F%E4%B8%80/</url>
+    <content><![CDATA[<h1 id="Spring-Boot-无侵入式-实现-API-接口统一-JSON-格式返回"><a href="#Spring-Boot-无侵入式-实现-API-接口统一-JSON-格式返回" class="headerlink" title="Spring Boot 无侵入式 实现 API 接口统一 JSON 格式返回"></a>Spring Boot 无侵入式 实现 API 接口统一 JSON 格式返回</h1><blockquote>
+<p>转载自 <a href="blog.csdn.net/qq_34347620/article/details/102239179">blog.csdn.net/qq_34347620/article/details/102239179</a><br>现在自从增加了每天的通勤路程，感觉每天时间都很紧张。这个文章并没有实际操作一下。</p>
+</blockquote>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><ul>
+<li>无侵入式 统一返回JSON格式<ul>
+<li>定义JSON格式</li>
+<li>定义JavaBean字段</li>
+<li>Result实体返回测试</li>
+</ul>
+</li>
+<li>统一返回JSON格式进阶-全局处理(@RestControllerAdvice)<ul>
+<li>@ResponseBody继承类</li>
+<li>ResponseBodyAdvice继承类</li>
+<li>RestControllerAdvice返回测试</li>
+</ul>
+</li>
+<li>统一返回JSON格式进阶-异常处理(@ExceptionHandler))<ul>
+<li>异常处理@ResponseStatus(不推荐)</li>
+<li>全局异常处理@ExceptionHandler(推荐)</li>
+</ul>
+</li>
+</ul>
+<h2 id="无侵入式-统一返回JSON格式"><a href="#无侵入式-统一返回JSON格式" class="headerlink" title="无侵入式 统一返回JSON格式"></a>无侵入式 统一返回JSON格式</h2><p>其实本没有没打算写这篇博客的，但还是要写一下写这篇博客的起因是因为，现在呆着的这家公司居然没有统一的API返回格式?，询问主管他居然告诉我用HTTP状态码就够用了（fxxk），天哪HTTP状态码真的够用吗？<br>在仔细的阅读了项目源码后发现，在API请求的是居然没有业务异常（黑人问好）。好吧 居然入坑了只能遵照项目风格了，懒得吐槽了。<br>因为项目已经开发了半年多了, 要是全部接口都做修改工作量还是挺大的, 只能用这种无侵入式的方案来解决.</p>
+<blockquote>
+<p>我感觉这种事情会经常碰到，尤其是维护老项目代码。</p>
+</blockquote>
+<h2 id="定义JSON格式"><a href="#定义JSON格式" class="headerlink" title="定义JSON格式"></a>定义JSON格式</h2><h3 id="定义返回JSON格式"><a href="#定义返回JSON格式" class="headerlink" title="定义返回JSON格式"></a>定义返回JSON格式</h3><p>后端返回给前端一般情况下使用JSON格式, 定义如下<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"code"</span>: <span class="number">200</span>,</span><br><span class="line">    <span class="string">"message"</span>: <span class="string">"OK"</span>,</span><br><span class="line">    <span class="string">"data"</span>: &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>code: 返回状态码</li>
+<li>message: 返回信息的描述</li>
+<li>data: 返回值<h2 id="定义JavaBean字段"><a href="#定义JavaBean字段" class="headerlink" title="定义JavaBean字段"></a>定义JavaBean字段</h2><h3 id="定义状态码枚举类"><a href="#定义状态码枚举类" class="headerlink" title="定义状态码枚举类"></a>定义状态码枚举类</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@ToString</span><br><span class="line">@Getter</span><br><span class="line">public enum ResultStatus &#123;</span><br><span class="line"></span><br><span class="line">    SUCCESS(HttpStatus.OK, 200, &quot;OK&quot;),</span><br><span class="line">    BAD_REQUEST(HttpStatus.BAD_REQUEST, 400, &quot;Bad Request&quot;),</span><br><span class="line">    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, &quot;Internal Server Error&quot;),;</span><br><span class="line"></span><br><span class="line">    /** 返回的HTTP状态码, 符合http请求 */</span><br><span class="line">    private HttpStatus httpStatus;</span><br><span class="line">    /** 业务异常码 */</span><br><span class="line">    private Integer code;</span><br><span class="line">    /** 业务异常信息描述 */</span><br><span class="line">    private String message;</span><br><span class="line"></span><br><span class="line">    ResultStatus(HttpStatus httpStatus, Integer code, String message) &#123;</span><br><span class="line">        this.httpStatus = httpStatus;</span><br><span class="line">        this.code = code;</span><br><span class="line">        this.message = message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>状态码和信息以及http状态码就能一一对应了便于维护, 有同学有疑问了为什么要用到http状态码呀,因为我要兼容项目以前的代码, 没有其他原因, 当然其他同学不喜欢http状态码的可以吧源码中HttpStatus给删除了</p>
+<h3 id="定义返回体类"><a href="#定义返回体类" class="headerlink" title="定义返回体类"></a>定义返回体类</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Result</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">/** 业务错误码 */</span></span><br><span class="line">    <span class="keyword">private</span> Integer code;</span><br><span class="line">    <span class="comment">/** 信息描述 */</span></span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line">    <span class="comment">/** 返回参数 */</span></span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Result</span><span class="params">(ResultStatus resultStatus, T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.code = resultStatus.getCode();</span><br><span class="line">        <span class="keyword">this</span>.message = resultStatus.getMessage();</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务成功返回业务代码和描述信息 */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Result&lt;Void&gt; <span class="title">success</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Result&lt;Void&gt;(ResultStatus.SUCCESS, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务成功返回业务代码,描述和返回的参数 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Result&lt;T&gt; <span class="title">success</span><span class="params">(T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Result&lt;T&gt;(ResultStatus.SUCCESS, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务成功返回业务代码,描述和返回的参数 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Result&lt;T&gt; <span class="title">success</span><span class="params">(ResultStatus resultStatus, T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (resultStatus == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> success(data);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Result&lt;T&gt;(resultStatus, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务异常返回业务代码和描述信息 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Result&lt;T&gt; <span class="title">failure</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Result&lt;T&gt;(ResultStatus.INTERNAL_SERVER_ERROR, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务异常返回业务代码,描述和返回的参数 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Result&lt;T&gt; <span class="title">failure</span><span class="params">(ResultStatus resultStatus)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> failure(resultStatus, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务异常返回业务代码,描述和返回的参数 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Result&lt;T&gt; <span class="title">failure</span><span class="params">(ResultStatus resultStatus, T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (resultStatus == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Result&lt;T&gt;(ResultStatus.INTERNAL_SERVER_ERROR, <span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Result&lt;T&gt;(resultStatus, data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为使用构造方法进行创建对象太麻烦了, 我们使用静态方法来创建对象这样简单明了</p>
+<h3 id="Result实体返回测试"><a href="#Result实体返回测试" class="headerlink" title="Result实体返回测试"></a>Result实体返回测试</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/hello"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> HashMap&lt;String, Object&gt; INFO;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        INFO = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        INFO.put(<span class="string">"name"</span>, <span class="string">"galaxy"</span>);</span><br><span class="line">        INFO.put(<span class="string">"age"</span>, <span class="string">"70"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/hello"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">hello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> INFO;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/result"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> Result&lt;Map&lt;String, Object&gt;&gt; helloResult() &#123;</span><br><span class="line">        <span class="keyword">return</span> Result.success(INFO);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>到这里我们已经简单的实现了统一JSON格式了, 但是我们也发现了一个问题了,想要返回统一的JSON格式需要返回Result\&lt;Object>才可以, 我明明返回Object可以了, 为什么要重复劳动, 有没有解决方法, 当然是有的啦, 下面我们开始优化我们的代码吧</p>
+<h2 id="统一返回JSON格式进阶-全局处理-RestControllerAdvice"><a href="#统一返回JSON格式进阶-全局处理-RestControllerAdvice" class="headerlink" title="统一返回JSON格式进阶-全局处理(@RestControllerAdvice)"></a>统一返回JSON格式进阶-全局处理(@RestControllerAdvice)</h2><p>我师傅经常告诉我的一句话: “你就是一个小屁孩, 你遇到的问题都已经不知道有多少人遇到过了, 你会想到的问题, 已经有前辈想到过了. 你准备解决的问题, 已经有人把坑填了”。是不是很鸡汤, 是不是很励志, 让我对前辈们充满着崇拜, 事实上他对我说的是: “自己去百度”, 这五个大字, 其实这五个大字已经说明上明的B话了, 通过不断的百度和Google发现了很多的解决方案.</p>
+<p>我们都知道使用@ResponseBody注解会把返回Object序列化成JSON字符串,就先从这个入手吧, 大致就是在序列化前把Object赋值给Result\&lt;Object>就可以了, 大家可以观摩<br>org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice<br>和<br>org.springframework.web.bind.annotation.ResponseBody</p>
+<h3 id="ResponseBody继承类"><a href="#ResponseBody继承类" class="headerlink" title="@ResponseBody继承类"></a>@ResponseBody继承类</h3><p>我们已经决定从@ResponseBody注解入手了就创建一个注解类继承@ResponseBody, 很干净什么都没有哈哈,@ResponseResultBody 可以标记在类和方法上这样我们就可以跟自由的进行使用了<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Target</span>(&#123;ElementType.TYPE, ElementType.METHOD&#125;)</span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ResponseResultBody &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="ResponseBody继承类-1"><a href="#ResponseBody继承类-1" class="headerlink" title="@ResponseBody继承类"></a>@ResponseBody继承类</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResponseResultBodyAdvice</span> <span class="keyword">implements</span> <span class="title">ResponseBodyAdvice</span>&lt;<span class="title">Object</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Class&lt;? extends Annotation&gt; ANNOTATION_TYPE = ResponseResultBody.class;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断类或者方法是否使用了 <span class="doctag">@ResponseResultBody</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(MethodParameter returnType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; converterType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ANNOTATION_TYPE) || returnType.hasMethodAnnotation(ANNOTATION_TYPE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 当类或者方法使用了 <span class="doctag">@ResponseResultBody</span> 就会调用这个方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">beforeBodyWrite</span><span class="params">(Object body, MethodParameter returnType, MediaType selectedContentType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; selectedConverterType, ServerHttpRequest request, ServerHttpResponse response)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 防止重复包裹的问题出现</span></span><br><span class="line">        <span class="keyword">if</span> (body <span class="keyword">instanceof</span> Result) &#123;</span><br><span class="line">            <span class="keyword">return</span> body;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Result.success(body);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="RestControllerAdvice返回测试"><a href="#RestControllerAdvice返回测试" class="headerlink" title="RestControllerAdvice返回测试"></a>RestControllerAdvice返回测试</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/helloResult"</span>)</span><br><span class="line"><span class="meta">@ResponseResultBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloResultController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> HashMap&lt;String, Object&gt; INFO;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        INFO = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</span><br><span class="line">        INFO.put(<span class="string">"name"</span>, <span class="string">"galaxy"</span>);</span><br><span class="line">        INFO.put(<span class="string">"age"</span>, <span class="string">"70"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"hello"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title">hello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> INFO;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 测试重复包裹 */</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"result"</span>)</span><br><span class="line">    <span class="keyword">public</span> Result&lt;Map&lt;String, Object&gt;&gt; helloResult() &#123;</span><br><span class="line">        <span class="keyword">return</span> Result.success(INFO);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"helloError"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title">helloError</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"helloError"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"helloMyError"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title">helloMyError</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ResultException();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>是不是很神奇, 直接返回Object就可以统一JSON格式了, 就不用每个返回都返回Result\&lt;T>对象了,直接让SpringMVC帮助我们进行统一的管理, 简直完美。<br>只想看接口哦, helloError和helloMyError是会直接抛出异常的接口,我好像没有对异常返回进行统一的处理哦</p>
+<h3 id="统一返回JSON格式进阶-异常处理-ExceptionHandler"><a href="#统一返回JSON格式进阶-异常处理-ExceptionHandler" class="headerlink" title="统一返回JSON格式进阶-异常处理(@ExceptionHandler))"></a>统一返回JSON格式进阶-异常处理(@ExceptionHandler))</h3><p>卧槽, 异常处理, 差点把这茬给忘了, 这个异常处理就有很多方法了,先看看我师傅的处理方式, 我刚拿到这个代码的时候很想吐槽, 对异常类的处理这么残暴的吗, 直接用PrintWriter直接输出结果, 果然是老师傅, 我要是有100个异常类, 不得要写100个 if else了. 赶紧改改睡吧<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyExceptionHandler</span> <span class="keyword">implements</span> <span class="title">HandlerExceptionResolver</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ModelAndView <span class="title">resolveException</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">                                         Object handler, Exception ex)</span> </span>&#123;</span><br><span class="line">        PrintWriter out = getPrintWrite(response);</span><br><span class="line">        <span class="keyword">if</span> (ex <span class="keyword">instanceof</span> XXXException) &#123;</span><br><span class="line">            out.write(JsonUtil.formatJson(ResultEnum.PAY_ERROR.getCode(), ex.getMessage()));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            out.write(JsonUtil.formatJson(ResultEnum.FAIL.getCode(), <span class="string">"服务器异常"</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> != out) &#123;</span><br><span class="line">            out.close();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> mav;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> PrintWriter <span class="title">getPrintWrite</span><span class="params">(HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">        PrintWriter out = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            response.setHeader(<span class="string">"Content-type"</span>, <span class="string">"text/html;charset=UTF-8"</span>);</span><br><span class="line">            response.setCharacterEncoding(<span class="string">"UTF-8"</span>);</span><br><span class="line">            out = response.getWriter();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            log.error(<span class="string">"PrintWriter is exception"</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> out;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码看看还是没有问题的, 别学过去哦,</p>
+<h3 id="异常处理-ResponseStatus-不推荐"><a href="#异常处理-ResponseStatus-不推荐" class="headerlink" title="异常处理@ResponseStatus(不推荐)"></a>异常处理@ResponseStatus(不推荐)</h3><p>@ResponseStatus用法如下,可用在Controller类和Controller方法上以及Exception类上但是这样的工作量还是挺大的<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/error"</span>)</span><br><span class="line"><span class="meta">@ResponseStatus</span>(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = <span class="string">"Java的异常"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloExceptionController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> HashMap&lt;String, Object&gt; INFO;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        INFO = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</span><br><span class="line">        INFO.put(<span class="string">"name"</span>, <span class="string">"galaxy"</span>);</span><br><span class="line">        INFO.put(<span class="string">"age"</span>, <span class="string">"70"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>()</span><br><span class="line">    <span class="function"><span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title">helloError</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"helloError"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"helloJavaError"</span>)</span><br><span class="line">    <span class="meta">@ResponseStatus</span>(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = <span class="string">"Java的异常"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title">helloJavaError</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"helloError"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"helloMyError"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title">helloMyError</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> MyException();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@ResponseStatus</span>(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = <span class="string">"自己定义的异常"</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyException</span> <span class="keyword">extends</span> <span class="title">Exception</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="全局异常处理-ExceptionHandler-推荐"><a href="#全局异常处理-ExceptionHandler-推荐" class="headerlink" title="全局异常处理@ExceptionHandler(推荐)"></a>全局异常处理@ExceptionHandler(推荐)</h3><p>把ResponseResultBodyAdvice类进行改造一下,代码有点多了,<br>主要参考了<br>org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler#handleException()方法,<br>有空可以看一下。<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@RestControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResponseResultBodyAdvice</span> <span class="keyword">implements</span> <span class="title">ResponseBodyAdvice</span>&lt;<span class="title">Object</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Class&lt;? extends Annotation&gt; ANNOTATION_TYPE = ResponseResultBody.class;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 判断类或者方法是否使用了 <span class="doctag">@ResponseResultBody</span> */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(MethodParameter returnType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; converterType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ANNOTATION_TYPE) || returnType.hasMethodAnnotation(ANNOTATION_TYPE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 当类或者方法使用了 <span class="doctag">@ResponseResultBody</span> 就会调用这个方法 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">beforeBodyWrite</span><span class="params">(Object body, MethodParameter returnType, MediaType selectedContentType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; selectedConverterType, ServerHttpRequest request, ServerHttpResponse response)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (body <span class="keyword">instanceof</span> Result) &#123;</span><br><span class="line">            <span class="keyword">return</span> body;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Result.success(body);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 提供对标准Spring MVC异常的处理</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ex the target exception</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> request the current request</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(Exception.class)</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> ResponseEntity&lt;Result&lt;?&gt;&gt; exceptionHandler(Exception ex, WebRequest request) &#123;</span><br><span class="line">        log.error(<span class="string">"ExceptionHandler: &#123;&#125;"</span>, ex.getMessage());</span><br><span class="line">        HttpHeaders headers = <span class="keyword">new</span> HttpHeaders();</span><br><span class="line">        <span class="keyword">if</span> (ex <span class="keyword">instanceof</span> ResultException) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.handleResultException((ResultException) ex, headers, request);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> 2019/10/05 galaxy 这里可以自定义其他的异常拦截</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.handleException(ex, headers, request);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 对ResultException类返回返回结果的处理 */</span></span><br><span class="line">    <span class="keyword">protected</span> ResponseEntity&lt;Result&lt;?&gt;&gt; handleResultException(ResultException ex, HttpHeaders headers, WebRequest request) &#123;</span><br><span class="line">        Result&lt;?&gt; body = Result.failure(ex.getResultStatus());</span><br><span class="line">        HttpStatus status = ex.getResultStatus().getHttpStatus();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.handleExceptionInternal(ex, body, headers, status, request);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 异常类的统一处理 */</span></span><br><span class="line">    <span class="keyword">protected</span> ResponseEntity&lt;Result&lt;?&gt;&gt; handleException(Exception ex, HttpHeaders headers, WebRequest request) &#123;</span><br><span class="line">        Result&lt;?&gt; body = Result.failure();</span><br><span class="line">        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.handleExceptionInternal(ex, body, headers, status, request);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler#handleExceptionInternal(java.lang.Exception, java.lang.Object, org.springframework.http.HttpHeaders, org.springframework.http.HttpStatus, org.springframework.web.context.request.WebRequest)</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;</span></span><br><span class="line"><span class="comment">     * A single place to customize the response body of all exception types.</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;The default implementation sets the &#123;<span class="doctag">@link</span> WebUtils#ERROR_EXCEPTION_ATTRIBUTE&#125;</span></span><br><span class="line"><span class="comment">     * request attribute and creates a &#123;<span class="doctag">@link</span> ResponseEntity&#125; from the given</span></span><br><span class="line"><span class="comment">     * body, headers, and status.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">protected</span> ResponseEntity&lt;Result&lt;?&gt;&gt; handleExceptionInternal(</span><br><span class="line">            Exception ex, Result&lt;?&gt; body, HttpHeaders headers, HttpStatus status, WebRequest request) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) &#123;</span><br><span class="line">            request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, WebRequest.SCOPE_REQUEST);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(body, headers, status);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <tags>
+        <tag>Spring boot</tag>
       </tags>
   </entry>
 </search>
