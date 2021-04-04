@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="jar包冲突后的处理过程 记录一下发现 jar 包冲突后，怎么用 idea 来排查解决  错误123456789101112131415161718192021222324252627***************************APPLICATION FAILED TO START***************************Description:An attempt was">
+<meta name="description" content="jar包冲突后的处理过程 记录一下发现 jar 包冲突后，怎么用 idea 来排查解决">
 <meta name="keywords" content="idea">
 <meta property="og:type" content="article">
 <meta property="og:title" content="jar包冲突后的处理过程">
 <meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/09/26/jar包冲突后的处理过程/index.html">
 <meta property="og:site_name" content="blogs">
-<meta property="og:description" content="jar包冲突后的处理过程 记录一下发现 jar 包冲突后，怎么用 idea 来排查解决  错误123456789101112131415161718192021222324252627***************************APPLICATION FAILED TO START***************************Description:An attempt was">
+<meta property="og:description" content="jar包冲突后的处理过程 记录一下发现 jar 包冲突后，怎么用 idea 来排查解决">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.worldofwarcraftchina.cn/2020/09/26/jar包冲突后的处理过程/b1.png">
-<meta property="og:updated_time" content="2020-11-13T03:36:56.861Z">
+<meta property="og:updated_time" content="2021-02-26T09:56:31.397Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jar包冲突后的处理过程">
-<meta name="twitter:description" content="jar包冲突后的处理过程 记录一下发现 jar 包冲突后，怎么用 idea 来排查解决  错误123456789101112131415161718192021222324252627***************************APPLICATION FAILED TO START***************************Description:An attempt was">
+<meta name="twitter:description" content="jar包冲突后的处理过程 记录一下发现 jar 包冲突后，怎么用 idea 来排查解决">
 <meta name="twitter:image" content="http://www.worldofwarcraftchina.cn/2020/09/26/jar包冲突后的处理过程/b1.png">
 
 
@@ -361,6 +361,7 @@
         <h1 id="jar包冲突后的处理过程"><a href="#jar包冲突后的处理过程" class="headerlink" title="jar包冲突后的处理过程"></a>jar包冲突后的处理过程</h1><blockquote>
 <p>记录一下发现 jar 包冲突后，怎么用 idea 来排查解决</p>
 </blockquote>
+<a id="more"></a>
 <h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">***************************</span><br><span class="line">APPLICATION FAILED TO START</span><br><span class="line">***************************</span><br><span class="line"></span><br><span class="line">Description:</span><br><span class="line"></span><br><span class="line">An attempt was made to call a method that does not exist. The attempt was made from the following location:</span><br><span class="line"></span><br><span class="line">    org.hibernate.snowflake.GenerateLongId.configure(GenerateLongId.java:40)</span><br><span class="line"></span><br><span class="line">The following method did not exist:</span><br><span class="line"></span><br><span class="line">    org.hibernate.snowflake.SnowFlakeIdWorker.getInstance()Lorg/hibernate/snowflake/SnowFlakeIdWorker;</span><br><span class="line"></span><br><span class="line">The method&apos;s class, org.hibernate.snowflake.SnowFlakeIdWorker, is available from the following locations:</span><br><span class="line"></span><br><span class="line">    file:/E:/idea-workspace/web-api/out/production/classes/org/hibernate/snowflake/SnowFlakeIdWorker.class</span><br><span class="line">    jar:file:/E:/idea-workspace/web-api/lib/hibernate-comment-annotation-0.0.2-SNAPSHOT.jar!/org/hibernate/snowflake/SnowFlakeIdWorker.class</span><br><span class="line"></span><br><span class="line">It was loaded from the following location:</span><br><span class="line"></span><br><span class="line">    file:/E:/idea-workspace/web-api/out/production/classes/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Action:</span><br><span class="line"></span><br><span class="line">Correct the classpath of your application so that it contains a single, compatible version of org.hibernate.snowflake.SnowFlakeIdWorker</span><br></pre></td></tr></table></figure>
 <p>通过错误信息我们可以看出来，是引入的 jar 包和我自己本地配置的发生了同类冲突。需要解决的就是找到引入的地方，并且屏蔽。</p>
 <h2 id="idea-jar包关联查询"><a href="#idea-jar包关联查询" class="headerlink" title="idea jar包关联查询"></a>idea jar包关联查询</h2><p>首先说明我用的是 gradle 管理 jar 包。在右侧的 gradle 工具中，可以查看整体的依赖关系图。<br>其中有 <code>Tasks-&gt;help-&gt;dependencies</code>这个工具。运行后，就会输出 jar 包依赖的树状图。根据树状图就可以找到是那两个 jar 包中的依赖冲突。</p>
@@ -491,7 +492,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -504,7 +505,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -557,7 +558,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

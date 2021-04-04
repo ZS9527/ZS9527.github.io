@@ -288,7 +288,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/10/03/SideLocationConflict错误解决/">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/12/12/springboot配置redis多数据源/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ezio">
@@ -307,7 +307,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/10/03/SideLocationConflict错误解决/" itemprop="url">side location conflict错误解决</a></h1>
+                <a class="post-title-link" href="/2020/12/12/springboot配置redis多数据源/" itemprop="url">springboot配置redis多数据源</a></h1>
         
 
         <div class="post-meta">
@@ -319,8 +319,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-03T11:35:15+08:00">
-                2020-10-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-12T19:46:27+08:00">
+                2020-12-12
               </time>
             
 
@@ -358,11 +358,12 @@
 
       
         
-          <h1 id="side-location-conflict错误解决"><a href="#side-location-conflict错误解决" class="headerlink" title="side location conflict错误解决"></a>side location conflict错误解决</h1><blockquote>
-<p>在进行两个面集合之间的关系比较时出现的问题<br>有关博文 <a href="http://locationtech.github.io/jts/javadoc/org/locationtech/jts/geom/Geometry.html" target="_blank" rel="noopener">http://locationtech.github.io/jts/javadoc/org/locationtech/jts/geom/Geometry.html</a> jar 包的api 文档。和 <a href="https://github.com/nettopologysuite/nettopologysuite/issues/129" target="_blank" rel="noopener">https://github.com/nettopologysuite/nettopologysuite/issues/129</a> 的一句话。<br></p></blockquote>
+          <h1 id="springboot配置redis多数据源"><a href="#springboot配置redis多数据源" class="headerlink" title="springboot配置redis多数据源"></a>springboot配置redis多数据源</h1><blockquote>
+<p>本文来自<a href="https://iogogogo.github.io/2020/01/10/spring-boot-redis-multi-instance/" target="_blank" rel="noopener">https://iogogogo.github.io/2020/01/10/spring-boot-redis-multi-instance/</a> ，我用了后记录一下。</p>
+</blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/10/03/SideLocationConflict错误解决/#more" rel="contents">
+            <a class="btn" href="/2020/12/12/springboot配置redis多数据源/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -413,7 +414,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/09/26/jar包冲突后的处理过程/">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/12/05/JPA配置多数据源/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ezio">
@@ -432,7 +433,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/09/26/jar包冲突后的处理过程/" itemprop="url">jar包冲突后的处理过程</a></h1>
+                <a class="post-title-link" href="/2020/12/05/JPA配置多数据源/" itemprop="url">JPA配置多数据源</a></h1>
         
 
         <div class="post-meta">
@@ -444,8 +445,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-09-26T10:07:37+08:00">
-                2020-09-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-05T18:15:55+08:00">
+                2020-12-05
               </time>
             
 
@@ -483,140 +484,12 @@
 
       
         
-          
-            <h1 id="jar包冲突后的处理过程"><a href="#jar包冲突后的处理过程" class="headerlink" title="jar包冲突后的处理过程"></a>jar包冲突后的处理过程</h1><blockquote>
-<p>记录一下发现 jar 包冲突后，怎么用 idea 来排查解决</p>
+          <h1 id="JPA配置多数据源"><a href="#JPA配置多数据源" class="headerlink" title="JPA配置多数据源"></a>JPA配置多数据源</h1><blockquote>
+<p>本文来自多个博文的综合。<br>主要为：<a href="https://blog.csdn.net/blowbob_666/article/details/110670713" target="_blank" rel="noopener">https://blog.csdn.net/blowbob_666/article/details/110670713</a><br>本文顺带解决一个 Jpa 不自动将驼峰（大写字母）命名转下划线的问题。</p>
 </blockquote>
-<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">***************************</span><br><span class="line">APPLICATION FAILED TO START</span><br><span class="line">***************************</span><br><span class="line"></span><br><span class="line">Description:</span><br><span class="line"></span><br><span class="line">An attempt was made to call a method that does not exist. The attempt was made from the following location:</span><br><span class="line"></span><br><span class="line">    org.hibernate.snowflake.GenerateLongId.configure(GenerateLongId.java:40)</span><br><span class="line"></span><br><span class="line">The following method did not exist:</span><br><span class="line"></span><br><span class="line">    org.hibernate.snowflake.SnowFlakeIdWorker.getInstance()Lorg/hibernate/snowflake/SnowFlakeIdWorker;</span><br><span class="line"></span><br><span class="line">The method&apos;s class, org.hibernate.snowflake.SnowFlakeIdWorker, is available from the following locations:</span><br><span class="line"></span><br><span class="line">    file:/E:/idea-workspace/web-api/out/production/classes/org/hibernate/snowflake/SnowFlakeIdWorker.class</span><br><span class="line">    jar:file:/E:/idea-workspace/web-api/lib/hibernate-comment-annotation-0.0.2-SNAPSHOT.jar!/org/hibernate/snowflake/SnowFlakeIdWorker.class</span><br><span class="line"></span><br><span class="line">It was loaded from the following location:</span><br><span class="line"></span><br><span class="line">    file:/E:/idea-workspace/web-api/out/production/classes/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Action:</span><br><span class="line"></span><br><span class="line">Correct the classpath of your application so that it contains a single, compatible version of org.hibernate.snowflake.SnowFlakeIdWorker</span><br></pre></td></tr></table></figure>
-<p>通过错误信息我们可以看出来，是引入的 jar 包和我自己本地配置的发生了同类冲突。需要解决的就是找到引入的地方，并且屏蔽。</p>
-<h2 id="idea-jar包关联查询"><a href="#idea-jar包关联查询" class="headerlink" title="idea jar包关联查询"></a>idea jar包关联查询</h2><p>首先说明我用的是 gradle 管理 jar 包。在右侧的 gradle 工具中，可以查看整体的依赖关系图。<br>其中有 <code>Tasks-&gt;help-&gt;dependencies</code>这个工具。运行后，就会输出 jar 包依赖的树状图。根据树状图就可以找到是那两个 jar 包中的依赖冲突。</p>
-<p><img src="/2020/09/26/jar包冲突后的处理过程/b1.png" alt="b1.png"></p>
-<h2 id="屏蔽无关jar包"><a href="#屏蔽无关jar包" class="headerlink" title="屏蔽无关jar包"></a>屏蔽无关jar包</h2><p>据别的博客说，可用以下这种方式移除<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">compile(configuration: &apos;core&apos;, group: &apos;toolbox&apos;, name: &apos;web-tools&apos;, version: &apos;2.0.+&apos;) &#123;</span><br><span class="line">        exclude(module: &apos;spring&apos;)</span><br><span class="line">        exclude(module: &apos;commons-codec&apos;)</span><br><span class="line">        exclude(module: &apos;slf4j&apos;)</span><br><span class="line">        exclude(module: &apos;servlet-api&apos;)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>但是我用这种方式发现无效，只好用这种全局屏蔽方式移除<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">configurations &#123;</span><br><span class="line">    compileOnly &#123;</span><br><span class="line">        extendsFrom annotationProcessor</span><br><span class="line">    &#125;</span><br><span class="line">    all*.exclude group:&apos;javax&apos;, module: &apos;javaee-api&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>注意：</strong>这个方法是因为我是本地导入了一个 jar 包和 gradle 管理的发生了冲突。<br>成功解决。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/09/19/Ubuntu安装tippecanoe/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/09/19/Ubuntu安装tippecanoe/" itemprop="url">Ubuntu安装tippecanoe</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-09-19T17:24:17+08:00">
-                2020-09-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Ubuntu安装tippecanoe"><a href="#Ubuntu安装tippecanoe" class="headerlink" title="Ubuntu安装tippecanoe"></a>Ubuntu安装tippecanoe</h1><blockquote>
-<p>Ubuntu 的命令还是和 centos 有很多出入，没法直接复制。再次整理一份安装过程。<br>参考博客 <a href="https://blog.csdn.net/zxzfcsu/article/details/80836277" target="_blank" rel="noopener">https://blog.csdn.net/zxzfcsu/article/details/80836277</a><br></p></blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/09/19/Ubuntu安装tippecanoe/#more" rel="contents">
+            <a class="btn" href="/2020/12/05/JPA配置多数据源/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -667,7 +540,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/09/12/Ubuntu上次操作后的继续/">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/11/28/Idea报错 【cannot access com.xxx】的【解决办法】/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ezio">
@@ -686,7 +559,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/09/12/Ubuntu上次操作后的继续/" itemprop="url">Ubuntu上次操作后的继续操作</a></h1>
+                <a class="post-title-link" href="/2020/11/28/Idea报错 【cannot access com.xxx】的【解决办法】/" itemprop="url">Idea报错 【cannot access com.xxx】的【解决办法】</a></h1>
         
 
         <div class="post-meta">
@@ -698,8 +571,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-09-12T15:53:10+08:00">
-                2020-09-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-28T17:47:29+08:00">
+                2020-11-28
               </time>
             
 
@@ -737,11 +610,12 @@
 
       
         
-          <h1 id="Ubuntu上次操作后的继续操作"><a href="#Ubuntu上次操作后的继续操作" class="headerlink" title="Ubuntu上次操作后的继续操作"></a>Ubuntu上次操作后的继续操作</h1><blockquote>
-<p>上次搞完哪个服务器后，再次使用发现无法用 sftp 传输文件。<br>包含查询系统版本号，更换清华软件数据源，处理文件无法上传。<br></p></blockquote>
+          <h1 id="Idea报错-【cannot-access-com-xxx】的【解决办法】"><a href="#Idea报错-【cannot-access-com-xxx】的【解决办法】" class="headerlink" title="Idea报错 【cannot access com.xxx】的【解决办法】"></a>Idea报错 【cannot access com.xxx】的【解决办法】</h1><blockquote>
+<p>本文来自 <a href="https://blog.csdn.net/qq_27818541/article/details/105078428" target="_blank" rel="noopener">https://blog.csdn.net/qq_27818541/article/details/105078428</a><br>我也没搞明白为啥会这样，但是这个文章中的方法我尝试后解决了问题</p>
+</blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/09/12/Ubuntu上次操作后的继续/#more" rel="contents">
+            <a class="btn" href="/2020/11/28/Idea报错 【cannot access com.xxx】的【解决办法】/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -792,7 +666,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/09/05/UBuntu的初次操作记录/">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/11/21/FTP断开连接，并返回421错误码/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ezio">
@@ -811,7 +685,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/09/05/UBuntu的初次操作记录/" itemprop="url">Ubuntu的初次操作记录</a></h1>
+                <a class="post-title-link" href="/2020/11/21/FTP断开连接，并返回421错误码/" itemprop="url">FTP断开连接，并返回421错误码</a></h1>
         
 
         <div class="post-meta">
@@ -823,8 +697,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-09-05T14:20:13+08:00">
-                2020-09-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-21T18:49:04+08:00">
+                2020-11-21
               </time>
             
 
@@ -862,12 +736,11 @@
 
       
         
-          <h1 id="Ubuntu的初次操作记录"><a href="#Ubuntu的初次操作记录" class="headerlink" title="Ubuntu的初次操作记录"></a>Ubuntu的初次操作记录</h1><blockquote>
-<p>简单的记录一下操作过程，做个存档。主要目的是排查服务器 ssh 关闭，并安装切片程序。<br>包含防火墙检查，ssh安装，更换数据源，解决域名无法解析。</p>
-</blockquote>
+          <h1 id="FTP断开连接，并返回421错误码"><a href="#FTP断开连接，并返回421错误码" class="headerlink" title="FTP断开连接，并返回421错误码"></a>FTP断开连接，并返回421错误码</h1><blockquote>
+<p>这个问题搞了好久。办公地点机房搬迁，导致网络及其不稳定。<br>421 received. Server closed connection<br>FTP 无法远程连接<br></p></blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/09/05/UBuntu的初次操作记录/#more" rel="contents">
+            <a class="btn" href="/2020/11/21/FTP断开连接，并返回421错误码/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -918,7 +791,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/08/30/mycat全局表错误/">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/11/14/导入gradle-bin/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ezio">
@@ -937,7 +810,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/08/30/mycat全局表错误/" itemprop="url">mycat全局表错误</a></h1>
+                <a class="post-title-link" href="/2020/11/14/导入gradle-bin/" itemprop="url">导入gradle-bin</a></h1>
         
 
         <div class="post-meta">
@@ -949,8 +822,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-30T15:28:41+08:00">
-                2020-08-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-14T15:04:52+08:00">
+                2020-11-14
               </time>
             
 
@@ -988,574 +861,642 @@
 
       
         
-          
-            <h1 id="mycat全局表错误"><a href="#mycat全局表错误" class="headerlink" title="mycat全局表错误"></a>mycat全局表错误</h1><blockquote>
-<p>具体报错内容为：can’t find table define in schema DIC_HIDDEN_DANGER_ADM schema:risk</p>
-</blockquote>
-<h2 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h2><p>部署时新加入了字典表，在mycat连接的两个库里都写入了一次。但是在查询时，和第一个库的普通表 join 时可以查询。和在另一个库的分表后的表 join 时会显示无法查询出字典表。</p>
-<h2 id="处理"><a href="#处理" class="headerlink" title="处理"></a>处理</h2><p>在 schemal.xml 中将新写入的字典表加入 node 节点，添加  type=”global” 标记为全局表</p>
-<h2 id="二次报错"><a href="#二次报错" class="headerlink" title="二次报错"></a>二次报错</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	r.dictionary_id <span class="keyword">AS</span> rid,</span><br><span class="line">	r.date_time <span class="keyword">AS</span> dateTime,</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	bs_mountain r</span><br><span class="line">	<span class="keyword">INNER</span> <span class="keyword">JOIN</span> dic_mountain ra <span class="keyword">ON</span> ra.id = r.dictionary_id</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	r.date_time <span class="keyword">BETWEEN</span> <span class="string">'2020-10-14 00:00:00'</span> </span><br><span class="line">	<span class="keyword">AND</span> <span class="string">'2020-10-15 00:00:00'</span> ;</span><br></pre></td></tr></table></figure>
-<p>可以确定的是 bs_mountain 表中是肯定有 dictionary_id 字段和 date_time ，但还是报出了 <code>Unknown column &#39;r.dictionary_id&#39; in &#39;field list&#39;</code> 错误。</p>
-<h2 id="二次处理"><a href="#二次处理" class="headerlink" title="二次处理"></a>二次处理</h2><p>通过 explain 关键字分析在 mycat 中执行的语句，得出结果<br>实际执行语句为<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	r.dictionary_id <span class="keyword">AS</span> rid,</span><br><span class="line">	r.date_time <span class="keyword">AS</span> dateTime,</span><br><span class="line">	</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	bs_mountain_32 </span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	r.date_time <span class="keyword">BETWEEN</span> <span class="string">'2020-10-14 00:00:00'</span> </span><br><span class="line">	<span class="keyword">AND</span> <span class="string">'2020-10-15 00:00:00'</span></span><br></pre></td></tr></table></figure></p>
-<p>mycat 在改写 sql 语句到分表的时候漏下了别名</p>
-<p>而且当我的语句是：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	r.dictionary_id <span class="keyword">AS</span> rid,</span><br><span class="line">	r.date_time <span class="keyword">AS</span> dateTime,</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	bs_mountain r</span><br><span class="line">	<span class="keyword">INNER</span> <span class="keyword">JOIN</span> dic_mountain ra <span class="keyword">ON</span> ra.id = r.dictionary_id</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	r.date_time <span class="keyword">BETWEEN</span> <span class="string">'2020-10-14 00:00:00'</span> </span><br><span class="line">	<span class="keyword">AND</span> <span class="string">'2020-10-15 00:00:00'</span> </span><br><span class="line">	<span class="keyword">AND</span> ra.id = <span class="string">'1'</span>;</span><br></pre></td></tr></table></figure></p>
-<p>会去执行一个全分表查询，不再单单只是定位到32分表的查询。</p>
-<p>开始百度关键字 <code>mycat 别名 全局表 join</code>，发现问题是出在 mycat 在单库分表和未分表关联查询时会出现的别名丢失问题。</p>
-<p>并没有去下载源码修改后重新打包，而是在业务中去过滤了。</p>
-<p>直接使用sql语句将要关联的表手动查询出来后，再代码中拼接关联查询。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/08/23/idea启动命令过长bug/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/08/23/idea启动命令过长bug/" itemprop="url">idea启动命令过长bug</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-23T11:37:26+08:00">
-                2020-08-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="idea启动命令过长bug"><a href="#idea启动命令过长bug" class="headerlink" title="idea启动命令过长bug"></a>idea启动命令过长bug</h1><blockquote>
-<p>在引用 MeteoInfoLib jar 包后带来的问题，报错内容为：<br>Error running ‘Application’: Command line is too long. Shorten command line for Application or also for Spring Boot default configuration.</p>
-</blockquote>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>调整运行项目的配置，将 Configuration 中的 Shorten Command Line 修改为 JAR 就可以了。<br>具体原因就是和 bug 所说的一样，启动的命令行过长，idea 通过临时的 classpath.jar 传递长的类路径。原始类路径在MANIFEST.MF中定义为classpath.jar中的类路径属性。就完事了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/08/16/无侵入式实现API接口统一/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/08/16/无侵入式实现API接口统一/" itemprop="url">无侵入式实现API接口统一</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-16T16:32:51+08:00">
-                2020-08-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Spring-Boot-无侵入式-实现-API-接口统一-JSON-格式返回"><a href="#Spring-Boot-无侵入式-实现-API-接口统一-JSON-格式返回" class="headerlink" title="Spring Boot 无侵入式 实现 API 接口统一 JSON 格式返回"></a>Spring Boot 无侵入式 实现 API 接口统一 JSON 格式返回</h1><blockquote>
-<p>转载自 <a href="blog.csdn.net/qq_34347620/article/details/102239179">blog.csdn.net/qq_34347620/article/details/102239179</a><br>现在自从增加了每天的通勤路程，感觉每天时间都很紧张。这个文章并没有实际操作一下。</p>
-</blockquote>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><ul>
-<li>无侵入式 统一返回JSON格式<ul>
-<li>定义JSON格式</li>
-<li>定义JavaBean字段</li>
-<li>Result实体返回测试</li>
-</ul>
-</li>
-<li>统一返回JSON格式进阶-全局处理(@RestControllerAdvice)<ul>
-<li>@ResponseBody继承类</li>
-<li>ResponseBodyAdvice继承类</li>
-<li>RestControllerAdvice返回测试</li>
-</ul>
-</li>
-<li>统一返回JSON格式进阶-异常处理(@ExceptionHandler))<ul>
-<li>异常处理@ResponseStatus(不推荐)</li>
-<li>全局异常处理@ExceptionHandler(推荐)</li>
-</ul>
-</li>
-</ul>
-<h2 id="无侵入式-统一返回JSON格式"><a href="#无侵入式-统一返回JSON格式" class="headerlink" title="无侵入式 统一返回JSON格式"></a>无侵入式 统一返回JSON格式</h2><p>其实本没有没打算写这篇博客的，但还是要写一下写这篇博客的起因是因为，现在呆着的这家公司居然没有统一的API返回格式?，询问主管他居然告诉我用HTTP状态码就够用了（fxxk），天哪HTTP状态码真的够用吗？<br>在仔细的阅读了项目源码后发现，在API请求的是居然没有业务异常（黑人问好）。好吧 居然入坑了只能遵照项目风格了，懒得吐槽了。<br>因为项目已经开发了半年多了, 要是全部接口都做修改工作量还是挺大的, 只能用这种无侵入式的方案来解决.</p>
-<blockquote>
-<p>我感觉这种事情会经常碰到，尤其是维护老项目代码。</p>
-</blockquote>
-<h2 id="定义JSON格式"><a href="#定义JSON格式" class="headerlink" title="定义JSON格式"></a>定义JSON格式</h2><h3 id="定义返回JSON格式"><a href="#定义返回JSON格式" class="headerlink" title="定义返回JSON格式"></a>定义返回JSON格式</h3><p>后端返回给前端一般情况下使用JSON格式, 定义如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"code"</span>: <span class="number">200</span>,</span><br><span class="line">    <span class="string">"message"</span>: <span class="string">"OK"</span>,</span><br><span class="line">    <span class="string">"data"</span>: &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>code: 返回状态码</li>
-<li>message: 返回信息的描述</li>
-<li>data: 返回值<h2 id="定义JavaBean字段"><a href="#定义JavaBean字段" class="headerlink" title="定义JavaBean字段"></a>定义JavaBean字段</h2><h3 id="定义状态码枚举类"><a href="#定义状态码枚举类" class="headerlink" title="定义状态码枚举类"></a>定义状态码枚举类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@ToString</span><br><span class="line">@Getter</span><br><span class="line">public enum ResultStatus &#123;</span><br><span class="line"></span><br><span class="line">    SUCCESS(HttpStatus.OK, 200, &quot;OK&quot;),</span><br><span class="line">    BAD_REQUEST(HttpStatus.BAD_REQUEST, 400, &quot;Bad Request&quot;),</span><br><span class="line">    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, &quot;Internal Server Error&quot;),;</span><br><span class="line"></span><br><span class="line">    /** 返回的HTTP状态码, 符合http请求 */</span><br><span class="line">    private HttpStatus httpStatus;</span><br><span class="line">    /** 业务异常码 */</span><br><span class="line">    private Integer code;</span><br><span class="line">    /** 业务异常信息描述 */</span><br><span class="line">    private String message;</span><br><span class="line"></span><br><span class="line">    ResultStatus(HttpStatus httpStatus, Integer code, String message) &#123;</span><br><span class="line">        this.httpStatus = httpStatus;</span><br><span class="line">        this.code = code;</span><br><span class="line">        this.message = message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>状态码和信息以及http状态码就能一一对应了便于维护, 有同学有疑问了为什么要用到http状态码呀,因为我要兼容项目以前的代码, 没有其他原因, 当然其他同学不喜欢http状态码的可以吧源码中HttpStatus给删除了</p>
-<h3 id="定义返回体类"><a href="#定义返回体类" class="headerlink" title="定义返回体类"></a>定义返回体类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Result</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">/** 业务错误码 */</span></span><br><span class="line">    <span class="keyword">private</span> Integer code;</span><br><span class="line">    <span class="comment">/** 信息描述 */</span></span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line">    <span class="comment">/** 返回参数 */</span></span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Result</span><span class="params">(ResultStatus resultStatus, T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.code = resultStatus.getCode();</span><br><span class="line">        <span class="keyword">this</span>.message = resultStatus.getMessage();</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务成功返回业务代码和描述信息 */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Result&lt;Void&gt; <span class="title">success</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Result&lt;Void&gt;(ResultStatus.SUCCESS, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务成功返回业务代码,描述和返回的参数 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Result&lt;T&gt; <span class="title">success</span><span class="params">(T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Result&lt;T&gt;(ResultStatus.SUCCESS, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务成功返回业务代码,描述和返回的参数 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Result&lt;T&gt; <span class="title">success</span><span class="params">(ResultStatus resultStatus, T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (resultStatus == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> success(data);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Result&lt;T&gt;(resultStatus, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务异常返回业务代码和描述信息 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Result&lt;T&gt; <span class="title">failure</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Result&lt;T&gt;(ResultStatus.INTERNAL_SERVER_ERROR, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务异常返回业务代码,描述和返回的参数 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Result&lt;T&gt; <span class="title">failure</span><span class="params">(ResultStatus resultStatus)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> failure(resultStatus, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务异常返回业务代码,描述和返回的参数 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Result&lt;T&gt; <span class="title">failure</span><span class="params">(ResultStatus resultStatus, T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (resultStatus == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Result&lt;T&gt;(ResultStatus.INTERNAL_SERVER_ERROR, <span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Result&lt;T&gt;(resultStatus, data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>因为使用构造方法进行创建对象太麻烦了, 我们使用静态方法来创建对象这样简单明了</p>
-<h3 id="Result实体返回测试"><a href="#Result实体返回测试" class="headerlink" title="Result实体返回测试"></a>Result实体返回测试</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/hello"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> HashMap&lt;String, Object&gt; INFO;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        INFO = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        INFO.put(<span class="string">"name"</span>, <span class="string">"galaxy"</span>);</span><br><span class="line">        INFO.put(<span class="string">"age"</span>, <span class="string">"70"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/hello"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">hello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> INFO;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/result"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> Result&lt;Map&lt;String, Object&gt;&gt; helloResult() &#123;</span><br><span class="line">        <span class="keyword">return</span> Result.success(INFO);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>到这里我们已经简单的实现了统一JSON格式了, 但是我们也发现了一个问题了,想要返回统一的JSON格式需要返回Result\&lt;Object>才可以, 我明明返回Object可以了, 为什么要重复劳动, 有没有解决方法, 当然是有的啦, 下面我们开始优化我们的代码吧</p>
-<h2 id="统一返回JSON格式进阶-全局处理-RestControllerAdvice"><a href="#统一返回JSON格式进阶-全局处理-RestControllerAdvice" class="headerlink" title="统一返回JSON格式进阶-全局处理(@RestControllerAdvice)"></a>统一返回JSON格式进阶-全局处理(@RestControllerAdvice)</h2><p>我师傅经常告诉我的一句话: “你就是一个小屁孩, 你遇到的问题都已经不知道有多少人遇到过了, 你会想到的问题, 已经有前辈想到过了. 你准备解决的问题, 已经有人把坑填了”。是不是很鸡汤, 是不是很励志, 让我对前辈们充满着崇拜, 事实上他对我说的是: “自己去百度”, 这五个大字, 其实这五个大字已经说明上明的B话了, 通过不断的百度和Google发现了很多的解决方案.</p>
-<p>我们都知道使用@ResponseBody注解会把返回Object序列化成JSON字符串,就先从这个入手吧, 大致就是在序列化前把Object赋值给Result\&lt;Object>就可以了, 大家可以观摩<br>org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice<br>和<br>org.springframework.web.bind.annotation.ResponseBody</p>
-<h3 id="ResponseBody继承类"><a href="#ResponseBody继承类" class="headerlink" title="@ResponseBody继承类"></a>@ResponseBody继承类</h3><p>我们已经决定从@ResponseBody注解入手了就创建一个注解类继承@ResponseBody, 很干净什么都没有哈哈,@ResponseResultBody 可以标记在类和方法上这样我们就可以跟自由的进行使用了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Target</span>(&#123;ElementType.TYPE, ElementType.METHOD&#125;)</span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ResponseResultBody &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="ResponseBody继承类-1"><a href="#ResponseBody继承类-1" class="headerlink" title="@ResponseBody继承类"></a>@ResponseBody继承类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResponseResultBodyAdvice</span> <span class="keyword">implements</span> <span class="title">ResponseBodyAdvice</span>&lt;<span class="title">Object</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Class&lt;? extends Annotation&gt; ANNOTATION_TYPE = ResponseResultBody.class;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断类或者方法是否使用了 <span class="doctag">@ResponseResultBody</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(MethodParameter returnType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; converterType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ANNOTATION_TYPE) || returnType.hasMethodAnnotation(ANNOTATION_TYPE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 当类或者方法使用了 <span class="doctag">@ResponseResultBody</span> 就会调用这个方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">beforeBodyWrite</span><span class="params">(Object body, MethodParameter returnType, MediaType selectedContentType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; selectedConverterType, ServerHttpRequest request, ServerHttpResponse response)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 防止重复包裹的问题出现</span></span><br><span class="line">        <span class="keyword">if</span> (body <span class="keyword">instanceof</span> Result) &#123;</span><br><span class="line">            <span class="keyword">return</span> body;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Result.success(body);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="RestControllerAdvice返回测试"><a href="#RestControllerAdvice返回测试" class="headerlink" title="RestControllerAdvice返回测试"></a>RestControllerAdvice返回测试</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/helloResult"</span>)</span><br><span class="line"><span class="meta">@ResponseResultBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloResultController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> HashMap&lt;String, Object&gt; INFO;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        INFO = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</span><br><span class="line">        INFO.put(<span class="string">"name"</span>, <span class="string">"galaxy"</span>);</span><br><span class="line">        INFO.put(<span class="string">"age"</span>, <span class="string">"70"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"hello"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title">hello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> INFO;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 测试重复包裹 */</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"result"</span>)</span><br><span class="line">    <span class="keyword">public</span> Result&lt;Map&lt;String, Object&gt;&gt; helloResult() &#123;</span><br><span class="line">        <span class="keyword">return</span> Result.success(INFO);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"helloError"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title">helloError</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"helloError"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"helloMyError"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title">helloMyError</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ResultException();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>是不是很神奇, 直接返回Object就可以统一JSON格式了, 就不用每个返回都返回Result\&lt;T>对象了,直接让SpringMVC帮助我们进行统一的管理, 简直完美。<br>只想看接口哦, helloError和helloMyError是会直接抛出异常的接口,我好像没有对异常返回进行统一的处理哦</p>
-<h3 id="统一返回JSON格式进阶-异常处理-ExceptionHandler"><a href="#统一返回JSON格式进阶-异常处理-ExceptionHandler" class="headerlink" title="统一返回JSON格式进阶-异常处理(@ExceptionHandler))"></a>统一返回JSON格式进阶-异常处理(@ExceptionHandler))</h3><p>卧槽, 异常处理, 差点把这茬给忘了, 这个异常处理就有很多方法了,先看看我师傅的处理方式, 我刚拿到这个代码的时候很想吐槽, 对异常类的处理这么残暴的吗, 直接用PrintWriter直接输出结果, 果然是老师傅, 我要是有100个异常类, 不得要写100个 if else了. 赶紧改改睡吧<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyExceptionHandler</span> <span class="keyword">implements</span> <span class="title">HandlerExceptionResolver</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ModelAndView <span class="title">resolveException</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">                                         Object handler, Exception ex)</span> </span>&#123;</span><br><span class="line">        PrintWriter out = getPrintWrite(response);</span><br><span class="line">        <span class="keyword">if</span> (ex <span class="keyword">instanceof</span> XXXException) &#123;</span><br><span class="line">            out.write(JsonUtil.formatJson(ResultEnum.PAY_ERROR.getCode(), ex.getMessage()));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            out.write(JsonUtil.formatJson(ResultEnum.FAIL.getCode(), <span class="string">"服务器异常"</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> != out) &#123;</span><br><span class="line">            out.close();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> mav;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> PrintWriter <span class="title">getPrintWrite</span><span class="params">(HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">        PrintWriter out = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            response.setHeader(<span class="string">"Content-type"</span>, <span class="string">"text/html;charset=UTF-8"</span>);</span><br><span class="line">            response.setCharacterEncoding(<span class="string">"UTF-8"</span>);</span><br><span class="line">            out = response.getWriter();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            log.error(<span class="string">"PrintWriter is exception"</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> out;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面的代码看看还是没有问题的, 别学过去哦,</p>
-<h3 id="异常处理-ResponseStatus-不推荐"><a href="#异常处理-ResponseStatus-不推荐" class="headerlink" title="异常处理@ResponseStatus(不推荐)"></a>异常处理@ResponseStatus(不推荐)</h3><p>@ResponseStatus用法如下,可用在Controller类和Controller方法上以及Exception类上但是这样的工作量还是挺大的<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/error"</span>)</span><br><span class="line"><span class="meta">@ResponseStatus</span>(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = <span class="string">"Java的异常"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloExceptionController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> HashMap&lt;String, Object&gt; INFO;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        INFO = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</span><br><span class="line">        INFO.put(<span class="string">"name"</span>, <span class="string">"galaxy"</span>);</span><br><span class="line">        INFO.put(<span class="string">"age"</span>, <span class="string">"70"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>()</span><br><span class="line">    <span class="function"><span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title">helloError</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"helloError"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"helloJavaError"</span>)</span><br><span class="line">    <span class="meta">@ResponseStatus</span>(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = <span class="string">"Java的异常"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title">helloJavaError</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"helloError"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"helloMyError"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title">helloMyError</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> MyException();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@ResponseStatus</span>(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = <span class="string">"自己定义的异常"</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyException</span> <span class="keyword">extends</span> <span class="title">Exception</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="全局异常处理-ExceptionHandler-推荐"><a href="#全局异常处理-ExceptionHandler-推荐" class="headerlink" title="全局异常处理@ExceptionHandler(推荐)"></a>全局异常处理@ExceptionHandler(推荐)</h3><p>把ResponseResultBodyAdvice类进行改造一下,代码有点多了,<br>主要参考了<br>org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler#handleException()方法,<br>有空可以看一下。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@RestControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResponseResultBodyAdvice</span> <span class="keyword">implements</span> <span class="title">ResponseBodyAdvice</span>&lt;<span class="title">Object</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Class&lt;? extends Annotation&gt; ANNOTATION_TYPE = ResponseResultBody.class;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 判断类或者方法是否使用了 <span class="doctag">@ResponseResultBody</span> */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(MethodParameter returnType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; converterType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ANNOTATION_TYPE) || returnType.hasMethodAnnotation(ANNOTATION_TYPE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 当类或者方法使用了 <span class="doctag">@ResponseResultBody</span> 就会调用这个方法 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">beforeBodyWrite</span><span class="params">(Object body, MethodParameter returnType, MediaType selectedContentType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; selectedConverterType, ServerHttpRequest request, ServerHttpResponse response)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (body <span class="keyword">instanceof</span> Result) &#123;</span><br><span class="line">            <span class="keyword">return</span> body;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Result.success(body);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 提供对标准Spring MVC异常的处理</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ex the target exception</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> request the current request</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(Exception.class)</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> ResponseEntity&lt;Result&lt;?&gt;&gt; exceptionHandler(Exception ex, WebRequest request) &#123;</span><br><span class="line">        log.error(<span class="string">"ExceptionHandler: &#123;&#125;"</span>, ex.getMessage());</span><br><span class="line">        HttpHeaders headers = <span class="keyword">new</span> HttpHeaders();</span><br><span class="line">        <span class="keyword">if</span> (ex <span class="keyword">instanceof</span> ResultException) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.handleResultException((ResultException) ex, headers, request);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> 2019/10/05 galaxy 这里可以自定义其他的异常拦截</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.handleException(ex, headers, request);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 对ResultException类返回返回结果的处理 */</span></span><br><span class="line">    <span class="keyword">protected</span> ResponseEntity&lt;Result&lt;?&gt;&gt; handleResultException(ResultException ex, HttpHeaders headers, WebRequest request) &#123;</span><br><span class="line">        Result&lt;?&gt; body = Result.failure(ex.getResultStatus());</span><br><span class="line">        HttpStatus status = ex.getResultStatus().getHttpStatus();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.handleExceptionInternal(ex, body, headers, status, request);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 异常类的统一处理 */</span></span><br><span class="line">    <span class="keyword">protected</span> ResponseEntity&lt;Result&lt;?&gt;&gt; handleException(Exception ex, HttpHeaders headers, WebRequest request) &#123;</span><br><span class="line">        Result&lt;?&gt; body = Result.failure();</span><br><span class="line">        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.handleExceptionInternal(ex, body, headers, status, request);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler#handleExceptionInternal(java.lang.Exception, java.lang.Object, org.springframework.http.HttpHeaders, org.springframework.http.HttpStatus, org.springframework.web.context.request.WebRequest)</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;</span></span><br><span class="line"><span class="comment">     * A single place to customize the response body of all exception types.</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;The default implementation sets the &#123;<span class="doctag">@link</span> WebUtils#ERROR_EXCEPTION_ATTRIBUTE&#125;</span></span><br><span class="line"><span class="comment">     * request attribute and creates a &#123;<span class="doctag">@link</span> ResponseEntity&#125; from the given</span></span><br><span class="line"><span class="comment">     * body, headers, and status.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">protected</span> ResponseEntity&lt;Result&lt;?&gt;&gt; handleExceptionInternal(</span><br><span class="line">            Exception ex, Result&lt;?&gt; body, HttpHeaders headers, HttpStatus status, WebRequest request) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) &#123;</span><br><span class="line">            request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, WebRequest.SCOPE_REQUEST);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(body, headers, status);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/08/08/部署geojson切片服务/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/08/08/部署geojson切片服务/" itemprop="url">部署geojson切片服务</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-08T20:42:27+08:00">
-                2020-08-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="部署geojson文件矢量切片服务"><a href="#部署geojson文件矢量切片服务" class="headerlink" title="部署geojson文件矢量切片服务"></a>部署geojson文件矢量切片服务</h1><blockquote>
-<p>客户答应的 Linux 虚拟机到了，终于可以直接部署 tippecanoe 了。<br>原本的 Geojson 文件太大了，还是需要切片。</p>
-</blockquote>
-<h2 id="安装-tippecanoe"><a href="#安装-tippecanoe" class="headerlink" title="安装 tippecanoe"></a>安装 tippecanoe</h2><p>登录 Linux 服务器</p>
-<ol>
-<li>准备好 tippecanoe 源码。</li>
-<li>将服务器的 yum 源更改为 阿里源</li>
-<li><p>下载依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc-c++</span><br><span class="line">yum install sqlite-devel</span><br><span class="line">yum install -y zlib zlib-devel</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>将源码解压好后，在 tippecanoe 文件夹内</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make -j</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>完成<br>具体的命令行参数参考：<a href="https://github.com/mapbox/tippecanoe" target="_blank" rel="noopener">https://github.com/mapbox/tippecanoe</a></p>
-<h2 id="安装-FoxGIS-Server-Lite"><a href="#安装-FoxGIS-Server-Lite" class="headerlink" title="安装 FoxGIS Server Lite"></a>安装 FoxGIS Server Lite</h2><p>直接部署在了原本的 win 服务器上，通过 FTP 读取 tippecanoe 做好的矢量地图文件。</p>
-<p>通过<a href="https://jingsam.github.io/foxgis-server-lite/#/deploy" target="_blank" rel="noopener">https://jingsam.github.io/foxgis-server-lite/#/deploy</a> 下载 win 包，直接启动 exe 文件即可。</p>
-<h2 id="部署调用命令-jar-包"><a href="#部署调用命令-jar-包" class="headerlink" title="部署调用命令 jar 包"></a>部署调用命令 jar 包</h2><p>这个程序是负责调用 Linux 中的切片程序，只需要放在 Linux 任意文件夹中开启来就完事了。只是一个开发接口调用命令而已。</p>
-<h2 id="处理中间关联程序"><a href="#处理中间关联程序" class="headerlink" title="处理中间关联程序"></a>处理中间关联程序</h2><p>切片程序部署在 Linux 服务器上，将原本的 geojson 文件通过 FTP上传到 Linux 文件夹中。<br>再访问接口来启动切片命令，收到完成回复后，将 FTP 中切好的文件拿回 win 服务器。<br>放在 FoxGIS Server Lite 中，得到映射的 url 。</p>
-<p>注意中间我关闭了 Linux 服务器的防火墙和 SeLinux，部署 FTP 的方式是用的之前的文章。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/08/01/LxRunOffline安装CentOS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/08/01/LxRunOffline安装CentOS/" itemprop="url">LxRunOffline安装CentOS</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-01T20:00:32+08:00">
-                2020-08-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="LxRunOffline安装CentOS"><a href="#LxRunOffline安装CentOS" class="headerlink" title="LxRunOffline安装CentOS"></a>LxRunOffline安装CentOS</h1><blockquote>
-<p>首先，本机已经是 windows2004 版本，安装了阿里云提供的<a href="http://mirrors.aliyun.com/docker-toolbox/windows/docker-for-windows/" target="_blank" rel="noopener">Docker for Windows</a> 。<br>本文承接上文的《在win上使用VMware安装虚拟机运行tippecanoe切片》,本质都是在 Windows10 上安装Linux虚拟机。</p>
+          <h1 id="导入gradle-bin"><a href="#导入gradle-bin" class="headerlink" title="导入gradle-bin"></a>导入gradle-bin</h1><blockquote>
+<p>简单的记录 gradle-bin 下载失败或者特别慢<br>Download <a href="https://services.gradle.org/distributions/gradle-6.8.2-bin.zip" target="_blank" rel="noopener">https://services.gradle.org/distributions/gradle-6.8.2-bin.zip</a> 失败</p>
 </blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/08/01/LxRunOffline安装CentOS/#more" rel="contents">
+            <a class="btn" href="/2020/11/14/导入gradle-bin/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/11/07/排查本地写入sql文件太慢/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/11/07/排查本地写入sql文件太慢/" itemprop="url">排查本地写入sql文件太慢</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-07T15:04:35+08:00">
+                2020-11-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="排查本地写入sql文件太慢"><a href="#排查本地写入sql文件太慢" class="headerlink" title="排查本地写入sql文件太慢"></a>排查本地写入sql文件太慢</h1><blockquote>
+<p>记录一下日常<br>本地写入数据每分钟2000条，所以叫大佬帮忙排查一下。<br>主要原因 binlog 日志、主从复制。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/11/07/排查本地写入sql文件太慢/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/10/31/linux后台启动程序操作/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/10/31/linux后台启动程序操作/" itemprop="url">Linux后台启动程序操作</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-31T18:31:09+08:00">
+                2020-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Linux后台启动程序操作"><a href="#Linux后台启动程序操作" class="headerlink" title="Linux后台启动程序操作"></a>Linux后台启动程序操作</h1><blockquote>
+<p>感觉越来越难写了。有点累，好想放个寒假。<br>本文主要用于记录我操作 Linux 的过程。包含后台启动程序、找到占用的端口、关闭占用端口程序。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/10/31/linux后台启动程序操作/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/10/24/删除一个找不到该项目的文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/10/24/删除一个找不到该项目的文件/" itemprop="url">删除一个找不到该项目的文件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-24T18:35:51+08:00">
+                2020-10-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="删除一个找不到该项目的文件"><a href="#删除一个找不到该项目的文件" class="headerlink" title="删除一个找不到该项目的文件"></a>删除一个找不到该项目的文件</h1><blockquote>
+<p>原文来自知乎<br><a href="https://www.zhihu.com/question/350091243" target="_blank" rel="noopener">求助：如何删除win10系统，“找不到该项目”的文件？文件名最后是一个点的文件，没有扩展名？</a></p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/10/24/删除一个找不到该项目的文件/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/10/17/使用grib2json解析风场grib文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/10/17/使用grib2json解析风场grib文件/" itemprop="url">使用grib2json解析风场grib文件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-17T18:28:54+08:00">
+                2020-10-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="使用grib2json解析风场grib文件"><a href="#使用grib2json解析风场grib文件" class="headerlink" title="使用grib2json解析风场grib文件"></a>使用grib2json解析风场grib文件</h1><blockquote>
+<p>本 jar 包由大佬在研究绘制风场动态图时提供。<br>参考博客 <a href="https://www.iteye.com/blog/umbrellall1-2509006" target="_blank" rel="noopener">https://www.iteye.com/blog/umbrellall1-2509006</a></p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/10/17/使用grib2json解析风场grib文件/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/10/10/在linux上安装mbgl-renderer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/10/10/在linux上安装mbgl-renderer/" itemprop="url">在linux上安装mbgl-renderer</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-10T16:10:51+08:00">
+                2020-10-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="在linux上安装mbgl-renderer"><a href="#在linux上安装mbgl-renderer" class="headerlink" title="在linux上安装mbgl-renderer"></a>在linux上安装mbgl-renderer</h1><blockquote>
+<p>docker 安装还是挺方便的。<br>这个软件包主要是用来 java 调用画图。基本上前端可以绘制出的界面，都可以绘制成图片保存。当然，我只是完成我需要的地图叠加。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/10/10/在linux上安装mbgl-renderer/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1597,7 +1538,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1647,7 +1588,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1660,7 +1601,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1697,7 +1638,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="idea启动命令过长bug 在引用 MeteoInfoLib jar 包后带来的问题，报错内容为：Error running ‘Application’: Command line is too long. Shorten command line for Application or also for Spring Boot default configuration.  解决方案调整运行项目的">
+<meta name="description" content="idea启动命令过长bug 在引用 MeteoInfoLib jar 包后带来的问题，报错内容为：Error running ‘Application’: Command line is too long. Shorten command line for Application or also for Spring Boot default configuration.">
 <meta name="keywords" content="bug">
 <meta property="og:type" content="article">
 <meta property="og:title" content="idea启动命令过长bug">
 <meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/08/23/idea启动命令过长bug/index.html">
 <meta property="og:site_name" content="blogs">
-<meta property="og:description" content="idea启动命令过长bug 在引用 MeteoInfoLib jar 包后带来的问题，报错内容为：Error running ‘Application’: Command line is too long. Shorten command line for Application or also for Spring Boot default configuration.  解决方案调整运行项目的">
+<meta property="og:description" content="idea启动命令过长bug 在引用 MeteoInfoLib jar 包后带来的问题，报错内容为：Error running ‘Application’: Command line is too long. Shorten command line for Application or also for Spring Boot default configuration.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-09-27T03:52:53.916Z">
+<meta property="og:updated_time" content="2021-02-26T09:57:29.946Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="idea启动命令过长bug">
-<meta name="twitter:description" content="idea启动命令过长bug 在引用 MeteoInfoLib jar 包后带来的问题，报错内容为：Error running ‘Application’: Command line is too long. Shorten command line for Application or also for Spring Boot default configuration.  解决方案调整运行项目的">
+<meta name="twitter:description" content="idea启动命令过长bug 在引用 MeteoInfoLib jar 包后带来的问题，报错内容为：Error running ‘Application’: Command line is too long. Shorten command line for Application or also for Spring Boot default configuration.">
 
 
 
@@ -359,6 +359,7 @@
         <h1 id="idea启动命令过长bug"><a href="#idea启动命令过长bug" class="headerlink" title="idea启动命令过长bug"></a>idea启动命令过长bug</h1><blockquote>
 <p>在引用 MeteoInfoLib jar 包后带来的问题，报错内容为：<br>Error running ‘Application’: Command line is too long. Shorten command line for Application or also for Spring Boot default configuration.</p>
 </blockquote>
+<a id="more"></a>
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>调整运行项目的配置，将 Configuration 中的 Shorten Command Line 修改为 JAR 就可以了。<br>具体原因就是和 bug 所说的一样，启动的命令行过长，idea 通过临时的 classpath.jar 传递长的类路径。原始类路径在MANIFEST.MF中定义为classpath.jar中的类路径属性。就完事了。</p>
 
       
@@ -483,7 +484,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -496,7 +497,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -549,7 +550,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="mycat全局表错误 具体报错内容为：can’t find table define in schema DIC_HIDDEN_DANGER_ADM schema:risk  缘由部署时新加入了字典表，在mycat连接的两个库里都写入了一次。但是在查询时，和第一个库的普通表 join 时可以查询。和在另一个库的分表后的表 join 时会显示无法查询出字典表。 处理在 schemal.xml 中将新">
+<meta name="description" content="mycat全局表错误 具体报错内容为：can’t find table define in schema DIC_HIDDEN_DANGER_ADM schema:risk">
 <meta name="keywords" content="mycat">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mycat全局表错误">
 <meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/08/30/mycat全局表错误/index.html">
 <meta property="og:site_name" content="blogs">
-<meta property="og:description" content="mycat全局表错误 具体报错内容为：can’t find table define in schema DIC_HIDDEN_DANGER_ADM schema:risk  缘由部署时新加入了字典表，在mycat连接的两个库里都写入了一次。但是在查询时，和第一个库的普通表 join 时可以查询。和在另一个库的分表后的表 join 时会显示无法查询出字典表。 处理在 schemal.xml 中将新">
+<meta property="og:description" content="mycat全局表错误 具体报错内容为：can’t find table define in schema DIC_HIDDEN_DANGER_ADM schema:risk">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-10-29T06:18:53.840Z">
+<meta property="og:updated_time" content="2021-02-26T09:57:06.512Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mycat全局表错误">
-<meta name="twitter:description" content="mycat全局表错误 具体报错内容为：can’t find table define in schema DIC_HIDDEN_DANGER_ADM schema:risk  缘由部署时新加入了字典表，在mycat连接的两个库里都写入了一次。但是在查询时，和第一个库的普通表 join 时可以查询。和在另一个库的分表后的表 join 时会显示无法查询出字典表。 处理在 schemal.xml 中将新">
+<meta name="twitter:description" content="mycat全局表错误 具体报错内容为：can’t find table define in schema DIC_HIDDEN_DANGER_ADM schema:risk">
 
 
 
@@ -359,6 +359,7 @@
         <h1 id="mycat全局表错误"><a href="#mycat全局表错误" class="headerlink" title="mycat全局表错误"></a>mycat全局表错误</h1><blockquote>
 <p>具体报错内容为：can’t find table define in schema DIC_HIDDEN_DANGER_ADM schema:risk</p>
 </blockquote>
+<a id="more"></a>
 <h2 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h2><p>部署时新加入了字典表，在mycat连接的两个库里都写入了一次。但是在查询时，和第一个库的普通表 join 时可以查询。和在另一个库的分表后的表 join 时会显示无法查询出字典表。</p>
 <h2 id="处理"><a href="#处理" class="headerlink" title="处理"></a>处理</h2><p>在 schemal.xml 中将新写入的字典表加入 node 节点，添加  type=”global” 标记为全局表</p>
 <h2 id="二次报错"><a href="#二次报错" class="headerlink" title="二次报错"></a>二次报错</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	r.dictionary_id <span class="keyword">AS</span> rid,</span><br><span class="line">	r.date_time <span class="keyword">AS</span> dateTime,</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	bs_mountain r</span><br><span class="line">	<span class="keyword">INNER</span> <span class="keyword">JOIN</span> dic_mountain ra <span class="keyword">ON</span> ra.id = r.dictionary_id</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	r.date_time <span class="keyword">BETWEEN</span> <span class="string">'2020-10-14 00:00:00'</span> </span><br><span class="line">	<span class="keyword">AND</span> <span class="string">'2020-10-15 00:00:00'</span> ;</span><br></pre></td></tr></table></figure>
@@ -493,7 +494,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -506,7 +507,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -559,7 +560,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
