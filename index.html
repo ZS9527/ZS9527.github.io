@@ -288,6 +288,574 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2021/03/06/Python绘制高度场和风场/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/03/06/Python绘制高度场和风场/" itemprop="url">Python绘制高度场和风场</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-06T18:35:37+08:00">
+                2021-03-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Python绘制高度场和风场"><a href="#Python绘制高度场和风场" class="headerlink" title="Python绘制高度场和风场"></a>Python绘制高度场和风场</h1><blockquote>
+<p>业务需要，需要我们用数据来画形势场图。</p>
+</blockquote>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p>之前没看过Python绘制图片，查了很多专业文章。</p>
+<ol>
+<li><p>基础语法。</p>
+<p><a href="https://www.runoob.com/python/file-methods.html" target="_blank" rel="noopener">https://www.runoob.com/python/file-methods.html</a></p>
+</li>
+<li><p>Cartopy绘图，使用其中的设置投影，读取自定义shp文件。<br><a href="http://www.meteoai.cn/post/%E6%8D%8D%E5%8D%AB%E7%A5%96%E5%9B%BD%E9%A2%86%E5%9C%9F%E4%BB%8E%E6%AF%8F%E4%B8%80%E5%BC%A0%E5%9C%B0%E5%9B%BE%E5%BC%80%E5%A7%8B/" target="_blank" rel="noopener">http://www.meteoai.cn/post/%E6%8D%8D%E5%8D%AB%E7%A5%96%E5%9B%BD%E9%A2%86%E5%9C%9F%E4%BB%8E%E6%AF%8F%E4%B8%80%E5%BC%A0%E5%9C%B0%E5%9B%BE%E5%BC%80%E5%A7%8B/</a></p>
+</li>
+<li><p>高空天气图绘制，使用其中的风场图绘制方法。<br><a href="https://mp.weixin.qq.com/s?src=11&amp;timestamp=1624939451&amp;ver=3159&amp;signature=IRheGU9yvwuDA-4XS-NSe5TGXMIY-EMplUfDDakGER1AObyIs70jFyHOY87B0jrVnwLhCQqayiB4o1-tTTfnY8TiNgFVgCQa*NAzEiAUwXDl7JXDiFHQJgHMsCK7WxwQ&amp;new=1" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?src=11&amp;timestamp=1624939451&amp;ver=3159&amp;signature=IRheGU9yvwuDA-4XS-NSe5TGXMIY-EMplUfDDakGER1AObyIs70jFyHOY87B0jrVnwLhCQqayiB4o1-tTTfnY8TiNgFVgCQa*NAzEiAUwXDl7JXDiFHQJgHMsCK7WxwQ&amp;new=1</a></p>
+</li>
+<li><p>气象绘图合集，从中了解一下专业术语和基础知识<br><a href="https://mp.weixin.qq.com/s?src=11&amp;timestamp=1625024794&amp;ver=3161&amp;signature=fHXwoUxOQIKXr5glWFcneH4I-MfVtJvdVK4lL7OsULP-gdbyeDzzLspQ27G*xqYIcD9qJ6Drxz61gl8vz0VSadHwB9FOFnZ9Njkqq3okYa2kjY6wUpPFjMH8IWjl8yOt&amp;new=1" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?src=11&amp;timestamp=1625024794&amp;ver=3161&amp;signature=fHXwoUxOQIKXr5glWFcneH4I-MfVtJvdVK4lL7OsULP-gdbyeDzzLspQ27G*xqYIcD9qJ6Drxz61gl8vz0VSadHwB9FOFnZ9Njkqq3okYa2kjY6wUpPFjMH8IWjl8yOt&amp;new=1</a></p>
+</li>
+<li><p>PyMICAPS，开源项目。使用其中的读MICAPS第4类文件和第11类风场流线图文件的方法<br><a href="https://github.com/flashlxy/PyMICAPS/edit/master/Micaps4Data.py" target="_blank" rel="noopener">https://github.com/flashlxy/PyMICAPS/edit/master/Micaps4Data.py</a></p>
+</li>
+<li><p>添加地图要素，使用这个来给白色底图增加一些颜色<br><a href="https://mp.weixin.qq.com/s?__biz=MzIxODQxODQ4NQ==&amp;mid=2247484117&amp;idx=1&amp;sn=929eea3b6a422333e7b72a8aa8db5294&amp;chksm=97eb9e8fa09c1799dfed2ad4e4e7ae28f678cc1b48f9447598a29c83058d2c9643f44a152c21&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzIxODQxODQ4NQ==&amp;mid=2247484117&amp;idx=1&amp;sn=929eea3b6a422333e7b72a8aa8db5294&amp;chksm=97eb9e8fa09c1799dfed2ad4e4e7ae28f678cc1b48f9447598a29c83058d2c9643f44a152c21&amp;scene=21#wechat_redirect</a></p>
+</li>
+<li><p>添加点描述，不过我自己使用时候，还是有些问题。因为格点过于密集的缘故，加上文字后会和风向标重合。<br><a href="https://zhuanlan.zhihu.com/p/107077358" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/107077358</a></p>
+</li>
+<li><p>python一键将白色背景变为透明背景。因为前端需要叠加自己的地图，所以需要将背景转换为透明<br><a href="https://www.cnblogs.com/aminor/p/13914684.html" target="_blank" rel="noopener">https://www.cnblogs.com/aminor/p/13914684.html</a></p>
+</li>
+</ol>
+<p>同时也参考了同事的绘制折线图demo，来完成中心气压的标志，等高线标注，java调用py文件这个三个功能。之后又加入了去掉白边，白色背景透明功能。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>代码中使用的数据有micaps4高度场数据，micaps11风场数据。<br>打开正确的注解后，就可以画出有底图的图片。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Created on Tue Jun 29 16:38:58 2021</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">@author: ezio</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> codecs</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs  <span class="comment"># 投影方式</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeat  <span class="comment"># 使用shp文件</span></span><br><span class="line"><span class="keyword">from</span> cartopy.io.shapereader <span class="keyword">import</span> Reader  <span class="comment"># 读取自定的shp文件</span></span><br><span class="line"><span class="keyword">from</span> cartopy.mpl.ticker <span class="keyword">import</span> LongitudeFormatter, LatitudeFormatter  <span class="comment"># 将x，y轴换成经纬度</span></span><br><span class="line"></span><br><span class="line">plt.rcParams[<span class="string">'font.sans-serif'</span>] = [<span class="string">'SimHei'</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Wind</span>:</span> <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_maxmin_points</span><span class="params">(lon, lat, data, extrema, nsize, symbol, color=<span class="string">'k'</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                       plotValue=True, transform=None)</span>:</span></span><br><span class="line">    <span class="keyword">from</span> scipy.ndimage.filters <span class="keyword">import</span> maximum_filter, minimum_filter</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (extrema == <span class="string">'max'</span>):</span><br><span class="line">        data_ext = maximum_filter(data, nsize, mode=<span class="string">'nearest'</span>)</span><br><span class="line">    <span class="keyword">elif</span> (extrema == <span class="string">'min'</span>):</span><br><span class="line">        data_ext = minimum_filter(data, nsize, mode=<span class="string">'nearest'</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'Value for hilo must be either max or min'</span>)</span><br><span class="line"></span><br><span class="line">    mxy, mxx = np.where(data_ext == data)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(mxy)):</span><br><span class="line">        <span class="keyword">if</span> (extent[<span class="number">0</span>] &lt; lon[mxy[i], mxx[i]] &lt; extent[<span class="number">1</span>] <span class="keyword">and</span> extent[<span class="number">2</span>] &lt; lat[mxy[i], mxx[i]] &lt; extent[<span class="number">3</span>]):</span><br><span class="line">            plt.text(lon[mxy[i], mxx[i]], lat[mxy[i], mxx[i]], symbol, color=color, size=<span class="number">24</span>,</span><br><span class="line">                     clip_on=<span class="keyword">True</span>, horizontalalignment=<span class="string">'center'</span>, verticalalignment=<span class="string">'center'</span>,</span><br><span class="line">                     transform=transform)</span><br><span class="line">            plt.text(lon[mxy[i], mxx[i]], lat[mxy[i], mxx[i]],</span><br><span class="line">                     <span class="string">'\n'</span> + str(np.int64(data[mxy[i], mxx[i]])),</span><br><span class="line">                     color=color, size=<span class="number">12</span>, clip_on=<span class="keyword">True</span>, fontweight=<span class="string">'bold'</span>,</span><br><span class="line">                     horizontalalignment=<span class="string">'center'</span>, verticalalignment=<span class="string">'top'</span>, transform=transform)</span><br><span class="line">        <span class="comment"># else:</span></span><br><span class="line">        <span class="comment">#     print(lon[mxy[i], mxx[i]], lat[mxy[i], mxx[i]])</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">spot_uv</span><span class="params">(lon, lat, us, vs)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 给点增加文字</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(len(us)):</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> range(len(us[x])):</span><br><span class="line">            ax.text(lon[x][y] - <span class="number">2</span>, lat[x][y] - <span class="number">1</span>, us[x][y], fontsize=<span class="number">6</span>, verticalalignment=<span class="string">'center'</span>,</span><br><span class="line">                     horizontalalignment=<span class="string">'center'</span>, rotation=<span class="number">0</span>)</span><br><span class="line">            ax.text(lon[x][y], lat[x][y] - <span class="number">1</span>, vs[x][y], fontsize=<span class="number">6</span>, verticalalignment=<span class="string">'center'</span>,</span><br><span class="line">                     horizontalalignment=<span class="string">'center'</span>, rotation=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ReadFromFile</span><span class="params">(path, self)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        读micaps第11类数据文件到内存</span></span><br><span class="line"><span class="string">        :return: </span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">    print(<span class="string">"ttt"</span>)</span><br><span class="line">    <span class="comment"># 打开文件</span></span><br><span class="line">    file_object = codecs.open(path, mode=<span class="string">'r'</span>, encoding=<span class="string">"GBK"</span>)</span><br><span class="line">    all_the_text = file_object.read().strip()</span><br><span class="line">    <span class="comment"># 将文件格式化</span></span><br><span class="line">    contents = re.split(<span class="string">r'[\s]+'</span>, all_the_text)</span><br><span class="line">    file_object.close()</span><br><span class="line">    <span class="keyword">if</span> len(contents) &lt; <span class="number">17</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="comment"># 填充属性</span></span><br><span class="line">    self.dataflag = contents[<span class="number">0</span>].strip()</span><br><span class="line">    self.style = contents[<span class="number">1</span>].strip()</span><br><span class="line">    self.title = contents[<span class="number">2</span>].strip()</span><br><span class="line">    self.yy = int(contents[<span class="number">3</span>].strip())</span><br><span class="line">    self.mm = int(contents[<span class="number">4</span>].strip())</span><br><span class="line">    self.dd = int(contents[<span class="number">5</span>].strip())</span><br><span class="line">    self.hh = int(contents[<span class="number">6</span>].strip())</span><br><span class="line">    self.forehh = int(contents[<span class="number">7</span>].strip())</span><br><span class="line">    self.level = contents[<span class="number">8</span>].strip()</span><br><span class="line">    self.deltalon = float(contents[<span class="number">9</span>].strip())</span><br><span class="line">    self.deltalat = float(contents[<span class="number">10</span>].strip())</span><br><span class="line">    self.beginlon = float(contents[<span class="number">11</span>].strip())</span><br><span class="line">    self.endlon = float(contents[<span class="number">12</span>].strip())</span><br><span class="line">    self.beginlat = float(contents[<span class="number">13</span>].strip())</span><br><span class="line">    self.endlat = float(contents[<span class="number">14</span>].strip())</span><br><span class="line">    self.sumlon = int(contents[<span class="number">15</span>].strip())</span><br><span class="line">    self.sumlat = int(contents[<span class="number">16</span>].strip())</span><br><span class="line">    self.distance = float(contents[<span class="number">17</span>].strip())</span><br><span class="line">    self.min = float(contents[<span class="number">18</span>].strip())</span><br><span class="line">    self.max = float(contents[<span class="number">19</span>].strip())</span><br><span class="line">    self.def1 = contents[<span class="number">20</span>].strip()</span><br><span class="line">    self.def2 = contents[<span class="number">21</span>].strip()</span><br><span class="line">    <span class="comment"># 返回一个有终点和起点的固定步长的排列</span></span><br><span class="line">    self.x = np.arange(self.beginlon, self.endlon + self.deltalon, self.deltalon)</span><br><span class="line">    self.y = np.arange(self.beginlat, self.endlat + self.deltalat, self.deltalat)</span><br><span class="line">    <span class="comment"># 根据传入的两个一维数组参数生成两个数组元素的列表</span></span><br><span class="line">    self.X, self.Y = np.meshgrid(self.x, self.y)</span><br><span class="line">    <span class="comment"># 初始化数据集合</span></span><br><span class="line">    self.U = np.zeros((self.sumlat, self.sumlon))</span><br><span class="line">    self.V = np.zeros((self.sumlat, self.sumlon))</span><br><span class="line">    self.Z = np.zeros((self.sumlat, self.sumlon))</span><br><span class="line">    <span class="comment"># 填充数据</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(self.sumlon):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(self.sumlat):</span><br><span class="line">            self.U[j, i] = float(contents[<span class="number">17</span> + j * self.sumlon + i])</span><br><span class="line"></span><br><span class="line">    vbegin = <span class="number">17</span> + self.sumlat * self.sumlon</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(self.sumlon):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(self.sumlat):</span><br><span class="line">            self.V[j, i] = float(contents[vbegin + j * self.sumlon + i])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(self.sumlon):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(self.sumlat):</span><br><span class="line">            self.Z[j, i] = math.sqrt(self.U[j, i] ** <span class="number">2</span> + self.V[j, i] ** <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Read4File</span><span class="params">(path, self)</span>:</span></span><br><span class="line">    print(<span class="string">"4"</span>)</span><br><span class="line">    <span class="comment"># 打开文件</span></span><br><span class="line">    file_object = codecs.open(path, mode=<span class="string">'r'</span>, encoding=<span class="string">"GBK"</span>)</span><br><span class="line">    all_the_text = file_object.read().strip()</span><br><span class="line">    <span class="comment"># 将文件格式化</span></span><br><span class="line">    contents = re.split(<span class="string">r'[\s]+'</span>, all_the_text)</span><br><span class="line">    file_object.close()</span><br><span class="line">    <span class="keyword">if</span> len(contents) &lt; <span class="number">23</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    self.dataflag = contents[<span class="number">0</span>].strip()</span><br><span class="line">    self.style = contents[<span class="number">1</span>].strip()</span><br><span class="line">    self.title = contents[<span class="number">2</span>].strip()</span><br><span class="line">    self.yy = int(contents[<span class="number">3</span>].strip())</span><br><span class="line">    self.mm = int(contents[<span class="number">4</span>].strip())</span><br><span class="line">    self.dd = int(contents[<span class="number">5</span>].strip())</span><br><span class="line">    self.hh = int(contents[<span class="number">6</span>].strip())</span><br><span class="line">    self.forehh = int(contents[<span class="number">7</span>].strip())</span><br><span class="line">    self.level = contents[<span class="number">8</span>].strip()</span><br><span class="line"></span><br><span class="line">    self.deltalon = float(contents[<span class="number">9</span>].strip())</span><br><span class="line">    self.deltalat = float(contents[<span class="number">10</span>].strip())</span><br><span class="line">    self.beginlon = float(contents[<span class="number">11</span>].strip())</span><br><span class="line">    self.endlon = float(contents[<span class="number">12</span>].strip())</span><br><span class="line">    self.beginlat = float(contents[<span class="number">13</span>].strip())</span><br><span class="line">    self.endlat = float(contents[<span class="number">14</span>].strip())</span><br><span class="line"></span><br><span class="line">    self.sumlon = int(contents[<span class="number">15</span>].strip())</span><br><span class="line">    self.sumlat = int(contents[<span class="number">16</span>].strip())</span><br><span class="line">    self.distance = float(contents[<span class="number">17</span>].strip())</span><br><span class="line">    self.min = float(contents[<span class="number">18</span>].strip())</span><br><span class="line">    self.max = float(contents[<span class="number">19</span>].strip())</span><br><span class="line">    self.def1 = contents[<span class="number">20</span>].strip()</span><br><span class="line">    self.def2 = contents[<span class="number">21</span>].strip()</span><br><span class="line"></span><br><span class="line">    x = np.arange(self.beginlon, self.endlon + <span class="number">0.9</span> * self.deltalon, self.deltalon)</span><br><span class="line">    y = np.arange(self.beginlat, self.endlat + <span class="number">0.9</span> * self.deltalat, self.deltalat)</span><br><span class="line">    self.X, self.Y = np.meshgrid(x, y)</span><br><span class="line">    <span class="keyword">if</span> self.dataflag == <span class="string">'diamond'</span> <span class="keyword">and</span> self.style == <span class="string">'4'</span>:</span><br><span class="line">        begin = <span class="number">22</span></span><br><span class="line">        self.Z = np.zeros((self.sumlat, self.sumlon))</span><br><span class="line">        <span class="keyword">if</span> contents <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            contents = np.array(contents[begin:]).astype(np.float64)</span><br><span class="line">            self.Z = contents.reshape((self.sumlat, self.sumlon))</span><br><span class="line">    <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用命令调用py文件运行，并传值</span></span><br><span class="line"><span class="comment"># python micaps-hight-wind.py ../data/20010108.000 ../data/20010108(2).000 2020年1月1日08时700百帕高度场+风场 ../images/2020年1月1日08时700百帕高度场+风场.png</span></span><br><span class="line"><span class="comment"># args = sys.argv</span></span><br><span class="line"><span class="comment"># print(args)</span></span><br><span class="line"><span class="comment"># windPath = args[1]</span></span><br><span class="line"><span class="comment"># highPath = args[2]</span></span><br><span class="line"><span class="comment"># title = args[3]</span></span><br><span class="line"><span class="comment"># savePath = args[4]</span></span><br><span class="line">title = <span class="string">'2020年1月1日08时700百帕高度场 + 风场'</span></span><br><span class="line">wind = ReadFromFile(<span class="string">"../data/20010108.000"</span>, Wind())</span><br><span class="line">high = Read4File(<span class="string">"../data/20010108(2).000"</span>, Wind())</span><br><span class="line"><span class="comment"># wind = ReadFromFile(windPath, Wind())</span></span><br><span class="line"><span class="comment"># high = Read4File(highPath, Wind())</span></span><br><span class="line"><span class="comment"># 设定投影</span></span><br><span class="line">proj = ccrs.PlateCarree()</span><br><span class="line"><span class="comment"># 创建画布</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">9</span>, <span class="number">6</span>), dpi=<span class="number">150</span>)</span><br><span class="line">ax = plt.axes(projection=proj)</span><br><span class="line"><span class="comment"># 定义数据经纬度范围</span></span><br><span class="line">extent = [<span class="number">70</span>, <span class="number">140</span>, <span class="number">10</span>, <span class="number">60</span>]</span><br><span class="line">ax.set_extent(extent)</span><br><span class="line"><span class="comment"># 国界线</span></span><br><span class="line"><span class="comment"># country_shp = Reader('../shp/china/bou1_4l.shp')</span></span><br><span class="line"><span class="comment"># fea_country = cfeat.ShapelyFeature(country_shp.geometries(), proj,</span></span><br><span class="line"><span class="comment">#                                    edgecolor='#000000', facecolor='#F0F0D9')</span></span><br><span class="line"><span class="comment"># ax.add_feature(fea_country, linewidth=1, alpha=1)</span></span><br><span class="line"><span class="comment"># # 地理信息的添加</span></span><br><span class="line"><span class="comment"># ax.add_feature(cfeat.OCEAN.with_scale('50m'))</span></span><br><span class="line"><span class="comment"># ax.add_feature(cfeat.COASTLINE.with_scale('50m'), lw=0.6)</span></span><br><span class="line"><span class="comment"># ax.add_feature(cfeat.LAND.with_scale('50m'))</span></span><br><span class="line"><span class="comment"># ax.add_feature(cfeat.LAKES.with_scale('50m'))</span></span><br><span class="line"><span class="comment"># ax.add_feature(cfeat.RIVERS.with_scale('50m'), lw=0.5)</span></span><br><span class="line"><span class="comment"># # 添加经纬度标注</span></span><br><span class="line"><span class="comment"># ax.set_xticks([70, 85, 100, 115, 130])</span></span><br><span class="line"><span class="comment"># ax.set_yticks([10, 20, 30, 40, 50, 60])</span></span><br><span class="line"><span class="comment"># ax.xaxis.set_major_formatter(LongitudeFormatter())</span></span><br><span class="line"><span class="comment"># ax.yaxis.set_major_formatter(LatitudeFormatter())</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制等高线</span></span><br><span class="line">ac = ax.contour(high.X, high.Y, high.Z, transform=proj, colors=<span class="string">'#090AFD'</span>, linewidths=<span class="number">1.2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 等高线标注</span></span><br><span class="line">ax.clabel(ac, fontsize=<span class="number">14</span>, colors=<span class="string">'#090AFD'</span>, inline_spacing=<span class="number">1</span>, fmt=<span class="string">'%d'</span>)</span><br><span class="line"><span class="comment"># 绘制 H/L 高低压区标记 5 是设置GD标志的疏密度</span></span><br><span class="line">plot_maxmin_points(high.X, high.Y, high.Z, <span class="string">'max'</span>, <span class="number">5</span>,</span><br><span class="line">                   symbol=<span class="string">'G'</span>, color=<span class="string">'b'</span>, transform=proj)</span><br><span class="line">plot_maxmin_points(high.X, high.Y, high.Z, <span class="string">'min'</span>, <span class="number">5</span>,</span><br><span class="line">                   symbol=<span class="string">'D'</span>, color=<span class="string">'r'</span>, transform=proj)</span><br><span class="line"><span class="comment"># # 给风场增加文字 不行</span></span><br><span class="line"><span class="comment"># spot_uv(wind.X[::3, ::3], wind.Y[::3, ::3],</span></span><br><span class="line"><span class="comment">#          wind.U[::3, ::3], wind.V[::3, ::3])</span></span><br><span class="line"><span class="comment"># 绘制风向标 ::1是格点密度</span></span><br><span class="line">ax.barbs(wind.X[::<span class="number">1</span>, ::<span class="number">1</span>], wind.Y[::<span class="number">1</span>, ::<span class="number">1</span>],</span><br><span class="line">         wind.U[::<span class="number">1</span>, ::<span class="number">1</span>], wind.V[::<span class="number">1</span>, ::<span class="number">1</span>],</span><br><span class="line">         barb_increments=&#123;<span class="string">'half'</span>: <span class="number">2</span>, <span class="string">'full'</span>: <span class="number">4</span>, <span class="string">'flag'</span>: <span class="number">20</span>&#125;, zorder=<span class="number">5</span>, length=<span class="number">5</span>, linewidth=<span class="number">0.2</span>)</span><br><span class="line"><span class="comment">#设置标题</span></span><br><span class="line"><span class="comment"># ax.set_title(title, fontsize=12)</span></span><br><span class="line"></span><br><span class="line">ax.spines[<span class="string">'top'</span>].set_visible(<span class="keyword">False</span>)</span><br><span class="line">ax.spines[<span class="string">'right'</span>].set_visible(<span class="keyword">False</span>)</span><br><span class="line">ax.spines[<span class="string">'bottom'</span>].set_visible(<span class="keyword">False</span>)</span><br><span class="line">ax.spines[<span class="string">'left'</span>].set_visible(<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存图片</span></span><br><span class="line">savePath = <span class="string">"../images/2020年1月1日08时700百帕高度场++风场.png"</span></span><br><span class="line"><span class="comment">#去掉白边，后面两个参数控制</span></span><br><span class="line">plt.savefig(savePath, bbox_inches=<span class="string">'tight'</span>, pad_inches=<span class="number">0.0</span>)</span><br><span class="line"><span class="comment">#show必须在savefig后</span></span><br><span class="line">fig.show()</span><br><span class="line"><span class="comment"># 清空画布</span></span><br><span class="line">plt.clf()</span><br><span class="line">print(wind.title)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将白色底图转为透明</span></span><br><span class="line">pic = Image.open(savePath)</span><br><span class="line"><span class="comment"># 转为RGBA模式</span></span><br><span class="line">pic = pic.convert(<span class="string">'RGBA'</span>)</span><br><span class="line">width, height = pic.size</span><br><span class="line"><span class="comment"># 获取图片像素操作入口</span></span><br><span class="line">array = pic.load()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(width):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(height):</span><br><span class="line">        <span class="comment"># 获得某个像素点，格式为(R,G,B,A)元组</span></span><br><span class="line">        pos = array[i, j]</span><br><span class="line">        <span class="comment"># 如果R G B三者都大于240(很接近白色了，数值可调整)</span></span><br><span class="line">        isEdit = (sum([<span class="number">1</span> <span class="keyword">for</span> x <span class="keyword">in</span> pos[<span class="number">0</span>:<span class="number">3</span>] <span class="keyword">if</span> x &gt; <span class="number">240</span>]) == <span class="number">3</span>)</span><br><span class="line">        <span class="keyword">if</span> isEdit:</span><br><span class="line">            <span class="comment"># 更改为透明</span></span><br><span class="line">            array[i, j] = (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存图片</span></span><br><span class="line">pic.save(savePath)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2021/01/30/Python新手入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/01/30/Python新手入门/" itemprop="url">Python新手入门</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-30T10:31:28+08:00">
+                2021-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Python新手入门"><a href="#Python新手入门" class="headerlink" title="Python新手入门"></a>Python新手入门</h1><blockquote>
+<p>业务需要Python画图，大佬已经写好了画图程序。我这边需要接入到业务中。</p>
+<p>还是需要学习如何在本地运行起来。</p>
+</blockquote>
+<h2 id="本地环境安装"><a href="#本地环境安装" class="headerlink" title="本地环境安装"></a>本地环境安装</h2><p>大佬给了我几个链接和程序，我照着开始研究。</p>
+<h3 id="【Anaconda-Miniconda-管理不同版本-Python-环境-依赖安装】"><a href="#【Anaconda-Miniconda-管理不同版本-Python-环境-依赖安装】" class="headerlink" title="【Anaconda/Miniconda 管理不同版本 Python 环境/依赖安装】"></a><strong>【Anaconda/Miniconda 管理不同版本 Python 环境/依赖安装</strong>】</h3><p>   <a href="https://docs.conda.io/en/latest/" target="_blank" rel="noopener"><strong>https://docs.conda.io/en/latest/</strong></a></p>
+<p>   <a href="https://blog.csdn.net/qq_18668137/article/details/80807829" target="_blank" rel="noopener"><strong>https://blog.csdn.net/qq_18668137/article/details/80807829</strong></a></p>
+<ol>
+<li><p><strong>搜索依赖包</strong></p>
+<p><a href="https://anaconda.org/search?q=pandas" target="_blank" rel="noopener">https://anaconda.org/search?q=pandas</a></p>
+</li>
+<li><p><strong>上海交通大学镜像</strong></p>
+<p><a href="https://mirrors.sjtug.sjtu.edu.cn/docs/anaconda" target="_blank" rel="noopener">https://mirrors.sjtug.sjtu.edu.cn/docs/anaconda</a></p>
+</li>
+<li><p><strong>conda install卡在solving environment解决办法</strong></p>
+<p><a href="https://www.codeleading.com/article/39333157784/" target="_blank" rel="noopener">https://www.codeleading.com/article/39333157784/</a></p>
+</li>
+<li><p><strong>在 Windows 安装虚拟环境，安装依赖后使用如果报错，需要注意环境变量的设置</strong></p>
+<p><a href="https://www.cnblogs.com/maomaozi/p/14619961.html" target="_blank" rel="noopener">https://www.cnblogs.com/maomaozi/p/14619961.html</a></p>
+</li>
+</ol>
+<h3 id="【准备工作】"><a href="#【准备工作】" class="headerlink" title="【准备工作】"></a><strong>【准备工作】</strong></h3><p>   <strong># Install</strong></p>
+<p>   下载 Anaconda/Miniconda 进行安装（推荐 Miniconda）</p>
+<p>   <strong># Get Start</strong></p>
+<ol>
+<li><p>创建 Python 3.9 环境</p>
+<p>conda create -n py39 -c conda-forge python=3.9</p>
+</li>
+<li><p>安装相关依赖（可以按需安装）</p>
+<p>conda install -c conda-forge -n py39 autopep8 -y</p>
+<p>// cartopy numpy matplotlib xarray pygrib cmaps netcdf4</p>
+</li>
+<li><p>切换到刚刚安装的环境</p>
+<p>conda activate py39</p>
+</li>
+</ol>
+<h3 id="【Python】"><a href="#【Python】" class="headerlink" title="【Python】"></a><strong>【Python】</strong></h3><h3 id="基础教程"><a href="#基础教程" class="headerlink" title="# 基础教程"></a><strong># 基础教程</strong></h3><p><a href="https://www.runoob.com/python3/python3-tutorial.html" target="_blank" rel="noopener">https://www.runoob.com/python3/python3-tutorial.html</a></p>
+<ul>
+<li>遍历数组 <a href="https://www.cnblogs.com/pizitai/p/6398276.html" target="_blank" rel="noopener">https://www.cnblogs.com/pizitai/p/6398276.html</a></li>
+</ul>
+<h3 id="【Unidata】"><a href="#【Unidata】" class="headerlink" title="【Unidata】"></a><strong>【Unidata】</strong></h3><p><strong># Python 气象绘图示例</strong></p>
+<p><a href="https://unidata.github.io/python-gallery/examples" target="_blank" rel="noopener">https://unidata.github.io/python-gallery/examples</a></p>
+<h2 id="安装后，对实例代码进行启动"><a href="#安装后，对实例代码进行启动" class="headerlink" title="安装后，对实例代码进行启动"></a>安装后，对实例代码进行启动</h2><p>通过上面大佬的指引，我在本地装好了 Anaconda。又安装了 Pycharm。<br>上面的准备工作中，又创建了除了 base 环境以外的 Python3.9 环境。<br>本来是打算用 spyder, 但是同事推荐 Pycharm。<br>所以需要在 Pycharm 中修改要使用的 Python 版本。</p>
+<h3 id="修改Pycharm环境"><a href="#修改Pycharm环境" class="headerlink" title="修改Pycharm环境"></a>修改Pycharm环境</h3><p>在 Pycharm 中找到 File -&gt; setting -&gt; Project: （项目所在文件夹）-&gt; Python Interpreter<br><img src="/2021/01/30/Python新手入门/b1.png" alt="b1.png"><br>我截图的是已经添加了一个的情况，点击右上角齿轮，点击 add 。<br><img src="/2021/01/30/Python新手入门/b2.png" alt="b2.png"><br>之后选择 Conda Environment -&gt; Existing environment 。在Interpreter 中选择要使用的环境的python.exe，完成环境添加。</p>
+<h3 id="添加所需包"><a href="#添加所需包" class="headerlink" title="添加所需包"></a>添加所需包</h3><p>之后运行 py 文件，报了个 ModuleNotFoundError: No module named ‘cartopy’ 。<br>双击 Anaconda Prompt ，可以从前面的（）中看出现在运行的环境。<br>可以使用 <code>conda env list</code>命令来查看conda 中装了几个环境，以及他们的名字是什么，所在本地目录。<br>使用<code>conda activate py39</code> 来切换运行环境。<br>再使用<code>conda install -c conda-forge cartopy</code> 命令将依赖包安装好。<br>虽然 pygrib 这个包安装有点慢，但是挂了一夜后还是装好了。</p>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ol>
+<li>遇到了一个奇怪的bug， <code>Unable to find boot.def</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">ECCODES ERROR   :  Unable to find boot.def. Context path=D:/bld/eccodes_1623941334791/_h_env/Library/share/eccodes/definitions</span><br><span class="line"></span><br><span class="line">Possible causes:</span><br><span class="line">- The software is not correctly installed</span><br><span class="line">- The environment variable ECCODES_DEFINITION_PATH is defined but incorrect</span><br><span class="line"></span><br><span class="line">ecCodes assertion failed: `0&apos; in D:\bld\eccodes_1623941334791\work\src\grib_context.c:226</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>百度后尝试在 anaconda prompt 中运行命令，还是不行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set &quot;ECCODES_SAMPLES_PATH=d:\anaconda3\Library\share\eccodes\samples&quot;</span><br><span class="line">set &quot;ECCODES_DEFINITION_PATH=c:\ProgramData\Anaconda3\Library\share\eccodes\definitions&quot;</span><br></pre></td></tr></table></figure></p>
+<p>然后我将这两个设置为电脑的环境变量，就可以了</p>
+<ol start="2">
+<li><code>check_hostname requires server_hostname</code> 这个错误是因为我本地开启了代理。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2021/01/23/在windows上的WSL上安装onlyoffice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/01/23/在windows上的WSL上安装onlyoffice/" itemprop="url">在windows上的WSL上安装onlyoffice</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-23T17:14:07+08:00">
+                2021-01-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="在windows上的WSL上安装onlyoffice"><a href="#在windows上的WSL上安装onlyoffice" class="headerlink" title="在windows上的WSL上安装onlyoffice"></a>在windows上的WSL上安装onlyoffice</h1><blockquote>
+<p>需要一个在线文档编辑功能，之前的OOS安装起来太麻烦了。最关键的还是排版和在本地的文档排版不一样。不能满足要求<br>就更换成了现在的这个OnlyOFFICE，这个软件有开源版本和商业版本，开源版本限制同时编辑人数，但是自然有办法绕过去。<br>官方源码：<a href="https://github.com/ONLYOFFICE/Docker-DocumentServer" target="_blank" rel="noopener">https://github.com/ONLYOFFICE/Docker-DocumentServer</a><br>我使用的Demo：<a href="https://github.com/xsi640/onlyoffice_demo" target="_blank" rel="noopener">https://github.com/xsi640/onlyoffice_demo</a><br>官方的Demo有点难懂，而且我部署在本地后还会报错，只好切换成别人的。<br>包含onlyoffice 添加中文字体<br></p></blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/01/23/在windows上的WSL上安装onlyoffice/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2021/01/09/当拿到WSDL连接后怎么调用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/01/09/当拿到WSDL连接后怎么调用/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-09T18:23:27+08:00">
+                2021-01-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="当拿到WSDL连接后怎么调用"><a href="#当拿到WSDL连接后怎么调用" class="headerlink" title="当拿到WSDL连接后怎么调用"></a>当拿到WSDL连接后怎么调用</h1><blockquote>
+<p>百度参考了一些文章，发现不太适用新版idea。自己来总结一下<br>参考文章：<a href="https://www.cnblogs.com/javamjh/p/13323096.html" target="_blank" rel="noopener">WebService接口的几种调用方式–wsdl文件类型</a><br></p></blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/01/09/当拿到WSDL连接后怎么调用/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/12/12/springboot配置redis多数据源/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -364,6 +932,132 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2020/12/12/springboot配置redis多数据源/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/12/12/使用show profile进行mysql调优/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/12/使用show profile进行mysql调优/" itemprop="url">使用show profile进行mysql调优</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-12T17:01:10+08:00">
+                2020-12-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="使用show-profile进行mysql调优"><a href="#使用show-profile进行mysql调优" class="headerlink" title="使用show profile进行mysql调优"></a>使用show profile进行mysql调优</h1><blockquote>
+<p>本文首先参考《高性能 MySQL（第三版）》中的第3章第3节剖析MySQL查询</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/12/12/使用show profile进行mysql调优/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -904,641 +1598,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/11/07/排查本地写入sql文件太慢/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/11/07/排查本地写入sql文件太慢/" itemprop="url">排查本地写入sql文件太慢</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-07T15:04:35+08:00">
-                2020-11-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="排查本地写入sql文件太慢"><a href="#排查本地写入sql文件太慢" class="headerlink" title="排查本地写入sql文件太慢"></a>排查本地写入sql文件太慢</h1><blockquote>
-<p>记录一下日常<br>本地写入数据每分钟2000条，所以叫大佬帮忙排查一下。<br>主要原因 binlog 日志、主从复制。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/11/07/排查本地写入sql文件太慢/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/10/31/linux后台启动程序操作/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/10/31/linux后台启动程序操作/" itemprop="url">Linux后台启动程序操作</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-31T18:31:09+08:00">
-                2020-10-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Linux后台启动程序操作"><a href="#Linux后台启动程序操作" class="headerlink" title="Linux后台启动程序操作"></a>Linux后台启动程序操作</h1><blockquote>
-<p>感觉越来越难写了。有点累，好想放个寒假。<br>本文主要用于记录我操作 Linux 的过程。包含后台启动程序、找到占用的端口、关闭占用端口程序。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/10/31/linux后台启动程序操作/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/10/24/删除一个找不到该项目的文件/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/10/24/删除一个找不到该项目的文件/" itemprop="url">删除一个找不到该项目的文件</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-24T18:35:51+08:00">
-                2020-10-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="删除一个找不到该项目的文件"><a href="#删除一个找不到该项目的文件" class="headerlink" title="删除一个找不到该项目的文件"></a>删除一个找不到该项目的文件</h1><blockquote>
-<p>原文来自知乎<br><a href="https://www.zhihu.com/question/350091243" target="_blank" rel="noopener">求助：如何删除win10系统，“找不到该项目”的文件？文件名最后是一个点的文件，没有扩展名？</a></p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/10/24/删除一个找不到该项目的文件/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/10/17/使用grib2json解析风场grib文件/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/10/17/使用grib2json解析风场grib文件/" itemprop="url">使用grib2json解析风场grib文件</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-17T18:28:54+08:00">
-                2020-10-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="使用grib2json解析风场grib文件"><a href="#使用grib2json解析风场grib文件" class="headerlink" title="使用grib2json解析风场grib文件"></a>使用grib2json解析风场grib文件</h1><blockquote>
-<p>本 jar 包由大佬在研究绘制风场动态图时提供。<br>参考博客 <a href="https://www.iteye.com/blog/umbrellall1-2509006" target="_blank" rel="noopener">https://www.iteye.com/blog/umbrellall1-2509006</a></p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/10/17/使用grib2json解析风场grib文件/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/10/10/在linux上安装mbgl-renderer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ezio">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="blogs">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/10/10/在linux上安装mbgl-renderer/" itemprop="url">在linux上安装mbgl-renderer</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-10T16:10:51+08:00">
-                2020-10-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="在linux上安装mbgl-renderer"><a href="#在linux上安装mbgl-renderer" class="headerlink" title="在linux上安装mbgl-renderer"></a>在linux上安装mbgl-renderer</h1><blockquote>
-<p>docker 安装还是挺方便的。<br>这个软件包主要是用来 java 调用画图。基本上前端可以绘制出的界面，都可以绘制成图片保存。当然，我只是完成我需要的地图叠加。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/10/10/在linux上安装mbgl-renderer/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1588,7 +1652,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">86</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1601,7 +1665,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

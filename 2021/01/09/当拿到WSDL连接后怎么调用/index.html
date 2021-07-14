@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="WSDL," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="当拿到WSDL连接后怎么调用 百度参考了一些文章，发现不太适用新版idea。自己来总结一下参考文章：WebService接口的几种调用方式–wsdl文件类型">
+<meta name="keywords" content="WSDL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="blogs">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2021/01/09/当拿到WSDL连接后怎么调用/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="当拿到WSDL连接后怎么调用 百度参考了一些文章，发现不太适用新版idea。自己来总结一下参考文章：WebService接口的几种调用方式–wsdl文件类型">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2021/01/09/当拿到WSDL连接后怎么调用/b1.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2021/01/09/当拿到WSDL连接后怎么调用/b2.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2021/01/09/当拿到WSDL连接后怎么调用/b3.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2021/01/09/当拿到WSDL连接后怎么调用/b4.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2021/01/09/当拿到WSDL连接后怎么调用/b5.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/2021/01/09/当拿到WSDL连接后怎么调用/b6.png">
+<meta property="og:updated_time" content="2021-05-27T09:15:47.776Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="blogs">
+<meta name="twitter:description" content="当拿到WSDL连接后怎么调用 百度参考了一些文章，发现不太适用新版idea。自己来总结一下参考文章：WebService接口的几种调用方式–wsdl文件类型">
+<meta name="twitter:image" content="http://www.worldofwarcraftchina.cn/2021/01/09/当拿到WSDL连接后怎么调用/b1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.worldofwarcraftchina.cn/2021/01/09/当拿到WSDL连接后怎么调用/"/>
+
+
+
+
+
+  <title> | blogs</title>
+  
+
+
+
+
+
+
+
+
+  
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	<a href="https://github.com/ZS9527"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2021/01/09/当拿到WSDL连接后怎么调用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ezio">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-09T18:23:27+08:00">
+                2021-01-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="当拿到WSDL连接后怎么调用"><a href="#当拿到WSDL连接后怎么调用" class="headerlink" title="当拿到WSDL连接后怎么调用"></a>当拿到WSDL连接后怎么调用</h1><blockquote>
+<p>百度参考了一些文章，发现不太适用新版idea。自己来总结一下<br>参考文章：<a href="https://www.cnblogs.com/javamjh/p/13323096.html" target="_blank" rel="noopener">WebService接口的几种调用方式–wsdl文件类型</a><br><a id="more"></a></p>
+</blockquote>
+<h2 id="通过WSDL链接使用idea生成java文件"><a href="#通过WSDL链接使用idea生成java文件" class="headerlink" title="通过WSDL链接使用idea生成java文件"></a>通过WSDL链接使用idea生成java文件</h2><p>我的idea版本是</p>
+<p><img src="/2021/01/09/当拿到WSDL连接后怎么调用/b1.png" alt="b1"></p>
+<p>直接新建项目，选择 WebServices Client，注意：这里的 Version 选择和 WSDL 链接有关。会影响到后面的 b4 图中选项。</p>
+<p><img src="/2021/01/09/当拿到WSDL连接后怎么调用/b2.png" alt="b2"></p>
+<p>填写好项目名后选择 Finish，</p>
+<p><img src="/2021/01/09/当拿到WSDL连接后怎么调用/b3.png" alt="b3"></p>
+<p>在窗口中填好参数。</p>
+<p><img src="/2021/01/09/当拿到WSDL连接后怎么调用/b4.png" alt="b4"></p>
+<p>确定后生成文件，如果产生了报错。从 b2 中换一个 Version 再试一下。</p>
+<p><img src="/2021/01/09/当拿到WSDL连接后怎么调用/b5.png" alt="b5"></p>
+<p>之后的main方法调用内容，就要看 WSDL 中的方法了。</p>
+<p><img src="/2021/01/09/当拿到WSDL连接后怎么调用/b6.png" alt="b6"></p>
+<h2 id="后面几种方法"><a href="#后面几种方法" class="headerlink" title="后面几种方法"></a>后面几种方法</h2><p>我试了一下后面的几种方法，其中调用方法是可以在 idea 生成的文件中看到。但是我本身的wsdl 文件中的调用方法所需参数太多。用起来还没有第一个方便。</p>
+<h3 id="方式二-使用apache的动态代理方式实现"><a href="#方式二-使用apache的动态代理方式实现" class="headerlink" title="方式二:使用apache的动态代理方式实现"></a>方式二:使用apache的动态代理方式实现</h3><p>我自己在使用这个方法的时候，Call类的创建时缺少参数，导致方法调用失败。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"><span class="keyword">import</span> javax.xml.namespace.QName;</span><br><span class="line"><span class="keyword">import</span> org.apache.axis.client.Call;</span><br><span class="line"><span class="keyword">import</span> org.apache.axis.client.Service;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UsingDII</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">int</span> a = <span class="number">100</span>, b=<span class="number">60</span>;　　　　　　　<span class="comment">// 对应的targetNamespace</span></span><br><span class="line">            String endPoint = <span class="string">"http://198.168.0.88:6888/ormrpc/services/EASLogin"</span>;</span><br><span class="line">            Service service = <span class="keyword">new</span> Service();</span><br><span class="line">            Call call = (Call)service.createCall();</span><br><span class="line">            call.setOperationName(<span class="keyword">new</span> QName(endPoint,<span class="string">"EASLogin"</span>));</span><br><span class="line">            call.setTargetEndpointAddress(<span class="keyword">new</span> URL(endPoint));　　　　　　　<span class="comment">// a,b 调用此方法的参数</span></span><br><span class="line">            String result = (String)call.invoke(<span class="keyword">new</span> Object[]&#123;<span class="keyword">new</span> Integer(a),<span class="keyword">new</span> Integer(b)&#125;);</span><br><span class="line">            System.out.println(<span class="string">"result is :"</span>+result);        </span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;     </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="方式三：使用Dynamic-Proxy动态代理"><a href="#方式三：使用Dynamic-Proxy动态代理" class="headerlink" title="方式三：使用Dynamic Proxy动态代理"></a>方式三：使用Dynamic Proxy动态代理</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"><span class="keyword">import</span> javax.xml.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UsingDP</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">int</span> a = <span class="number">100</span>, b=<span class="number">60</span>;</span><br><span class="line">            String wsdlUrl = <span class="string">"http://198.168.0.88:6888/ormrpc/services/EASLogin?wsdl"</span>;</span><br><span class="line">            String nameSpaceUri = <span class="string">"http://198.168.0.88:6888/ormrpc/services/EASLogin"</span>;</span><br><span class="line">            String serviceName = <span class="string">"EASLoginProxyService"</span>;</span><br><span class="line">            String portName = <span class="string">"EASLogin"</span>;</span><br><span class="line">            ServiceFactory serviceFactory = ServiceFactory.newInstance();        </span><br><span class="line">            Service service = serviceFactory.createService(<span class="keyword">new</span> URL(wsdlUrl),<span class="keyword">new</span> QName(nameSpaceUri,serviceName));　　　　　　  <span class="comment">// 返回值是自己封装的类</span></span><br><span class="line">            AddFunctionServiceIntf adsIntf = (AddFunctionServiceIntf)service.getPort(<span class="keyword">new</span> QName(nameSpaceUri,portName),AddFunctionServiceIntf.class);        </span><br><span class="line">            System.out.println(<span class="string">"result is :"</span>+adsIntf.addInt(a, b));       </span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="方式四-使用httpclient方式"><a href="#方式四-使用httpclient方式" class="headerlink" title="方式四:使用httpclient方式"></a>方式四:使用httpclient方式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;<span class="keyword">import</span> java.io.IOException;<span class="keyword">import</span> java.io.InputStream;<span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.httpclient.HttpClient;<span class="keyword">import</span> org.apache.commons.httpclient.methods.InputStreamRequestEntity;<span class="keyword">import</span> org.apache.commons.httpclient.methods.PostMethod;<span class="keyword">import</span> org.apache.commons.httpclient.methods.RequestEntity;<span class="keyword">import</span> org.apache.log4j.Logger;<span class="keyword">import</span> org.dom4j.Document;<span class="keyword">import</span> org.dom4j.io.SAXReader;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里引得依赖  包的话需要自己找了 下面地址可以找到//https://mvnrepository.com/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> InputStream <span class="title">postXmlRequestInputStream</span><span class="params">(String requestUrl, String xmlData)</span> <span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">        </span><br><span class="line">        PostMethod postMethod = <span class="keyword">new</span> PostMethod(requestUrl);</span><br><span class="line">        <span class="keyword">byte</span>[] b = xmlData.getBytes(<span class="string">"utf-8"</span>);</span><br><span class="line">        InputStream is = <span class="keyword">new</span> ByteArrayInputStream(b, <span class="number">0</span>, b.length);</span><br><span class="line">        RequestEntity re = <span class="keyword">new</span> InputStreamRequestEntity(is, b.length, <span class="string">"text/xml;charset=utf-8"</span>);</span><br><span class="line">        postMethod.setRequestEntity(re);</span><br><span class="line">        </span><br><span class="line">        HttpClient httpClient = <span class="keyword">new</span> HttpClient();</span><br><span class="line">        httpClient.getParams().setAuthenticationPreemptive(<span class="keyword">true</span>);</span><br><span class="line">        httpClient.getHostConfiguration().setProxy(CommonPptsUtil.get(<span class="string">"PROXY_HOST"</span>), Integer.valueOf(CommonPptsUtil.get(<span class="string">"PROXY_PORT"</span>)));</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> statusCode = httpClient.executeMethod(postMethod);</span><br><span class="line">        logger.debug(<span class="string">"responseCode:"</span>+statusCode);</span><br><span class="line">        <span class="keyword">if</span> (statusCode != <span class="number">200</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> postMethod.getResponseBodyAsStream();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String reqJsonStr = <span class="string">"&#123;\"workId\":\"20171018161622\",\"status\":\"201\",\"startTime\":\"2017-10-18 16:16:22\"&#125;"</span>;</span><br><span class="line">        </span><br><span class="line">        String xmlData =  <span class="string">"&lt;soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://service.interfacemodule.cic.com/\"&gt;&lt;soapenv:Header/&gt;&lt;soapenv:Body&gt;&lt;ser:statusWriteBack&gt;&lt;jsonString&gt;"</span></span><br><span class="line">                + <span class="string">"&#123;\"workId\":\"314\",\"orderId\":\"5207675\",\"longitude\":\"104.068310\",\"latitude\":\"30.539503\",\"sendTime\":\"2019-08-13 08:38:45\",\"servicePerName\":\"于xx\",\"servicePerPhone\":\"184xxxx7680\"&#125;"</span></span><br><span class="line">                + <span class="string">"&lt;/jsonString&gt;&lt;/ser:statusWriteBack&gt;&lt;/soapenv:Body&gt;&lt;/soapenv:Envelope&gt;"</span>;</span><br><span class="line">        String url = <span class="string">"http://xx.xxx.246.88:7103/avs/services/CCService?wsdl"</span>;</span><br><span class="line">        SAXReader reader  = <span class="keyword">new</span> SAXReader();</span><br><span class="line">        String result = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            InputStream in = postXmlRequestInputStream(url,xmlData);</span><br><span class="line">            <span class="keyword">if</span>(in!=<span class="keyword">null</span>)&#123;</span><br><span class="line">                Document doc = reader.read(in);</span><br><span class="line">                result = doc.getRootElement().element(<span class="string">"Body"</span>).element(<span class="string">"statusWriteBackResponse"</span>).element(<span class="string">"return"</span>).getText();</span><br><span class="line">                logger.debug(<span class="string">"result:"</span>+result);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            logger.error(<span class="string">"error:"</span>,e);</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>CommonPptsUtil：//就是获取配置文件里的代理信息<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.commons.configuration.ConfigurationException;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.configuration.PropertiesConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;</span><br><span class="line"><span class="keyword">import</span> org.apache.log4j.Logger;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通用属性文件工具类</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> y.c</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonPptsUtil</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = Logger.getLogger(CommonPptsUtil.class);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String CONFIG_FILE = <span class="string">"common.properties"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> PropertiesConfiguration ppts;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            ppts = <span class="keyword">new</span> PropertiesConfiguration(CONFIG_FILE);</span><br><span class="line">            ppts.setReloadingStrategy(<span class="keyword">new</span> FileChangedReloadingStrategy());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ConfigurationException e) &#123;</span><br><span class="line">            logger.error(<span class="string">"文件【common.properties】加载失败！"</span>);</span><br><span class="line">            ppts = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取属性值</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> key</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 属性值</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">get</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (ppts == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ppts.getString(key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="方式五-使用CXF动态调用webservice接口"><a href="#方式五-使用CXF动态调用webservice接口" class="headerlink" title="方式五:使用CXF动态调用webservice接口"></a>方式五:使用CXF动态调用webservice接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cxfClient;</span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> org.apache.cxf.endpoint.Endpoint;</span><br><span class="line"><span class="keyword">import</span> javax.xml.namespace.QName; </span><br><span class="line"><span class="keyword">import</span> org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;</span><br><span class="line"><span class="keyword">import</span> org.apache.cxf.service.model.BindingInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.cxf.service.model.BindingOperationInfo;</span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CxfClient</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        String url = <span class="string">"http://localhost:9091/Service/SayHello?wsdl"</span>;</span><br><span class="line">        String method = <span class="string">"say"</span>;</span><br><span class="line">        Object[] parameters = <span class="keyword">new</span> Object[]&#123;<span class="string">"我是参数"</span>&#125;;</span><br><span class="line">        System.out.println(invokeRemoteMethod(url, method, parameters)[<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Object[] invokeRemoteMethod(String url, String operation, Object[] parameters)&#123;</span><br><span class="line">        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();</span><br><span class="line">        <span class="keyword">if</span> (!url.endsWith(<span class="string">"wsdl"</span>)) &#123;</span><br><span class="line">            url += <span class="string">"?wsdl"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        org.apache.cxf.endpoint.Client client = dcf.createClient(url);</span><br><span class="line">        <span class="comment">//处理webService接口和实现类namespace不同的情况，CXF动态客户端在处理此问题时，会报No operation was found with the name的异常</span></span><br><span class="line">        Endpoint endpoint = client.getEndpoint();</span><br><span class="line">        QName opName = <span class="keyword">new</span> QName(endpoint.getService().getName().getNamespaceURI(),operation);</span><br><span class="line">        BindingInfo bindingInfo= endpoint.getEndpointInfo().getBinding();</span><br><span class="line">        <span class="keyword">if</span>(bindingInfo.getOperation(opName) == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">for</span>(BindingOperationInfo operationInfo : bindingInfo.getOperations())&#123;</span><br><span class="line">                <span class="keyword">if</span>(operation.equals(operationInfo.getName().getLocalPart()))&#123;</span><br><span class="line">                    opName = operationInfo.getName();</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        Object[] res = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            res = client.invoke(opName, parameters);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/WSDL/" rel="tag"># WSDL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/12/springboot配置redis多数据源/" rel="next" title="springboot配置redis多数据源">
+                <i class="fa fa-chevron-left"></i> springboot配置redis多数据源
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/01/23/在windows上的WSL上安装onlyoffice/" rel="prev" title="在windows上的WSL上安装onlyoffice">
+                在windows上的WSL上安装onlyoffice <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Ezio" />
+            
+              <p class="site-author-name" itemprop="name">Ezio</p>
+              <p class="site-description motion-element" itemprop="description">java</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">91</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#当拿到WSDL连接后怎么调用"><span class="nav-number">1.</span> <span class="nav-text">当拿到WSDL连接后怎么调用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#通过WSDL链接使用idea生成java文件"><span class="nav-number">1.1.</span> <span class="nav-text">通过WSDL链接使用idea生成java文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后面几种方法"><span class="nav-number">1.2.</span> <span class="nav-text">后面几种方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方式二-使用apache的动态代理方式实现"><span class="nav-number">1.2.1.</span> <span class="nav-text">方式二:使用apache的动态代理方式实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方式三：使用Dynamic-Proxy动态代理"><span class="nav-number">1.2.2.</span> <span class="nav-text">方式三：使用Dynamic Proxy动态代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方式四-使用httpclient方式"><span class="nav-number">1.2.3.</span> <span class="nav-text">方式四:使用httpclient方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方式五-使用CXF动态调用webservice接口"><span class="nav-number">1.2.4.</span> <span class="nav-text">方式五:使用CXF动态调用webservice接口</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">灵魂在路上的Ezio</span>
+
+  
+</div>
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; Next v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
