@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="简述对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列 最近有时间整理一下自己所使用过的技术，大多数时候我都是有这个需求后再去找这个技术去学来使用。除了业务场景，并没有太多的了解。现在大多数人都喜欢把知识分享在公众号上，这篇也是我在公众号上看到后记录过来的。原文：17 个方面，综合对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简述对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2019/12/14/%E7%AE%80%E8%BF%B0%E5%AF%B9%E6%AF%94%20Kafka%E3%80%81RabbitMQ%E3%80%81RocketMQ%E3%80%81ActiveMQ%20%E5%9B%9B%E4%B8%AA%E5%88%86%E5%B8%83%E5%BC%8F%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="简述对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列 最近有时间整理一下自己所使用过的技术，大多数时候我都是有这个需求后再去找这个技术去学来使用。除了业务场景，并没有太多的了解。现在大多数人都喜欢把知识分享在公众号上，这篇也是我在公众号上看到后记录过来的。原文：17 个方面，综合对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b1.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b2.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b3.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b4.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b5.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b6.png">
+<meta property="article:published_time" content="2019-12-14T06:42:14.000Z">
+<meta property="article:modified_time" content="2020-05-28T09:58:39.774Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="RabbitMQ">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.worldofwarcraftchina.cn/b1.png">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2019/12/14/%E7%AE%80%E8%BF%B0%E5%AF%B9%E6%AF%94%20Kafka%E3%80%81RabbitMQ%E3%80%81RocketMQ%E3%80%81ActiveMQ%20%E5%9B%9B%E4%B8%AA%E5%88%86%E5%B8%83%E5%BC%8F%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2019/12/14/%E7%AE%80%E8%BF%B0%E5%AF%B9%E6%AF%94%20Kafka%E3%80%81RabbitMQ%E3%80%81RocketMQ%E3%80%81ActiveMQ%20%E5%9B%9B%E4%B8%AA%E5%88%86%E5%B8%83%E5%BC%8F%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/","path":"2019/12/14/简述对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列/","title":"简述对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>简述对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0%E5%AF%B9%E6%AF%94-Kafka%E3%80%81RabbitMQ%E3%80%81RocketMQ%E3%80%81ActiveMQ-%E5%9B%9B%E4%B8%AA%E5%88%86%E5%B8%83%E5%BC%8F%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="nav-number">1.</span> <span class="nav-text">简述对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">1.1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="nav-number">1.2.</span> <span class="nav-text">为什么要使用消息队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E8%80%A6"><span class="nav-number">1.2.1.</span> <span class="nav-text">解耦</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5"><span class="nav-number">1.2.2.</span> <span class="nav-text">异步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8A%E5%B3%B0"><span class="nav-number">1.2.3.</span> <span class="nav-text">削峰</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%96%99%E6%96%87%E6%A1%A3"><span class="nav-number">1.3.</span> <span class="nav-text">资料文档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80"><span class="nav-number">1.4.</span> <span class="nav-text">开发语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E7%95%8C%E9%9D%A2"><span class="nav-number">1.5.</span> <span class="nav-text">管理界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E7%9A%84%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.6.</span> <span class="nav-text">支持的协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E5%AD%98%E5%82%A8"><span class="nav-number">1.7.</span> <span class="nav-text">消息存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E4%BA%8B%E5%8A%A1"><span class="nav-number">1.8.</span> <span class="nav-text">消息事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="nav-number">1.9.</span> <span class="nav-text">负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E6%96%B9%E5%BC%8F"><span class="nav-number">1.10.</span> <span class="nav-text">集群方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="nav-number">1.11.</span> <span class="nav-text">可用性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E9%87%8D%E5%A4%8D"><span class="nav-number">1.12.</span> <span class="nav-text">消息重复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%9E%E5%90%90%E9%87%8FTPS"><span class="nav-number">1.13.</span> <span class="nav-text">吞吐量TPS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A2%E9%98%85%E5%BD%A2%E5%BC%8F%E5%92%8C%E6%B6%88%E6%81%AF%E5%88%86%E5%8F%91"><span class="nav-number">1.14.</span> <span class="nav-text">订阅形式和消息分发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%BA%E5%BA%8F%E6%B6%88%E6%81%AF"><span class="nav-number">1.15.</span> <span class="nav-text">顺序消息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E7%A1%AE%E8%AE%A4"><span class="nav-number">1.16.</span> <span class="nav-text">消息确认</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E5%9B%9E%E6%BA%AF"><span class="nav-number">1.17.</span> <span class="nav-text">消息回溯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E9%87%8D%E8%AF%95"><span class="nav-number">1.18.</span> <span class="nav-text">消息重试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E5%BA%A6"><span class="nav-number">1.19.</span> <span class="nav-text">并发度</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2019/12/14/%E7%AE%80%E8%BF%B0%E5%AF%B9%E6%AF%94%20Kafka%E3%80%81RabbitMQ%E3%80%81RocketMQ%E3%80%81ActiveMQ%20%E5%9B%9B%E4%B8%AA%E5%88%86%E5%B8%83%E5%BC%8F%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="简述对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          简述对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-12-14 14:42:14" itemprop="dateCreated datePublished" datetime="2019-12-14T14:42:14+08:00">2019-12-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-05-28 17:58:39" itemprop="dateModified" datetime="2020-05-28T17:58:39+08:00">2020-05-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="简述对比-Kafka、RabbitMQ、RocketMQ、ActiveMQ-四个分布式消息队列"><a href="#简述对比-Kafka、RabbitMQ、RocketMQ、ActiveMQ-四个分布式消息队列" class="headerlink" title="简述对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列"></a>简述对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列</h1><blockquote>
+<p>最近有时间整理一下自己所使用过的技术，大多数时候我都是有这个需求后再去找这个技术去学来使用。除了业务场景，并没有太多的了解。<br>现在大多数人都喜欢把知识分享在公众号上，这篇也是我在公众号上看到后记录过来的。<br>原文：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzAxNjk4ODE4OQ==&mid=2247487283&idx=1&sn=e03ca118ef257ea91e3c9d0178e6037f&chksm=9bed2e41ac9aa75764df6bd037312d0bc6ae051147d47742c914495f245d2af19bc58afed5aa&scene=21#wechat_redirect">17 个方面，综合对比 Kafka、RabbitMQ、RocketMQ、ActiveMQ 四个分布式消息队列</a><br>原文：<a target="_blank" rel="noopener" href="https://blog.csdn.net/mrs_haining/article/details/80625833">为什么分布式一定要有消息队列？</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>为何要使用消息队列</li>
+<li>资料文档</li>
+<li>开发语言</li>
+<li>管理界面</li>
+<li>支持的协议</li>
+<li>消息存储</li>
+<li>消息事务</li>
+<li>负载均衡</li>
+<li>集群方式</li>
+<li>可用性</li>
+<li>消息重复</li>
+<li>吞吐量TPS</li>
+<li>订阅形式和消息分发</li>
+<li>顺序消息</li>
+<li>消息确认</li>
+<li>消息回溯</li>
+<li>消息重试</li>
+<li>并发度<br>本文将从Kafka、RabbitMQ、ZeroMQ、RocketMQ、ActiveMQ 17 个方面综合对比作为消息队列使用时的差异。<br>另外在加入一些我自己在使用和测试中的一些小看法。</li>
+</ul>
+<h2 id="为什么要使用消息队列"><a href="#为什么要使用消息队列" class="headerlink" title="为什么要使用消息队列"></a>为什么要使用消息队列</h2><p>只答三个最主要的应用场景(不可否认还有其他的，但是只答三个主要的),即以下六个字:解耦、异步、削峰</p>
+<h3 id="解耦"><a href="#解耦" class="headerlink" title="解耦"></a>解耦</h3><p>传统模式的缺点：</p>
+<ul>
+<li>系统间耦合性太强，如下图所示，系统A在代码中直接调用系统B和系统C的代码，如果将来D系统接入，系统A还需要修改代码，过于麻烦！</li>
+</ul>
+<p><img src="/b1.png" alt="传统模式"></p>
+<p>中间件模式的的优点：</p>
+<ul>
+<li>将消息写入消息队列，需要消息的系统自己从消息队列中订阅，从而系统A不需要做任何修改。</li>
+</ul>
+<p><img src="/b2.png" alt="中间件模式"></p>
+<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>传统模式的缺点：</p>
+<ul>
+<li>一些非必要的业务逻辑以同步的方式运行，太耗费时间。</li>
+</ul>
+<p><img src="/b3.png" alt="传统模式"></p>
+<p>中间件模式的的优点：</p>
+<ul>
+<li>将消息写入消息队列，非必要的业务逻辑以异步的方式运行，加快响应速度</li>
+</ul>
+<p><img src="/b4.png" alt="中间件模式"></p>
+<h3 id="削峰"><a href="#削峰" class="headerlink" title="削峰"></a>削峰</h3><p>传统模式的缺点：</p>
+<ul>
+<li>并发量大的时候，所有的请求直接怼到数据库，造成数据库连接异常</li>
+</ul>
+<p><img src="/b5.png" alt="传统模式"></p>
+<p>中间件模式的的优点：</p>
+<ul>
+<li>系统A慢慢的按照数据库能处理的并发量，从消息队列中慢慢拉取消息。在生产中，这个短暂的高峰期积压是允许的。</li>
+</ul>
+<p><img src="/b6.png" alt="中间件模式"></p>
+<h2 id="资料文档"><a href="#资料文档" class="headerlink" title="资料文档"></a>资料文档</h2><p>Kafka：中。有kafka作者自己写的书，网上资料也有一些。<br>rabbitmq：多。有一些不错的书，网上资料多。<br>zeromq：少。没有专门写zeromq的书，网上的资料多是一些代码的实现和简单介绍。<br>rocketmq：少。没有专门写rocketmq的书，网上的资料良莠不齐，官方文档很简洁，但是对技术细节没有过多的描述。<br>activemq：多。没有专门写activemq的书，网上资料多。</p>
+<h2 id="开发语言"><a href="#开发语言" class="headerlink" title="开发语言"></a>开发语言</h2><p>Kafka：Scala<br>rabbitmq：Erlang<br>zeromq：c<br>rocketmq：java<br>activemq：java</p>
+<h2 id="管理界面"><a href="#管理界面" class="headerlink" title="管理界面"></a>管理界面</h2><p>Kafka：一般<br>rabbitmq：好<br>zeromq：无<br>rocketmq：无<br>activemq：一般</p>
+<h2 id="支持的协议"><a href="#支持的协议" class="headerlink" title="支持的协议"></a>支持的协议</h2><p>Kafka：自己定义的一套…（基于TCP）<br>rabbitmq：AMQP<br>zeromq：TCP、UDP<br>rocketmq：自己定义的一套…<br>activemq：OpenWire、STOMP、REST、XMPP、AMQP</p>
+<p>这里我要添加一下。AMQP作为一个高级消息队列协议。它主要目的之一是适用于各种流行语言和框架的客户端，实现交互性。实现一种在全行业广泛使用的标准消息中间件技术，以便降低企业和系统集成的开销。</p>
+<h2 id="消息存储"><a href="#消息存储" class="headerlink" title="消息存储"></a>消息存储</h2><ul>
+<li>Kafka：内存、磁盘、数据库。支持大量堆积。</li>
+</ul>
+<p>kafka的最小存储单元是分区，一个topic包含多个分区，kafka创建主题时，这些分区会被分配在多个服务器上，通常一个broker一台服务器。分区首领会均匀地分布在不同的服务器上，分区副本也会均匀的分布在不同的服务器上，确保负载均衡和高可用性，当新的broker加入集群的时候，部分副本会被移动到新的broker上。根据配置文件中的目录清单，kafka会把新的分区分配给目录清单里分区数最少的目录。默认情况下，分区器使用轮询算法把消息均衡地分布在同一个主题的不同分区中，对于发送时指定了key的情况，会根据key的hashcode取模后的值存到对应的分区中。</p>
+<ul>
+<li>rabbitmq：内存、磁盘。支持少量堆积。</li>
+</ul>
+<p>rabbitmq的消息分为持久化的消息和非持久化消息，不管是持久化的消息还是非持久化的消息都可以写入到磁盘。持久化的消息在到达队列时就写入到磁盘，并且如果可以，持久化的消息也会在内存中保存一份备份，这样可以提高一定的性能，当内存吃紧的时候会从内存中清除。非持久化的消息一般只存在于内存中，在内存吃紧的时候会被换入到磁盘中，以节省内存。</p>
+<p>引入镜像队列机制，可将重要队列“复制”到集群中的其他broker上，保证这些队列的消息不会丢失。配置镜像的队列，都包含一个主节点master和多个从节点slave,如果master失效，加入时间最长的slave会被提升为新的master，除发送消息外的所有动作都向master发送，然后由master将命令执行结果广播给各个slave，rabbitmq会让master均匀地分布在不同的服务器上，而同一个队列的slave也会均匀地分布在不同的服务器上，保证负载均衡和高可用性。</p>
+<ul>
+<li><p>zeromq：消息发送端的内存或者磁盘中。不支持持久化。</p>
+</li>
+<li><p>rocketmq：磁盘。支持大量堆积。</p>
+</li>
+</ul>
+<p>commitLog文件存放实际的消息数据，每个commitLog上限是1G，满了之后会自动新建一个commitLog文件保存数据。ConsumeQueue队列只存放offset、size、tagcode，非常小，分布在多个broker上。ConsumeQueue相当于CommitLog的索引文件，消费者消费时会从consumeQueue中查找消息在commitLog中的offset，再去commitLog中查找元数据。</p>
+<p>ConsumeQueue存储格式的特性，保证了写过程的顺序写盘（写CommitLog文件），大量数据IO都在顺序写同一个commitLog，满1G了再写新的。加上rocketmq是累计4K才强制从PageCache中刷到磁盘（缓存），所以高并发写性能突出。</p>
+<ul>
+<li>activemq：内存、磁盘、数据库。支持少量堆积。</li>
+</ul>
+<h2 id="消息事务"><a href="#消息事务" class="headerlink" title="消息事务"></a>消息事务</h2><ul>
+<li>Kafka：支持</li>
+<li>rabbitmq：支持。客户端将信道设置为事务模式，只有当消息被rabbitMq接收，事务才能提交成功，否则在捕获异常后进行回滚。使用事务会使得性能有所下降</li>
+<li>zeromq：不支持 </li>
+<li>rocketmq：支持 </li>
+<li>activemq：支持</li>
+</ul>
+<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><ul>
+<li><p>Kafka：支持负载均衡。</p>
+<ol>
+<li>一个broker通常就是一台服务器节点。对于同一个Topic的不同分区，Kafka会尽力将这些分区分布到不同的Broker服务器上，zookeeper保存了broker、主题和分区的元数据信息。分区首领会处理来自客户端的生产请求，kafka分区首领会被分配到不同的broker服务器上，让不同的broker服务器共同分担任务。</li>
+</ol>
+</li>
+</ul>
+<p>每一个broker都缓存了元数据信息，客户端可以从任意一个broker获取元数据信息并缓存起来，根据元数据信息知道要往哪里发送请求。</p>
+<ol start="2">
+<li><p>kafka的消费者组订阅同一个topic，会尽可能地使得每一个消费者分配到相同数量的分区，分摊负载。</p>
+</li>
+<li><p>当消费者加入或者退出消费者组的时候，还会触发再均衡，为每一个消费者重新分配分区，分摊负载。<br>kafka的负载均衡大部分是自动完成的，分区的创建也是kafka完成的，隐藏了很多细节，避免了繁琐的配置和人为疏忽造成的负载问题。</p>
+</li>
+<li><p>发送端由topic和key来决定消息发往哪个分区，如果key为null，那么会使用轮询算法将消息均衡地发送到同一个topic的不同分区中。如果key不为null，那么会根据key的hashcode取模计算出要发往的分区。</p>
+</li>
+</ol>
+<ul>
+<li><p>rabbitmq：对负载均衡的支持不好。</p>
+<ol>
+<li>消息被投递到哪个队列是由交换器和key决定的，交换器、路由键、队列都需要手动创建。<br> rabbitmq客户端发送消息要和broker建立连接，需要事先知道broker上有哪些交换器，有哪些队列。通常要声明要发送的目标队列，如果没有目标队列，会在broker上创建一个队列，如果有，就什么都不处理，接着往这个队列发送消息。假设大部分繁重任务的队列都创建在同一个broker上，那么这个broker的负载就会过大。（可以在上线前预先创建队列，无需声明要发送的队列，但是发送时不会尝试创建队列，可能出现找不到队列的问题，rabbitmq的备份交换器会把找不到队列的消息保存到一个专门的队列中，以便以后查询使用）</li>
+</ol>
+<p>  使用镜像队列机制建立rabbitmq集群可以解决这个问题，形成master-slave的架构，master节点会均匀分布在不同的服务器上，让每一台服务器分摊负载。slave节点只是负责转发，在master失效时会选择加入时间最长的slave成为master。</p>
+<p>  当新节点加入镜像队列的时候，队列中的消息不会同步到新的slave中，除非调用同步命令，但是调用命令后，队列会阻塞，不能在生产环境中调用同步命令。</p>
+<ol start="2">
+<li>当rabbitmq队列拥有多个消费者的时候，队列收到的消息将以轮询的分发方式发送给消费者。每条消息只会发送给订阅列表里的一个消费者，不会重复。</li>
+</ol>
+</li>
+</ul>
+<p>这种方式非常适合扩展，而且是专门为并发程序设计的。<br>如果某些消费者的任务比较繁重，那么可以设置basicQos限制信道上消费者能保持的最大未确认消息的数量，在达到上限时，rabbitmq不再向这个消费者发送任何消息。</p>
+<ol start="3">
+<li>对于rabbitmq而言，客户端与集群建立的TCP连接不是与集群中所有的节点建立连接，而是挑选其中一个节点建立连接。<br>但是rabbitmq集群可以借助HAProxy、LVS技术，或者在客户端使用算法实现负载均衡，引入负载均衡之后，各个客户端的连接可以分摊到集群的各个节点之中。</li>
+</ol>
+<p>客户端均衡算法：</p>
+<ol>
+<li><p>轮询法。按顺序返回下一个服务器的连接地址。</p>
+</li>
+<li><p>加权轮询法。给配置高、负载低的机器配置更高的权重，让其处理更多的请求；而配置低、负载高的机器，给其分配较低的权重，降低其系统负载。</p>
+</li>
+<li><p>随机法。随机选取一个服务器的连接地址。</p>
+</li>
+<li><p>加权随机法。按照概率随机选取连接地址。</p>
+</li>
+<li><p>源地址哈希法。通过哈希函数计算得到的一个数值，用该数值对服务器列表的大小进行取模运算。</p>
+</li>
+<li><p>最小连接数法。动态选择当前连接数最少的一台服务器的连接地址。</p>
+</li>
+</ol>
+<ul>
+<li><p>zeromq：去中心化，不支持负载均衡。本身只是一个多线程网络库。</p>
+</li>
+<li><p>rocketmq：支持负载均衡。</p>
+</li>
+</ul>
+<p>一个broker通常是一个服务器节点，broker分为master和slave,master和slave存储的数据一样，slave从master同步数据。</p>
+<ol>
+<li><p>nameserver与每个集群成员保持心跳，保存着Topic-Broker路由信息，同一个topic的队列会分布在不同的服务器上。</p>
+</li>
+<li><p>发送消息通过轮询队列的方式发送，每个队列接收平均的消息量。发送消息指定topic、tags、keys，无法指定投递到哪个队列（没有意义，集群消费和广播消费跟消息存放在哪个队列没有关系）。</p>
+</li>
+</ol>
+<p>   tags选填，类似于 Gmail 为每封邮件设置的标签，方便服务器过滤使用。目前只支 持每个消息设置一个 tag，所以也可以类比为 Notify 的 MessageType 概念。</p>
+<p>   keys选填，代表这条消息的业务关键词，服务器会根据 keys 创建哈希索引，设置后， 可以在 Console 系统根据 Topic、Keys 来查询消息，由于是哈希索引，请尽可能 保证 key 唯一，例如订单号，商品 Id 等。</p>
+<ol start="3">
+<li>rocketmq的负载均衡策略规定：Consumer数量应该小于等于Queue数量，如果Consumer超过Queue数量，那么多余的Consumer 将不能消费消息。这一点和kafka是一致的，rocketmq会尽可能地为每一个Consumer分配相同数量的队列，分摊负载。</li>
+</ol>
+<ul>
+<li>activemq：支持负载均衡。可以基于zookeeper实现负载均衡。</li>
+</ul>
+<h2 id="集群方式"><a href="#集群方式" class="headerlink" title="集群方式"></a>集群方式</h2><ul>
+<li><p>Kafka：天然的‘Leader-Slave’无状态集群，每台服务器既是Master也是Slave。</p>
+<p>分区首领均匀地分布在不同的kafka服务器上，分区副本也均匀地分布在不同的kafka服务器上，所以每一台kafka服务器既含有分区首领，同时又含有分区副本，每一台kafka服务器是某一台kafka服务器的Slave，同时也是某一台kafka服务器的leader。</p>
+<p>kafka的集群依赖于zookeeper，zookeeper支持热扩展，所有的broker、消费者、分区都可以动态加入移除，而无需关闭服务，与不依靠zookeeper集群的mq相比，这是最大的优势。</p>
+</li>
+<li><p>rabbitmq：支持简单集群，’复制’模式，对高级集群模式支持不好。</p>
+<p>rabbitmq的每一个节点，不管是单一节点系统或者是集群中的一部分，要么是内存节点，要么是磁盘节点，集群中至少要有一个是磁盘节点。</p>
+<p>在rabbitmq集群中创建队列，集群只会在单个节点创建队列进程和完整的队列信息（元数据、状态、内容），而不是在所有节点上创建。</p>
+<p>引入镜像队列，可以避免单点故障，确保服务的可用性，但是需要人为地为某些重要的队列配置镜像。</p>
+</li>
+<li><p>zeromq：去中心化，不支持集群。</p>
+</li>
+<li><p>rocketmq：常用 多对’Master-Slave’ 模式，开源版本需手动切换Slave变成Master</p>
+<p>Name Server是一个几乎无状态节点，可集群部署，节点之间无任何信息同步。</p>
+<p>Broker部署相对复杂，Broker分为Master与Slave，一个Master可以对应多个Slave，但是一个Slave只能对应一个Master，Master与Slave的对应关系通过指定相同的BrokerName，不同的BrokerId来定义，BrokerId为0表示Master，非0表示Slave。Master也可以部署多个。每个Broker与Name Server集群中的所有节点建立长连接，定时注册Topic信息到所有Name Server。</p>
+<p>Producer与Name Server集群中的其中一个节点（随机选择）建立长连接，定期从Name Server取Topic路由信息，并向提供Topic服务的Master建立长连接，且定时向Master发送心跳。Producer完全无状态，可集群部署。</p>
+<p>Consumer与Name Server集群中的其中一个节点（随机选择）建立长连接，定期从Name Server取Topic路由信息，并向提供Topic服务的Master、Slave建立长连接，且定时向Master、Slave发送心跳。Consumer既可以从Master订阅消息，也可以从Slave订阅消息，订阅规则由Broker配置决定。</p>
+<p>客户端先找到NameServer, 然后通过NameServer再找到 Broker。</p>
+<p>一个topic有多个队列，这些队列会均匀地分布在不同的broker服务器上。rocketmq队列的概念和kafka的分区概念是基本一致的，kafka同一个topic的分区尽可能地分布在不同的broker上，分区副本也会分布在不同的broker上。</p>
+<p>rocketmq集群的slave会从master拉取数据备份，master分布在不同的broker上。</p>
+</li>
+<li><p>activemq：支持简单集群模式，比如’主-备’，对高级集群模式支持不好。</p>
+</li>
+</ul>
+<h2 id="可用性"><a href="#可用性" class="headerlink" title="可用性"></a>可用性</h2><ul>
+<li>Kafka：非常高（分布式） </li>
+<li>rabbitmq：高（主从） </li>
+<li>zeromq：高。</li>
+<li>rocketmq：非常高（分布式）</li>
+<li>activemq：高（主从）</li>
+</ul>
+<h2 id="消息重复"><a href="#消息重复" class="headerlink" title="消息重复"></a>消息重复</h2><ul>
+<li><p>Kafka：支持at least once、at most once</p>
+</li>
+<li><p>rabbitmq：支持at least once、at most once</p>
+</li>
+<li><p>zeromq：只有重传机制，但是没有持久化，消息丢了重传也没有用。既不是at least once、也不是at most once、更不是exactly only once</p>
+</li>
+<li><p>rocketmq：支持at least once</p>
+</li>
+<li><p>activemq：支持at least once</p>
+</li>
+</ul>
+<p>这里我添加一下：<br>At most once：最多一次，消息可能会丢失，但不会重复<br>At least once：最少一次，消息不会丢失，可能会重复<br>Exactly once：只且一次，消息不丢失不重复，只且消费一次</p>
+<h2 id="吞吐量TPS"><a href="#吞吐量TPS" class="headerlink" title="吞吐量TPS"></a>吞吐量TPS</h2><ul>
+<li>Kafka：极大 Kafka按批次发送消息和消费消息。发送端将多个小消息合并，批量发向Broker，消费端每次取出一个批次的消息批量处理。</li>
+<li>rabbitmq：比较大 </li>
+<li>zeromq：极大 </li>
+<li>rocketmq：大 rocketMQ接收端可以批量消费消息，可以配置每次消费的消息数，但是发送端不是批量发送。</li>
+<li>activemq：比较大</li>
+</ul>
+<h2 id="订阅形式和消息分发"><a href="#订阅形式和消息分发" class="headerlink" title="订阅形式和消息分发"></a>订阅形式和消息分发</h2><ul>
+<li><p>Kafka：基于topic以及按照topic进行正则匹配的发布订阅模式。<br>【发送】<br>发送端由topic和key来决定消息发往哪个分区，如果key为null，那么会使用轮询算法将消息均衡地发送到同一个topic的不同分区中。如果key不为null，那么会根据key的hashcode取模计算出要发往的分区。<br>【接收】</p>
+<ol>
+<li><p>consumer向群组协调器broker发送心跳来维持他们和群组的从属关系以及他们对分区的所有权关系，所有权关系一旦被分配就不会改变除非发生再均衡(比如有一个consumer加入或者离开consumer group)，consumer只会从对应的分区读取消息。</p>
+</li>
+<li><p>kafka限制consumer个数要少于分区个数,每个消息只会被同一个 Consumer Group的一个consumer消费（非广播）。</p>
+</li>
+<li><p>kafka的 Consumer Group订阅同一个topic，会尽可能地使得每一个consumer分配到相同数量的分区，不同 Consumer Group订阅同一个主题相互独立，同一个消息会被不同的 Consumer Group处理。</p>
+</li>
+</ol>
+</li>
+<li><p>rabbitmq：提供了4种：direct, topic ,Headers和fanout。<br>【发送】<br>先要声明一个队列，这个队列会被创建或者已经被创建，队列是基本存储单元。<br>由exchange和key决定消息存储在哪个队列。<br>direct -&gt; 发送到和bindingKey完全匹配的队列。</p>
+</li>
+</ul>
+<p>topic -&gt; 路由key是含有”.”的字符串，会发送到含有“*”、“#”进行模糊匹配的bingKey对应的队列。</p>
+<p>fanout -&gt; 与key无关，会发送到所有和exchange绑定的队列</p>
+<p>headers -&gt; 与key无关，消息内容的headers属性（一个键值对）和绑定键值对完全匹配时，会发送到此队列。此方式性能低一般不用<br>【接收】<br>rabbitmq的队列是基本存储单元，不再被分区或者分片，对于我们已经创建了的队列，消费端要指定从哪一个队列接收消息。<br>当rabbitmq队列拥有多个消费者的时候，队列收到的消息将以轮询的分发方式发送给消费者。每条消息只会发送给订阅列表里的一个消费者，不会重复。<br>这种方式非常适合扩展，而且是专门为并发程序设计的。<br>如果某些消费者的任务比较繁重，那么可以设置basicQos限制信道上消费者能保持的最大未确认消息的数量，在达到上限时，rabbitmq不再向这个消费者发送任何消息。</p>
+<ul>
+<li><p>zeromq：点对点(p2p)</p>
+</li>
+<li><p>rocketmq：基于topic&#x2F;messageTag以及按照消息类型、属性进行正则匹配的发布订阅模式<br>【发送】<br>发送消息通过轮询队列的方式发送，每个队列接收平均的消息量。发送消息指定topic、tags、keys，无法指定投递到哪个队列（没有意义，集群消费和广播消费跟消息存放在哪个队列没有关系）。<br>tags选填，类似于 Gmail 为每封邮件设置的标签，方便服务器过滤使用。目前只支 持每个消息设置一个 tag，所以也可以类比为 Notify 的 MessageType 概念。<br>keys选填，代表这条消息的业务关键词，服务器会根据 keys 创建哈希索引，设置后， 可以在 Console 系统根据 Topic、Keys 来查询消息，由于是哈希索引，请尽可能 保证 key 唯一，例如订单号，商品 Id 等。<br>【接收】</p>
+<ol>
+<li>广播消费。一条消息被多个Consumer消费，即使Consumer属于同一个ConsumerGroup，消息也会被ConsumerGroup中的每个Consumer都消费一次。</li>
+<li>集群消费。一个 Consumer Group中的Consumer实例平均分摊消费消息。例如某个Topic有 9 条消息，其中一个Consumer Group有3个实例，那么每个实例只消费其中的 3 条消息。即每一个队列都把消息轮流分发给每个consumer。</li>
+</ol>
+</li>
+<li><p>activemq：点对点(p2p)、广播（发布-订阅）</p>
+</li>
+</ul>
+<p>点对点模式，每个消息只有1个消费者；</p>
+<p>发布&#x2F;订阅模式，每个消息可以有多个消费者。</p>
+<p>【发送】<br>点对点模式：先要指定一个队列，这个队列会被创建或者已经被创建。</p>
+<p>发布&#x2F;订阅模式：先要指定一个topic，这个topic会被创建或者已经被创建。</p>
+<p>【接收】<br>点对点模式：对于已经创建了的队列，消费端要指定从哪一个队列接收消息。</p>
+<p>发布&#x2F;订阅模式：对于已经创建了的topic，消费端要指定订阅哪一个topic的消息。</p>
+<h2 id="顺序消息"><a href="#顺序消息" class="headerlink" title="顺序消息"></a>顺序消息</h2><ul>
+<li>Kafka：支持。</li>
+</ul>
+<p>设置生产者的max.in.flight.requests.per.connection为1，可以保证消息是按照发送顺序写入服务器的，即使发生了重试。</p>
+<p>kafka保证同一个分区里的消息是有序的，但是这种有序分两种情况</p>
+<ol>
+<li><p>key为null，消息逐个被写入不同主机的分区中，但是对于每个分区依然是有序的</p>
+</li>
+<li><p>key不为null , 消息被写入到同一个分区，这个分区的消息都是有序。</p>
+</li>
+</ol>
+<ul>
+<li><p>rabbitmq：不支持</p>
+</li>
+<li><p>zeromq：不支持</p>
+</li>
+<li><p>rocketmq：支持</p>
+</li>
+<li><p>activemq：不支持</p>
+</li>
+</ul>
+<h2 id="消息确认"><a href="#消息确认" class="headerlink" title="消息确认"></a>消息确认</h2><ul>
+<li><p>Kafka：支持。</p>
+<ol>
+<li>发送方确认机制</li>
+</ol>
+</li>
+</ul>
+<p>ack&#x3D;0，不管消息是否成功写入分区</p>
+<p>ack&#x3D;1，消息成功写入首领分区后，返回成功</p>
+<p>ack&#x3D;all，消息成功写入所有分区后，返回成功。</p>
+<ol start="2">
+<li>接收方确认机制</li>
+</ol>
+<p>自动或者手动提交分区偏移量，早期版本的kafka偏移量是提交给Zookeeper的，这样使得zookeeper的压力比较大，更新版本的kafka的偏移量是提交给kafka服务器的，不再依赖于zookeeper群组，集群的性能更加稳定。</p>
+<ul>
+<li><p>rabbitmq：支持。</p>
+<ol>
+<li><p>发送方确认机制，消息被投递到所有匹配的队列后，返回成功。如果消息和队列是可持久化的，那么在写入磁盘后，返回成功。支持批量确认和异步确认。</p>
+</li>
+<li><p>接收方确认机制，设置autoAck为false，需要显式确认，设置autoAck为true，自动确认。</p>
+</li>
+</ol>
+</li>
+</ul>
+<p>当autoAck为false的时候，rabbitmq队列会分成两部分，一部分是等待投递给consumer的消息，一部分是已经投递但是没收到确认的消息。如果一直没有收到确认信号，并且consumer已经断开连接，rabbitmq会安排这个消息重新进入队列，投递给原来的消费者或者下一个消费者。</p>
+<p>未确认的消息不会有过期时间，如果一直没有确认，并且没有断开连接，rabbitmq会一直等待，rabbitmq允许一条消息处理的时间可以很久很久。</p>
+<ul>
+<li><p>zeromq：支持。</p>
+</li>
+<li><p>rocketmq：支持。</p>
+</li>
+<li><p>activemq：支持。</p>
+</li>
+</ul>
+<h2 id="消息回溯"><a href="#消息回溯" class="headerlink" title="消息回溯"></a>消息回溯</h2><ul>
+<li>Kafka：支持指定分区offset位置的回溯。</li>
+<li>rabbitmq：不支持</li>
+<li>zeromq：不支持</li>
+<li>rocketmq：支持指定时间点的回溯。</li>
+<li>activemq：不支持</li>
+</ul>
+<h2 id="消息重试"><a href="#消息重试" class="headerlink" title="消息重试"></a>消息重试</h2><ul>
+<li><p>Kafka：不支持，但是可以实现。</p>
+</li>
+<li><p>kafka支持指定分区offset位置的回溯，可以实现消息重试。</p>
+</li>
+<li><p>rabbitmq：不支持，但是可以利用消息确认机制实现。</p>
+</li>
+<li><p>rabbitmq接收方确认机制，设置autoAck为false。</p>
+<p>当autoAck为false的时候，rabbitmq队列会分成两部分，一部分是等待投递给consumer的消息，一部分是已经投递但是没收到确认的消息。如果一直没有收到确认信号，并且consumer已经断开连接，rabbitmq会安排这个消息重新进入队列，投递给原来的消费者或者下一个消费者。</p>
+</li>
+<li><p>zeromq：不支持，</p>
+</li>
+<li><p>rocketmq：支持。</p>
+<p>消息消费失败的大部分场景下，立即重试99%都会失败，所以rocketmq的策略是在消费失败时定时重试，每次时间间隔相同。</p>
+<ol>
+<li>发送端的 send 方法本身支持内部重试，重试逻辑如下：</li>
+</ol>
+<ul>
+<li><p>至多重试3次；</p>
+</li>
+<li><p>如果发送失败，则轮转到下一个broker；</p>
+</li>
+<li><p>这个方法的总耗时不超过sendMsgTimeout 设置的值，默认 10s，超过时间不在重试。</p>
+</li>
+</ul>
+<ol start="2">
+<li>接收端。</li>
+</ol>
+</li>
+</ul>
+<p>Consumer 消费消息失败后，要提供一种重试机制，令消息再消费一次。Consumer 消费消息失败通常可以分为以下两种情况：</p>
+<pre><code>- 由于消息本身的原因，例如反序列化失败，消息数据本身无法处理（例如话费充值，当前消息的手机号被注销，无法充值）等。定时重试机制，比如过 10s 秒后再重试。
+  
+- 由于依赖的下游应用服务不可用，例如 db 连接不可用，外系统网络不可达等。即使跳过当前失败的消息，消费其他消息同样也会报错。这种情况可以 sleep 30s，再消费下一条消息，减轻 Broker 重试消息的压力。
+</code></pre>
+<ul>
+<li>activemq：不支持</li>
+</ul>
+<h2 id="并发度"><a href="#并发度" class="headerlink" title="并发度"></a>并发度</h2><ul>
+<li><p>Kafka：高</p>
+<p>一个线程一个消费者，kafka限制消费者的个数要小于等于分区数，如果要提高并行度，可以在消费者中再开启多线程，或者增加consumer实例数量。</p>
+</li>
+<li><p>rabbitmq：极高</p>
+<p>本身是用Erlang语言写的，并发性能高。</p>
+<p>可在消费者中开启多线程，最常用的做法是一个channel对应一个消费者，每一个线程把持一个channel，多个线程复用connection的tcp连接，减少性能开销。</p>
+<p>当rabbitmq队列拥有多个消费者的时候，队列收到的消息将以轮询的分发方式发送给消费者。每条消息只会发送给订阅列表里的一个消费者，不会重复。</p>
+<p>这种方式非常适合扩展，而且是专门为并发程序设计的。</p>
+<p>如果某些消费者的任务比较繁重，那么可以设置basicQos限制信道上消费者能保持的最大未确认消息的数量，在达到上限时，rabbitmq不再向这个消费者发送任何消息。</p>
+</li>
+<li><p>zeromq：高</p>
+</li>
+<li><p>rocketmq：高</p>
+<ol>
+<li><p>rocketmq限制消费者的个数少于等于队列数，但是可以在消费者中再开启多线程，这一点和kafka是一致的，提高并行度的方法相同。</p>
+<p>修改消费并行度方法：</p>
+<ul>
+<li><p>同一个 ConsumerGroup 下，通过增加 Consumer 实例数量来提高并行度，超过订阅队列数的 Consumer实例无效。</p>
+</li>
+<li><p>提高单个 Consumer 的消费并行线程，通过修改参数consumeThreadMin、consumeThreadMax</p>
+</li>
+</ul>
+</li>
+<li><p>同一个网络连接connection，客户端多个线程可以同时发送请求，连接会被复用，减少性能开销。</p>
+</li>
+</ol>
+</li>
+<li><p>activemq：高</p>
+<p>单个ActiveMQ的接收和消费消息的速度在1万笔&#x2F;秒（持久化 一般为1-2万， 非持久化 2 万以上），在生产环境中部署10个Activemq就能达到10万笔&#x2F;秒以上的性能，部署越多的activemq broker 在MQ上latency也就越低，系统吞吐量也就越高。</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RabbitMQ/" rel="tag"># RabbitMQ</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/12/07/linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E9%85%8Dwin7%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84frp/" rel="prev" title="linux服务器搭配win7客户端的frp">
+                  <i class="fa fa-chevron-left"></i> linux服务器搭配win7客户端的frp
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/12/21/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%EF%BC%8C%E5%90%AF%E5%8A%A8slave%E6%97%B6%E6%8A%A5%E9%94%99/" rel="next" title="MySQL主从复制，启动slave时报错Slave failed to initialize relay log info structure from the repository">
+                  MySQL主从复制，启动slave时报错Slave failed to initialize relay log info structure from the repository <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

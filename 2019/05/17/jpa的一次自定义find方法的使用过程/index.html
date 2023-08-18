@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一次jpa自定义查询方法的使用尝试过程项目需求目前客户有一个需求：每一个用户想要看到的帖子顺序都不一样，用户可以按照自己的喜好排列帖子顺序，并且可以手动把某个帖子置顶显示。现在项目数据交互使用的框架是spring-boot-starter-data-jpa。之前因为项目的工期很赶，所写的代码为直接使用jpa的findAll方法即可满足查询。现在查询条件的变化后，我想要在原本的基础上改动的内容越小越">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jpa的一次自定义find方法的使用过程">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2019/05/17/jpa%E7%9A%84%E4%B8%80%E6%AC%A1%E8%87%AA%E5%AE%9A%E4%B9%89find%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="一次jpa自定义查询方法的使用尝试过程项目需求目前客户有一个需求：每一个用户想要看到的帖子顺序都不一样，用户可以按照自己的喜好排列帖子顺序，并且可以手动把某个帖子置顶显示。现在项目数据交互使用的框架是spring-boot-starter-data-jpa。之前因为项目的工期很赶，所写的代码为直接使用jpa的findAll方法即可满足查询。现在查询条件的变化后，我想要在原本的基础上改动的内容越小越">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-17T14:22:54.000Z">
+<meta property="article:modified_time" content="2020-05-28T09:59:41.665Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="jpa">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2019/05/17/jpa%E7%9A%84%E4%B8%80%E6%AC%A1%E8%87%AA%E5%AE%9A%E4%B9%89find%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2019/05/17/jpa%E7%9A%84%E4%B8%80%E6%AC%A1%E8%87%AA%E5%AE%9A%E4%B9%89find%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B/","path":"2019/05/17/jpa的一次自定义find方法的使用过程/","title":"jpa的一次自定义find方法的使用过程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>jpa的一次自定义find方法的使用过程 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E6%AC%A1jpa%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9F%A5%E8%AF%A2%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8%E5%B0%9D%E8%AF%95%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">一次jpa自定义查询方法的使用尝试过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E9%9C%80%E6%B1%82"><span class="nav-number">1.1.</span> <span class="nav-text">项目需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%9D%E8%AF%95%E8%BF%87%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">尝试过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%B0%9D%E8%AF%95"><span class="nav-number">1.2.1.</span> <span class="nav-text">第一次尝试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%B9%E6%B3%95%E5%90%8D"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">自定义方法名</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E5%B0%9D%E8%AF%95"><span class="nav-number">1.2.2.</span> <span class="nav-text">第二次尝试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-matchers"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Example matchers</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E6%AC%A1%E5%B0%9D%E8%AF%95"><span class="nav-number">1.2.3.</span> <span class="nav-text">第四次尝试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JpaSpecificationExecutor"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">JpaSpecificationExecutor</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E7%9A%84%E7%BB%93%E5%B1%80"><span class="nav-number">1.2.4.</span> <span class="nav-text">最终的结局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%94%9Fsql%EF%BC%8CQuery%E6%B3%A8%E9%87%8A"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">原生sql，Query注释</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E8%AE%B0%EF%BC%9A"><span class="nav-number">1.3.</span> <span class="nav-text">后记：</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2019/05/17/jpa%E7%9A%84%E4%B8%80%E6%AC%A1%E8%87%AA%E5%AE%9A%E4%B9%89find%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="jpa的一次自定义find方法的使用过程 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          jpa的一次自定义find方法的使用过程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-05-17 22:22:54" itemprop="dateCreated datePublished" datetime="2019-05-17T22:22:54+08:00">2019-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-05-28 17:59:41" itemprop="dateModified" datetime="2020-05-28T17:59:41+08:00">2020-05-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="一次jpa自定义查询方法的使用尝试过程"><a href="#一次jpa自定义查询方法的使用尝试过程" class="headerlink" title="一次jpa自定义查询方法的使用尝试过程"></a>一次jpa自定义查询方法的使用尝试过程</h1><h2 id="项目需求"><a href="#项目需求" class="headerlink" title="项目需求"></a>项目需求</h2><p>目前客户有一个需求：每一个用户想要看到的帖子顺序都不一样，用户可以按照自己的喜好排列帖子顺序，并且可以手动把某个帖子置顶显示。<br>现在项目数据交互使用的框架是spring-boot-starter-data-jpa。之前因为项目的工期很赶，所写的代码为直接使用jpa的findAll方法即可满足查询。现在查询条件的变化后，我想要在原本的基础上改动的内容越小越好。</p>
+<span id="more"></span>
+
+<h2 id="尝试过程"><a href="#尝试过程" class="headerlink" title="尝试过程"></a>尝试过程</h2><h3 id="第一次尝试"><a href="#第一次尝试" class="headerlink" title="第一次尝试"></a>第一次尝试</h3><p>我尝试使用下面的命名方式去直接自定义查询方法，来根据userId属性查询所关联的权重表，再根据权重表来查询到帖子表进行排序。<br>然而这种方法只能查询到这个用户已经排序过的帖子，并不可以看得到没有和该用户关联的帖子。放弃</p>
+<h4 id="自定义方法名"><a href="#自定义方法名" class="headerlink" title="自定义方法名"></a>自定义方法名</h4><p>jpa框架在进行方法名解析时，会先把方法名多余的前缀截取掉，比如 find、findBy、read、readBy、get、getBy，然后对剩下部分进行解析。并且如果方法的最后一个参数是 Sort 或者 Pageable 类型，也会提取相关的信息，以便按规则进行排序或者分页查询。</p>
+<p>在创建查询时，我们通过在方法名中使用属性名称来表达，比如 findByUserAddressZip ()。框架在解析该方法时，首先剔除 findBy，然后对剩下的属性进行解析，详细规则如下（此处假设该方法针对的域对象为 AccountInfo 类型）：</p>
+<ul>
+<li>先判断 userAddressZip （根据 POJO 规范，首字母变为小写，下同）是否为 AccountInfo 的一个属性，如果是，则表示根据该属性进行查询；如果没有该属性，继续第二步；</li>
+<li>从右往左截取第一个大写字母开头的字符串（此处为 Zip），然后检查剩下的字符串是否为 AccountInfo 的一个属性，如果是，则表示根据该属性进行查询；如果没有该属性，则重复第二步，继续从右往左截取；最后假设 user 为 AccountInfo 的一个属性；</li>
+<li>接着处理剩下部分（ AddressZip ），先判断 user 所对应的类型是否有 addressZip 属性，如果有，则表示该方法最终是根据 “AccountInfo.user.addressZip” 的取值进行查询；否则继续按照步骤 2 的规则从右往左截取，最终表示根据 “AccountInfo.user.address.zip” 的值进行查询。</li>
+</ul>
+<p>可能会存在一种特殊情况，比如 AccountInfo 包含一个 user 的属性，也有一个 userAddress 属性，此时会存在混淆。读者可以明确在属性之间加上下划线以显式表达意图，比如 “findByUser_AddressZip()” 或者 “findByUserAddress_Zip()”。</p>
+<p>在查询时，通常需要同时根据多个属性进行查询，且查询的条件也格式各样（大于某个值、在某个范围等等），Spring Data JPA 为此提供了一些表达条件查询的关键字，大致如下：</p>
+<ul>
+<li>And — 等价于 SQL 中的 and 关键字，比如 findByUsernameAndPassword(String user, Striang pwd)；</li>
+<li>Or — 等价于 SQL 中的 or 关键字，比如 findByUsernameOrAddress(String user, String addr)；</li>
+<li>Between — 等价于 SQL 中的 between 关键字，比如 findBySalaryBetween(int max, int min)；</li>
+<li>LessThan — 等价于 SQL 中的 “&lt;”，比如 findBySalaryLessThan(int max)；</li>
+<li>GreaterThan — 等价于 SQL 中的”&gt;”，比如 findBySalaryGreaterThan(int min)；</li>
+<li>IsNull — 等价于 SQL 中的 “is null”，比如 findByUsernameIsNull()；</li>
+<li>IsNotNull — 等价于 SQL 中的 “is not null”，比如 findByUsernameIsNotNull()；</li>
+<li>NotNull — 与 IsNotNull 等价；</li>
+<li>Like — 等价于 SQL 中的 “like”，比如 findByUsernameLike(String user)；</li>
+<li>NotLike — 等价于 SQL 中的 “not like”，比如 findByUsernameNotLike(String user)；</li>
+<li>OrderBy — 等价于 SQL 中的 “order by”，比如 findByUsernameOrderBySalaryAsc(String user)；</li>
+<li>Not — 等价于 SQL 中的 “！ &#x3D;”，比如 findByUsernameNot(String user)；</li>
+<li>In — 等价于 SQL 中的 “in”，比如 findByUsernameIn(Collection<String> userList) ，方法的参数可以是 Collection 类型，也可以是数组或者不定长参数；</li>
+<li>NotIn — 等价于 SQL 中的 “not in”，比如 findByUsernameNotIn(Collection<String> userList) ，方法的参数可以是 Collection 类型，也可以是数组或者不定长参数；</li>
+</ul>
+<h3 id="第二次尝试"><a href="#第二次尝试" class="headerlink" title="第二次尝试"></a>第二次尝试</h3><p>在网上搜索相关文章时突然发现了这个Api查询条件的限制类，仔细查找研究了一下。发现还是没有找到可以解决这个的方案。</p>
+<h4 id="Example-matchers"><a href="#Example-matchers" class="headerlink" title="Example matchers"></a>Example matchers</h4><p>首先，仓库接口需要继承<code>QueryByExampleExecutor</code>接口（继承这个 <code>JpaSpecificationExecutor</code> 也行），这样会引入一组以Example作参数的方法。然后创建一个<code>ExampleMatcher</code>对象，最后再用<code>Example</code>的of方法构造相应的Example对象并传递给相关查询方法。</p>
+<p>Example不仅仅局限于默认的设置。你可以给strings定义自己的默认值然后去匹配。使用<code>ExampleMatcher</code>绑定null和特定属性的设置。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Person</span> <span class="variable">person</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>();                          </span><br><span class="line">person.setFirstname(<span class="string">&quot;Dave&quot;</span>);                           </span><br><span class="line"></span><br><span class="line"><span class="type">ExampleMatcher</span> <span class="variable">matcher</span> <span class="operator">=</span> ExampleMatcher.matching()    </span><br><span class="line">  .withMatcher(<span class="string">&quot;username&quot;</span>, ExampleMatcher.GenericPropertyMatchers.startsWith())  <span class="comment">//模糊查询匹配开头，即&#123;username&#125;%</span></span><br><span class="line">  .withMatcher(<span class="string">&quot;address&quot;</span> ,ExampleMatcher.GenericPropertyMatchers.contains())  <span class="comment">//全部模糊查询，即%&#123;address&#125;%</span></span><br><span class="line">  .withIgnorePaths(<span class="string">&quot;lastname&quot;</span>)  <span class="comment">//忽略字段，即不管lastname是什么值都不加入查询条件                 </span></span><br><span class="line">  .withIncludeNullValues()       </span><br><span class="line">  .withStringMatcherEnding();                          </span><br><span class="line"></span><br><span class="line">Example&lt;Person&gt; example = Example.of(person, matcher); </span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li><code>Person person = new Person();</code> 创建一个domain对象实例。</li>
+<li>设置属性值去查询。</li>
+<li><code>ExampleMatcher matcher = ExampleMatcher.matching()</code> 创建一个 <code>ExampleMatcher</code> 让其可以使用，但没有多余的配置项。</li>
+<li><code>.withIgnorePaths(&quot;lastname&quot;)</code> Construct a new ExampleMatcher to ignore the property path lastname。用来排除某个属性的查询。</li>
+<li><code>.withIncludeNullValues()</code> Construct a new ExampleMatcher to ignore the property path lastname and to include null values。让空值也参与查询。</li>
+<li><code>.withStringMatcherEnding();</code>  Construct a new ExampleMatcher to ignore the property path lastname, to include null values, and use perform suffix string matching。匹配后缀字符串</li>
+<li><code>Example&lt;Person&gt; example = Example.of(person, matcher);</code> 根据domain对象和配置的<code>ExampleMatcher</code>对象来创建一个<code>Example</code></li>
+</ul>
+<p>还可以给个别的属性指定行为.(比如.<code>firstname</code>和<code>lastname</code>以及domain对象的嵌套属性<code>address.city</code>) </p>
+<ul>
+<li><code>.ignoreCase()</code> 可以调整他让他匹配大小写敏感的选项。</li>
+<li><code>endsWith</code> 以<code>firstname</code> 结束的前模糊查询。</li>
+<li><code>startWith</code> 以<code>lastname</code>开始的后模糊查询。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ExampleMatcher</span> <span class="variable">matcher</span> <span class="operator">=</span> ExampleMatcher.matching()</span><br><span class="line">  .withMatcher(<span class="string">&quot;firstname&quot;</span>, endsWith())</span><br><span class="line">  .withMatcher(<span class="string">&quot;lastname&quot;</span>, startsWith().ignoreCase());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第四次尝试"><a href="#第四次尝试" class="headerlink" title="第四次尝试"></a>第四次尝试</h3><p>没办法，要改动的步骤越来越大。以上的方法都不行的前提下，我只好试了试 <code>Specification</code> 作为 <code>findAll</code> 的参数这种方法。可是虽然用起来要改动的代码很少，但是还是不能查询到我想要的查询结果。查询条件只能加在where上面，而我想要的是用户排过序的加入条件查询，没有排过序的也要排列在后面。</p>
+<h4 id="JpaSpecificationExecutor"><a href="#JpaSpecificationExecutor" class="headerlink" title="JpaSpecificationExecutor"></a>JpaSpecificationExecutor</h4><p>首先，仓库接口要继承 <code>JpaSpecificationExecutor&lt;T&gt;</code> 这个类，之后就可以使用 <code>findAll(Specification&lt;T&gt; spec)</code>等方法了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Specification</span> <span class="variable">specification</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Specification</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Predicate <span class="title function_">toPredicate</span><span class="params">(Root root, CriteriaQuery query,</span></span><br><span class="line"><span class="params">        CriteriaBuilder cb)</span> &#123;</span><br><span class="line">        List&lt;Predicate&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (Objects.nonNull(<span class="string">&quot;1&quot;</span>)) &#123;</span><br><span class="line">            Join&lt;WeightSort, ProjectInfo&gt; join = root.join(<span class="string">&quot;weightSort&quot;</span>, JoinType.LEFT);</span><br><span class="line">            list.add(cb.equal(join.get(<span class="string">&quot;user&quot;</span>).get(<span class="string">&quot;username&quot;</span>), <span class="string">&quot;zs&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (Objects.nonNull(param.getYear())) &#123;</span><br><span class="line">            list.add(cb.equal(root.get(<span class="string">&quot;year&quot;</span>), param.getYear()));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (Objects.nonNull(param.getTag())) &#123;</span><br><span class="line">            list.add(cb.like(root.get(<span class="string">&quot;tag&quot;</span>), param.getTag() + <span class="string">&quot;%&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> query.where(list.toArray(<span class="keyword">new</span> <span class="title class_">Predicate</span>[<span class="number">0</span>])).getRestriction();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Page&lt;ProjectInfo&gt; projectInfoPageTest = projectInfoRepository.findAll(specification, page);</span><br><span class="line">projectInfoPageTest.stream().forEach(projectInfo -&gt; &#123;</span><br><span class="line">    System.out.println(projectInfo.getId());</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<ul>
+<li><code>join</code> 为外键关联查询，通过 <code>project</code> 类中的 <code>WeightSort weightSort；</code>中的 <code>User user</code> 中的 <code>String username</code>属性来作为条件查询。该条件加在where后面。</li>
+<li><code>cb.equal</code> 为匹配查询，相当于where后面的&#x3D;号属性查询。</li>
+<li><code>cb.like</code> 为模糊匹配查询，相当于where后面的like属性查询。</li>
+</ul>
+<p>上面的代码产生的sql语句为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	p.<span class="operator">*</span> </span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	bs_project_info p</span><br><span class="line">	<span class="keyword">LEFT</span> <span class="keyword">JOIN</span> bs_project_info_weight_sorts pw <span class="keyword">ON</span> p.id <span class="operator">=</span> pw.project_info_id</span><br><span class="line">	<span class="keyword">LEFT</span> <span class="keyword">JOIN</span> bs_weight_sort w <span class="keyword">ON</span> w.id <span class="operator">=</span> pw.weight_sorts_id</span><br><span class="line">	<span class="keyword">LEFT</span> <span class="keyword">JOIN</span> <span class="built_in">system_user</span> u <span class="keyword">ON</span> u.id <span class="operator">=</span> w.user_id</span><br><span class="line">	<span class="keyword">WHERE</span></span><br><span class="line">	 u.username <span class="operator">=</span> <span class="string">&#x27;zs&#x27;</span></span><br><span class="line">	 <span class="keyword">and</span> p.year <span class="operator">=</span> <span class="number">2019</span></span><br><span class="line">	 <span class="keyword">and</span> p.tag <span class="keyword">like</span> <span class="string">&#x27;sql%&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>但是这种方法还是要写很多行代码，不如把之前的原本的 <code>findAll(Example example)</code> 利用起来。<br>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Example</span> <span class="variable">example</span> <span class="operator">=</span> Example.of(ProjectInfo.builder().weightSort(<span class="literal">null</span>).build());</span><br><span class="line">Page&lt;ProjectInfo&gt; pages = projectInfoRepository.findAll((root, query, cb) -&gt; &#123;</span><br><span class="line">   List&lt;Predicate&gt; predicates = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    predicates.add(QueryByExamplePredicateBuilder.getPredicate(root, cb, example));</span><br><span class="line"></span><br><span class="line">    Join&lt;WeightSort, ProjectInfo&gt; join = root.join(<span class="string">&quot;weightSort&quot;</span>, JoinType.LEFT);</span><br><span class="line">    predicates.add(cb.equal(join.get(<span class="string">&quot;user&quot;</span>).get(<span class="string">&quot;username&quot;</span>), <span class="string">&quot;zs&quot;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> query.where(predicates.toArray(<span class="keyword">new</span> <span class="title class_">Predicate</span>[<span class="number">0</span>])).getRestriction();</span><br><span class="line">&#125;, page);</span><br><span class="line">pages.stream().forEach(projectInfo -&gt; &#123;</span><br><span class="line">    System.out.println(projectInfo.getId());</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以把一些属性相等的条件放进 <code>Example</code> 类里，而且该类本就支持不加入null的条件查询。不用再去判断传入参数为null时不做条件查询。利用上jpa的动态条件查询，节省了很多行代码。</p>
+<h3 id="最终的结局"><a href="#最终的结局" class="headerlink" title="最终的结局"></a>最终的结局</h3><p>没办法，实在是没有找到可以解决这个问题的方法。只好直接使用原生sql语句来满足需求。</p>
+<h4 id="原生sql，Query注释"><a href="#原生sql，Query注释" class="headerlink" title="原生sql，Query注释"></a>原生sql，Query注释</h4><p>@Query 注解的使用非常简单，只需在声明的方法上面标注该注解，同时提供一个 JP QL 查询语句即可，如下所示：</p>
+<p>使用 @Query 提供自定义查询语句示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Query(value = &quot;SELECT &quot;</span></span><br><span class="line"><span class="meta">        + &quot;p.* &quot;</span></span><br><span class="line"><span class="meta">        + &quot; FROM &quot;</span></span><br><span class="line"><span class="meta">        + &quot; bs_project_info p &quot;</span></span><br><span class="line"><span class="meta">        + &quot; LEFT JOIN ( bs_project_info_weight_sorts pw JOIN bs_weight_sort w ON w.id = pw.weight_sorts_id AND w.user_id = :#&#123;#param.userId&#125; )</span></span><br><span class="line"><span class="meta">        +  ON pw.project_info_id = p.id &quot;</span></span><br><span class="line"><span class="meta">        + &quot;where  &quot;</span></span><br><span class="line"><span class="meta">        + &quot; IF( :#&#123;#param.name&#125; IS NOT null, p.name= :#&#123;#param.name&#125;,  1=1) and &quot;</span></span><br><span class="line"><span class="meta">        + &quot; IF( :#&#123;#param.year&#125; IS NOT null, p.year = :#&#123;#param.year&#125;,  1=1) and &quot;</span></span><br><span class="line"><span class="meta">        + &quot; IF( :#&#123;#param.review&#125; IS NOT null, p.review = :#&#123;#param.review&#125;,  1=1) &quot;</span></span><br><span class="line"><span class="meta">        + &quot;ORDER BY &quot;</span></span><br><span class="line"><span class="meta">        + &quot;w.weight desc, p.create_time desc limit :#&#123;#param.pageStart&#125;, :#&#123;#param.sizeStart&#125;&quot;, nativeQuery=true)</span></span><br><span class="line">    List&lt;ProjectInfo&gt; <span class="title function_">findAllPageProjectByParam</span><span class="params">(<span class="meta">@Param(&quot;param&quot;)</span> FindProjectParam param)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>输入参数 <code>FindProjectParam</code> 类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ApiModel</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Builder</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@FieldDefaults(level = AccessLevel.PRIVATE)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FindProjectParam</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiModelProperty(value =&quot;名称(不填为全部)&quot;, example = Mock.SPECIALNAMEID)</span></span><br><span class="line">    Long name;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@ApiModelProperty(value =&quot;年度(不填为全部)&quot;, example = &quot;2019&quot;)</span></span><br><span class="line">    Integer year;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@ApiModelProperty(value =&quot;项目状态(3-待提交，1-已提交)(不填为全部)&quot;, example = Mock.REVIEW)</span></span><br><span class="line">    Integer review;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@ApiModelProperty(value =&quot;用户id&quot;, example = Mock.USERNAME)</span></span><br><span class="line">    Long userId;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@ApiModelProperty(value =&quot;页数&quot;)</span></span><br><span class="line">    Integer pageStart;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@ApiModelProperty(value =&quot;条数&quot;)</span></span><br><span class="line">    Integer sizeStart;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>查询 <code>ProjectInfo</code> 类（数据库表名为：bs_project_info）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yiring.finance.domain.projectinfo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yiring.finance.domain.constructioncontent.ConstructionContent;</span><br><span class="line"><span class="keyword">import</span> com.yiring.finance.domain.dictionary.DictionaryType;</span><br><span class="line"><span class="keyword">import</span> com.yiring.finance.domain.guide.Guide;</span><br><span class="line"><span class="keyword">import</span> com.yiring.finance.domain.uploadfile.FileOperation;</span><br><span class="line"><span class="keyword">import</span> com.yiring.finance.domain.weightsort.WeightSort;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiModelProperty;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime;</span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.CascadeType;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Column;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Entity;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.FetchType;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.GeneratedValue;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.GenerationType;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Id;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.ManyToOne;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.OneToMany;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Table;</span><br><span class="line"><span class="keyword">import</span> lombok.AccessLevel;</span><br><span class="line"><span class="keyword">import</span> lombok.AllArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.Builder;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> lombok.NoArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.experimental.FieldDefaults;</span><br><span class="line"><span class="keyword">import</span> org.hibernate.annotaions.Comment;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 项目</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> zhangshuai</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/4/16 17:31</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Builder</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@FieldDefaults(level = AccessLevel.PRIVATE)</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Comment(&quot;项目&quot;)</span></span><br><span class="line"><span class="meta">@Table(name = &quot;bs_project_info&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProjectInfo</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> -<span class="number">2079824786038520972L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;主键&quot;)</span></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span></span><br><span class="line">    Long id;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;项目名称&quot;)</span></span><br><span class="line">    <span class="meta">@ApiModelProperty(value =&quot;区域项目名称&quot;, example = &quot;2&quot;, required = true)</span></span><br><span class="line">    String projectName;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;申报年份&quot;)</span></span><br><span class="line">    <span class="meta">@ApiModelProperty(value =&quot;申报年份&quot;, example = &quot;2&quot;, required = true)</span></span><br><span class="line">    Integer year;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;创建时间&quot;)</span></span><br><span class="line">    <span class="meta">@ApiModelProperty(value =&quot;创建时间&quot;, example = &quot;2&quot;, required = true)</span></span><br><span class="line">    LocalDateTime createTime;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="meta">@Builder</span>.Default</span><br><span class="line">    <span class="meta">@Comment(&quot;权重&quot;)</span></span><br><span class="line">    <span class="meta">@ApiModelProperty(value =&quot;权重&quot;, required = true)</span></span><br><span class="line">    <span class="meta">@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)</span></span><br><span class="line">    Set&lt;WeightSort&gt; weightSorts = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>关联权重<code>WeightSort</code>类（数据库名：bs_weight_sort）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yiring.finance.domain.weightsort;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yiring.finance.domain.user.User;</span><br><span class="line"><span class="keyword">import</span> io.swagger.annotations.ApiModelProperty;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Entity;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.GeneratedValue;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.GenerationType;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Id;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.ManyToOne;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Table;</span><br><span class="line"><span class="keyword">import</span> lombok.AccessLevel;</span><br><span class="line"><span class="keyword">import</span> lombok.AllArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.Builder;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> lombok.NoArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.experimental.FieldDefaults;</span><br><span class="line"><span class="keyword">import</span> org.hibernate.annotaions.Comment;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 用户关联项目权重表</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> zhangshuai</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/5/9 11:09</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Builder</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@FieldDefaults(level = AccessLevel.PRIVATE)</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Comment(&quot;权重表&quot;)</span></span><br><span class="line"><span class="meta">@Table(name = &quot;bs_weight_sort&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WeightSort</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> <span class="number">1009267440536346667L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;主键&quot;)</span></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span></span><br><span class="line">    <span class="meta">@ApiModelProperty(value =&quot;主键&quot;, example = &quot;2&quot;)</span></span><br><span class="line">    Long id;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;绑定用户&quot;)</span></span><br><span class="line">    <span class="meta">@ApiModelProperty(value =&quot;绑定用户&quot;)</span></span><br><span class="line">    <span class="meta">@ManyToOne</span></span><br><span class="line">    User user;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;权重&quot;)</span></span><br><span class="line">    <span class="meta">@ApiModelProperty(value =&quot;权重&quot;, example = &quot;2&quot;)</span></span><br><span class="line">    Long weight;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>关联用户<code>User</code>表（数据库表名：SYSTEM_USER）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yiring.finance.domain.user;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yiring.finance.domain.dictionary.DictionaryType;</span><br><span class="line"><span class="keyword">import</span> com.yiring.finance.domain.permission.Permission;</span><br><span class="line"><span class="keyword">import</span> com.yiring.finance.domain.role.Role;</span><br><span class="line"><span class="keyword">import</span> com.yiring.finance.secruity.JwtUser;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime;</span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"><span class="keyword">import</span> java.util.stream.Collectors;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.CascadeType;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Column;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Entity;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.FetchType;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.GeneratedValue;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.GenerationType;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Id;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Index;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.ManyToMany;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.ManyToOne;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.OneToOne;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Table;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Transient;</span><br><span class="line"><span class="keyword">import</span> lombok.AccessLevel;</span><br><span class="line"><span class="keyword">import</span> lombok.AllArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.Builder;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> lombok.NoArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.experimental.FieldDefaults;</span><br><span class="line"><span class="keyword">import</span> org.hibernate.annotaions.Comment;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 用户</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> fangzhimin</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2018/9/3 15:27</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Builder</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@FieldDefaults(level = AccessLevel.PRIVATE)</span></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Comment(&quot;用户&quot;)</span></span><br><span class="line"><span class="meta">@Table(name = &quot;SYSTEM_USER&quot;, indexes = &#123;</span></span><br><span class="line"><span class="meta">        @Index(name = &quot;IDX_USERNAME&quot;, columnList = &quot;username&quot;, unique = true),</span></span><br><span class="line"><span class="meta">        @Index(name = &quot;IDX_MOBILE&quot;, columnList = &quot;mobile&quot;, unique = true),</span></span><br><span class="line"><span class="meta">        @Index(name = &quot;IDX_EMAIL&quot;, columnList = &quot;email&quot;, unique = true)</span></span><br><span class="line"><span class="meta">&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> -<span class="number">5787847701210907511L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;主键&quot;)</span></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span></span><br><span class="line">    Long id;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;真实姓名&quot;)</span></span><br><span class="line">    String realName;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;用户名&quot;)</span></span><br><span class="line">    <span class="meta">@Column(unique = true)</span></span><br><span class="line">    String username;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;密码&quot;)</span></span><br><span class="line">    String password;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;手机号&quot;)</span></span><br><span class="line">    <span class="meta">@Column(unique = true)</span></span><br><span class="line">    String mobile;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;最后登录IP地址&quot;)</span></span><br><span class="line">    String lastLoginIp;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;激活时间&quot;)</span></span><br><span class="line">    LocalDateTime activationTime;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;权限更新时间&quot;)</span></span><br><span class="line">    LocalDateTime authorityUpdateTime;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;最后重置密码时间&quot;)</span></span><br><span class="line">    LocalDateTime lastPasswordResetTime;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;最后登录时间&quot;)</span></span><br><span class="line">    LocalDateTime lastLoginTime;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;最后更新信息时间&quot;)</span></span><br><span class="line">    LocalDateTime lastUpdateTime;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Comment(&quot;创建时间&quot;)</span></span><br><span class="line">    LocalDateTime createTime;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 验证码（非持久化）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Transient</span></span><br><span class="line">    String code;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * token（非持久化）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Transient</span></span><br><span class="line">    String token;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="后记："><a href="#后记：" class="headerlink" title="后记："></a>后记：</h2><p>主要还是卡在了不能创建临时表之后查询。大佬自己查询操作了一下构建CriteriaQuery这个类。但是还是不能解决这个问题。只能先记录一下，等待以后的解决。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/jpa/" rel="tag"># jpa</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/05/08/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E5%B4%A9%E6%BA%83%E5%90%8E%E7%9A%84%E6%8B%AF%E6%95%91%E8%A1%8C%E5%8A%A8/" rel="prev" title="记录一次主从同步崩溃后的拯救行动">
+                  <i class="fa fa-chevron-left"></i> 记录一次主从同步崩溃后的拯救行动
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/01/%E6%97%A5%E5%B8%B8%E4%B8%9A%E5%8A%A1%E5%92%8Chadoop%E5%88%9D%E5%AD%A6/" rel="next" title="日常业务和hadoop初学">
+                  日常业务和hadoop初学 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="使用show profile进行mysql调优 本文首先参考《高性能 MySQL（第三版）》中的第3章第3节剖析MySQL查询">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用show profile进行mysql调优">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/12/12/%E4%BD%BF%E7%94%A8show%20profile%E8%BF%9B%E8%A1%8Cmysql%E8%B0%83%E4%BC%98/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="使用show profile进行mysql调优 本文首先参考《高性能 MySQL（第三版）》中的第3章第3节剖析MySQL查询">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-12T09:01:10.000Z">
+<meta property="article:modified_time" content="2021-04-19T03:49:54.918Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="Mysql">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/12/12/%E4%BD%BF%E7%94%A8show%20profile%E8%BF%9B%E8%A1%8Cmysql%E8%B0%83%E4%BC%98/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/12/12/%E4%BD%BF%E7%94%A8show%20profile%E8%BF%9B%E8%A1%8Cmysql%E8%B0%83%E4%BC%98/","path":"2020/12/12/使用show profile进行mysql调优/","title":"使用show profile进行mysql调优"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用show profile进行mysql调优 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8show-profile%E8%BF%9B%E8%A1%8Cmysql%E8%B0%83%E4%BC%98"><span class="nav-number">1.</span> <span class="nav-text">使用show profile进行mysql调优</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%9D%A5%E6%BA%90"><span class="nav-number">1.1.</span> <span class="nav-text">问题来源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E8%BF%87%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">问题解决过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="nav-number">1.2.1.</span> <span class="nav-text">慢查询日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#show-profile"><span class="nav-number">1.2.2.</span> <span class="nav-text">show profile</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%9C%80%E6%B3%A8%E6%84%8F%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">日常开发需注意的结论</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E7%BB%AD%E8%A7%A3%E5%86%B3%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.2.3.</span> <span class="nav-text">后续解决步骤</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/12/12/%E4%BD%BF%E7%94%A8show%20profile%E8%BF%9B%E8%A1%8Cmysql%E8%B0%83%E4%BC%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用show profile进行mysql调优 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用show profile进行mysql调优
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-12 17:01:10" itemprop="dateCreated datePublished" datetime="2020-12-12T17:01:10+08:00">2020-12-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-04-19 11:49:54" itemprop="dateModified" datetime="2021-04-19T11:49:54+08:00">2021-04-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="使用show-profile进行mysql调优"><a href="#使用show-profile进行mysql调优" class="headerlink" title="使用show profile进行mysql调优"></a>使用show profile进行mysql调优</h1><blockquote>
+<p>本文首先参考《高性能 MySQL（第三版）》中的第3章第3节剖析MySQL查询</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="问题来源"><a href="#问题来源" class="headerlink" title="问题来源"></a>问题来源</h2><p>在日常开发接口的过程中，有一个接口在开发上线后，偶尔会发生接口查询超时问题。一开始是服务器部署网络会有网络波动，突发性的网络延迟。便把问题搁置，归结为网络问题。</p>
+<p>过了近两个月后，接口超时现象变得频繁了起来。需要仔细查看原因。</p>
+<h2 id="问题解决过程"><a href="#问题解决过程" class="headerlink" title="问题解决过程"></a>问题解决过程</h2><p>在程序中埋日志，打印时间，去缓存等操作后，定位到一个分表的查询会出现超时现象。由于语句过于简单，一共查询结果最大为120条。本人没有想到优化方法，向大佬求助。</p>
+<p>大佬去排查了MySQL 慢语句日志，这里说明一下慢查询日志。</p>
+<h3 id="慢查询日志"><a href="#慢查询日志" class="headerlink" title="慢查询日志"></a>慢查询日志</h3><p>根据本文参考书籍来讲，慢查询是为了让MySQL记录下查询超过指定时间的语句，通过定位分析性能的瓶颈，才能更好的优化数据库系统的性能。书籍作者描述慢查询日志在I&#x2F;O密集型场景中开销可忽略不计，只需要担心消耗的磁盘空间。</p>
+<p><strong>开启方式：</strong> 在配置文件中配置</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">slow_query_log<span class="operator">=</span><span class="number">1</span> #慢查询开启状态，<span class="number">1</span>开启，<span class="number">0</span>关闭 默认为<span class="number">0</span></span><br><span class="line">slow_query_log_file<span class="operator">=</span>“slow.log” #慢查询日志存放的位置（这个目录需要MySQL的运行帐号的可写权限，一般设置为MySQL的数据存放目录） 默认给一个缺省的文件host_name<span class="operator">-</span>slow.log</span><br><span class="line">long_query_time<span class="operator">=</span><span class="number">10</span>  #查询超过<span class="number">10</span>秒才记录 默认为<span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>在开启的日志中，查询到了 SQL 语句的执行时间为16秒。开始进一步调查。</p>
+<h3 id="show-profile"><a href="#show-profile" class="headerlink" title="show profile"></a>show profile</h3><p>大佬有别的事被抓走了，我只好自己去查询资料来寻找定位问题方法。<br>继续阅读《MySQL高性能》，尝试使用其中的 <code>show profile</code>方法。<br><strong>显示当前mysql是否支持profile：</strong><code>select @@have_profiling</code><br><strong>查看profile是否开启：</strong><code>select @@profiling</code>如果为0是未开启<br><strong>开启方式：</strong><code>set profiling =1</code><br>当开启后，就可以进入数据库执行语句，来查看分析语句的执行结果。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use test</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test</span><br></pre></td></tr></table></figure>
+<p>大概是这样的语句执行完毕后，就可以查看语句的执行结果。<br><strong>查看结果：</strong><code>show profiles;</code><br>![b1.png](show profiles)<br>获得了语句的执行编码后，可以直接查看对应编码的语句详细执行时间<br><strong>查看对应编码：</strong><code>show profile for query query_id</code><br>其中可以加入参数来查看对应的消耗时间。<br>    1. ALL：显示所有的开销信息。<br>    2. BLOCK IO：显示块IO开销。<br>    3. CONTEXT SWITCHES：上下文切换开销。<br>    4. CPU：显示CPU开销信息。<br>    5. IPC：显示发送和接收开销信息。<br>    6. MEMORY：显示内存开销信息。<br>    7. PAGE FAULTS：显示页面错误开销信息。<br>    8. SOURCE：显示和Source_function，Source_file，Source_line相关的开销信息。<br>    9. SWAPS：显示交换次数开销信息。<br>![b2.png](show profile for query)</p>
+<h4 id="日常开发需注意的结论"><a href="#日常开发需注意的结论" class="headerlink" title="日常开发需注意的结论"></a>日常开发需注意的结论</h4><p>①converting  HEAP to MyISAM：查询结果太大，内存不够，数据往磁盘上搬了。</p>
+<p>②Creating tmp table：创建临时表。先拷贝数据到临时表，用完后再删除临时表。</p>
+<p>③Copying to tmp table on disk：把内存中临时表复制到磁盘上，危险！！！</p>
+<p>④locked。</p>
+<p>如果在show profile诊断结果中出现了以上4条结果中的任何一条，则sql语句需要优化。</p>
+<h3 id="后续解决步骤"><a href="#后续解决步骤" class="headerlink" title="后续解决步骤"></a>后续解决步骤</h3><p>之后调查到程序的cpu时间超长，但是磁盘的时间未显示。<br>查看资源监视器，发现磁盘写入100%。<br>尝试将同服务器的写入减少，把java.io.FileWriter 换成 java.nio.file.Files.write。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Mysql/" rel="tag"># Mysql</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/12/05/JPA%E9%85%8D%E7%BD%AE%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/" rel="prev" title="JPA配置多数据源">
+                  <i class="fa fa-chevron-left"></i> JPA配置多数据源
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/12/12/springboot%E9%85%8D%E7%BD%AEredis%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/" rel="next" title="springboot配置redis多数据源">
+                  springboot配置redis多数据源 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

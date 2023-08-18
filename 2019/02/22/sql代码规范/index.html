@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="摘要：当前研发工作中经常出现因数据库表、数据库表字段格式不规则而影响开发进度的问题，在后续开发使用原来数据库表时，也会因为数据库表的可读性不够高，表字段规则不统一，造成数据查询，数据使用效率低的问题，所以有必要整理出一套合适的数据库表字段命名规范来解决优化这些问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql代码规范">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2019/02/22/sql%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="摘要：当前研发工作中经常出现因数据库表、数据库表字段格式不规则而影响开发进度的问题，在后续开发使用原来数据库表时，也会因为数据库表的可读性不够高，表字段规则不统一，造成数据查询，数据使用效率低的问题，所以有必要整理出一套合适的数据库表字段命名规范来解决优化这些问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-22T07:18:00.000Z">
+<meta property="article:modified_time" content="2019-02-28T03:14:03.750Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="sql">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2019/02/22/sql%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2019/02/22/sql%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/","path":"2019/02/22/sql代码规范/","title":"sql代码规范"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>sql代码规范 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="nav-number">1.</span> <span class="nav-text">一、数据库命名规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="nav-number">2.</span> <span class="nav-text">二、数据库表命名规范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="nav-number">2.1.</span> <span class="nav-text">2.1数据表命名规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E9%87%87%E7%94%A826%E4%B8%AA%E8%8B%B1%E6%96%87%E5%AD%97%E6%AF%8D-%E5%8C%BA%E5%88%86%E5%A4%A7%E5%B0%8F%E5%86%99-%E5%92%8C0-9%E7%9A%84%E8%87%AA%E7%84%B6%E6%95%B0-%E7%BB%8F%E5%B8%B8%E4%B8%8D%E9%9C%80%E8%A6%81-%E5%8A%A0%E4%B8%8A%E4%B8%8B%E5%88%92%E7%BA%BF%E2%80%99%E2%80%98%E7%BB%84%E6%88%90%EF%BC%8C%E5%91%BD%E5%90%8D%E7%AE%80%E6%B4%81%E6%98%8E%E7%A1%AE%EF%BC%8C%E5%A4%9A%E4%B8%AA%E5%8D%95%E8%AF%8D%E7%94%A8%E4%B8%8B%E5%88%92%E7%BA%BF%E2%80%99%E2%80%98%E5%88%86%E9%9A%94"><span class="nav-number">2.1.1.</span> <span class="nav-text">（1）采用26个英文字母(区分大小写)和0-9的自然数(经常不需要)加上下划线’‘组成，命名简洁明确，多个单词用下划线’‘分隔</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%85%A8%E9%83%A8%E5%B0%8F%E5%86%99%E5%91%BD%E5%90%8D%EF%BC%8C%E7%A6%81%E6%AD%A2%E5%87%BA%E7%8E%B0%E5%A4%A7%E5%86%99"><span class="nav-number">2.1.2.</span> <span class="nav-text">（2）全部小写命名，禁止出现大写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E7%A6%81%E6%AD%A2%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E5%A6%82%EF%BC%9Aname%EF%BC%8Ctime-%EF%BC%8Cdatetime%EF%BC%8Cpassword%E7%AD%89"><span class="nav-number">2.1.3.</span> <span class="nav-text">（3）禁止使用数据库关键字，如：name，time ，datetime，password等</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E8%A1%A8%E5%90%8D%E7%A7%B0%E4%B8%8D%E5%BA%94%E8%AF%A5%E5%8F%96%E5%BE%97%E5%A4%AA%E9%95%BF%EF%BC%88%E4%B8%80%E8%88%AC%E4%B8%8D%E8%B6%85%E8%BF%87%E4%B8%89%E4%B8%AA%E8%8B%B1%E6%96%87%E5%8D%95%E8%AF%8D%EF%BC%89"><span class="nav-number">2.1.4.</span> <span class="nav-text">（4）表名称不应该取得太长（一般不超过三个英文单词）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E8%A1%A8%E7%9A%84%E5%90%8D%E7%A7%B0%E4%B8%80%E8%88%AC%E4%BD%BF%E7%94%A8%E5%90%8D%E8%AF%8D%E6%88%96%E8%80%85%E5%8A%A8%E5%AE%BE%E7%9F%AD%E8%AF%AD"><span class="nav-number">2.1.5.</span> <span class="nav-text">（5）表的名称一般使用名词或者动宾短语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%886%EF%BC%89%E7%94%A8%E5%8D%95%E6%95%B0%E5%BD%A2%E5%BC%8F%E8%A1%A8%E7%A4%BA%E5%90%8D%E7%A7%B0%EF%BC%8C%E4%BE%8B%E5%A6%82%EF%BC%8C%E4%BD%BF%E7%94%A8-employee%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF-employees"><span class="nav-number">2.1.6.</span> <span class="nav-text">（6）用单数形式表示名称，例如，使用 employee，而不是 employees</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%887%EF%BC%89%E8%A1%A8%E5%BF%85%E9%A1%BB%E5%A1%AB%E5%86%99%E6%8F%8F%E8%BF%B0%E4%BF%A1%E6%81%AF%EF%BC%88%E4%BD%BF%E7%94%A8SQL%E8%AF%AD%E5%8F%A5%E5%BB%BA%E8%A1%A8%E6%97%B6%EF%BC%89"><span class="nav-number">2.1.7.</span> <span class="nav-text">（7）表必须填写描述信息（使用SQL语句建表时）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="nav-number">2.2.</span> <span class="nav-text">2.2命名规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A0%E6%A8%A1%E5%9D%97-%E5%8A%9F%E8%83%BD%E7%82%B9-%E7%A4%BA%E4%BE%8B%EF%BC%9Aalllive-log-alllive-category"><span class="nav-number">2.2.1.</span> <span class="nav-text">①模块_+功能点  示例：alllive_log   alllive_category</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A1%E5%8A%9F%E8%83%BD%E7%82%B9-%E7%A4%BA%E4%BE%8B%EF%BC%9Alive-message"><span class="nav-number">2.2.2.</span> <span class="nav-text">②功能点  示例：live   message</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A2%E9%80%9A%E7%94%A8%E8%A1%A8-%E7%A4%BA%E4%BE%8B%EF%BC%9Aall-user"><span class="nav-number">2.2.3.</span> <span class="nav-text">③通用表  示例：all_user</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3%E5%BE%85%E4%BC%98%E5%8C%96%E5%91%BD%E5%90%8D%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.3.</span> <span class="nav-text">2.3待优化命名示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A0%E5%86%97%E4%BD%99%EF%BC%9A"><span class="nav-number">2.3.1.</span> <span class="nav-text">①冗余：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A1%E7%9B%B8%E5%90%8C%E7%B1%BB%E5%88%AB%E8%A1%A8%E5%91%BD%E5%90%8D%E5%AD%98%E5%9C%A8%E5%B7%AE%E5%BC%82%EF%BC%8C%E7%AE%A1%E7%90%86%E6%80%A7%E5%B7%AE"><span class="nav-number">2.3.2.</span> <span class="nav-text">②相同类别表命名存在差异，管理性差</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A2%E5%91%BD%E5%90%8D%E6%A0%BC%E5%BC%8F%E5%AD%98%E5%9C%A8%E5%B7%AE%E5%BC%82"><span class="nav-number">2.3.3.</span> <span class="nav-text">③命名格式存在差异</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%97%E6%AE%B5%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="nav-number">3.</span> <span class="nav-text">三、数据库字段命名规范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1%E5%AD%97%E6%AE%B5%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="nav-number">3.1.</span> <span class="nav-text">3.1字段命名规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E9%87%87%E7%94%A826%E4%B8%AA%E8%8B%B1%E6%96%87%E5%AD%97%E6%AF%8D-%E5%8C%BA%E5%88%86%E5%A4%A7%E5%B0%8F%E5%86%99-%E5%92%8C0-9%E7%9A%84%E8%87%AA%E7%84%B6%E6%95%B0-%E7%BB%8F%E5%B8%B8%E4%B8%8D%E9%9C%80%E8%A6%81-%E5%8A%A0%E4%B8%8A%E4%B8%8B%E5%88%92%E7%BA%BF%E2%80%99%E2%80%98%E7%BB%84%E6%88%90%EF%BC%8C%E5%91%BD%E5%90%8D%E7%AE%80%E6%B4%81%E6%98%8E%E7%A1%AE%EF%BC%8C%E5%A4%9A%E4%B8%AA%E5%8D%95%E8%AF%8D%E7%94%A8%E4%B8%8B%E5%88%92%E7%BA%BF%E2%80%99%E2%80%98%E5%88%86%E9%9A%94-1"><span class="nav-number">3.1.1.</span> <span class="nav-text">（1）采用26个英文字母(区分大小写)和0-9的自然数(经常不需要)加上下划线’‘组成，命名简洁明确，多个单词用下划线’‘分隔</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%85%A8%E9%83%A8%E5%B0%8F%E5%86%99%E5%91%BD%E5%90%8D%EF%BC%8C%E7%A6%81%E6%AD%A2%E5%87%BA%E7%8E%B0%E5%A4%A7%E5%86%99-1"><span class="nav-number">3.1.2.</span> <span class="nav-text">（2）全部小写命名，禁止出现大写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%AD%97%E6%AE%B5%E5%BF%85%E9%A1%BB%E5%A1%AB%E5%86%99%E6%8F%8F%E8%BF%B0%E4%BF%A1%E6%81%AF"><span class="nav-number">3.1.3.</span> <span class="nav-text">（3）字段必须填写描述信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E7%A6%81%E6%AD%A2%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E5%A6%82%EF%BC%9Aname%EF%BC%8Ctime-%EF%BC%8Cdatetime-password-%E7%AD%89"><span class="nav-number">3.1.4.</span> <span class="nav-text">（4）禁止使用数据库关键字，如：name，time ，datetime password 等</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E5%AD%97%E6%AE%B5%E5%90%8D%E7%A7%B0%E4%B8%80%E8%88%AC%E9%87%87%E7%94%A8%E5%90%8D%E8%AF%8D%E6%88%96%E5%8A%A8%E5%AE%BE%E7%9F%AD%E8%AF%AD"><span class="nav-number">3.1.5.</span> <span class="nav-text">（5）字段名称一般采用名词或动宾短语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%886%EF%BC%89%E9%87%87%E7%94%A8%E5%AD%97%E6%AE%B5%E7%9A%84%E5%90%8D%E7%A7%B0%E5%BF%85%E9%A1%BB%E6%98%AF%E6%98%93%E4%BA%8E%E7%90%86%E8%A7%A3%EF%BC%8C%E4%B8%80%E8%88%AC%E4%B8%8D%E8%B6%85%E8%BF%87%E4%B8%89%E4%B8%AA%E8%8B%B1%E6%96%87%E5%8D%95%E8%AF%8D"><span class="nav-number">3.1.6.</span> <span class="nav-text">（6）采用字段的名称必须是易于理解，一般不超过三个英文单词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%887%EF%BC%89%E5%9C%A8%E5%91%BD%E5%90%8D%E8%A1%A8%E7%9A%84%E5%88%97%E6%97%B6%EF%BC%8C%E4%B8%8D%E8%A6%81%E9%87%8D%E5%A4%8D%E8%A1%A8%E7%9A%84%E5%90%8D%E7%A7%B0"><span class="nav-number">3.1.7.</span> <span class="nav-text">（7）在命名表的列时，不要重复表的名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%888%EF%BC%89%E4%B8%8D%E8%A6%81%E5%9C%A8%E5%88%97%E7%9A%84%E5%90%8D%E7%A7%B0%E4%B8%AD%E5%8C%85%E5%90%AB%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.1.8.</span> <span class="nav-text">（8）不要在列的名称中包含数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%889%EF%BC%89%E5%AD%97%E6%AE%B5%E5%91%BD%E5%90%8D%E4%BD%BF%E7%94%A8%E5%AE%8C%E6%95%B4%E5%90%8D%E7%A7%B0%EF%BC%8C%E7%A6%81%E6%AD%A2%E7%BC%A9%E5%86%99"><span class="nav-number">3.1.9.</span> <span class="nav-text">（9）字段命名使用完整名称，禁止缩写</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="nav-number">3.2.</span> <span class="nav-text">3.2命名规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A0%E5%90%8D%E8%AF%8D-%E7%A4%BA%E4%BE%8B%EF%BC%9Auser-id-user-name-sex"><span class="nav-number">3.2.1.</span> <span class="nav-text">①名词  示例：user_id    user_name    sex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A1%E5%8A%A8%E5%AE%BE%E7%9F%AD%E8%AF%AD-%E7%A4%BA%E4%BE%8B%EF%BC%9Ais-friend-is-good"><span class="nav-number">3.2.2.</span> <span class="nav-text">②动宾短语  示例：is_friend   is_good</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3%E5%BE%85%E4%BC%98%E5%8C%96%E5%91%BD%E5%90%8D%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.3.</span> <span class="nav-text">3.3待优化命名示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A0%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99%E4%B8%8D%E7%BB%9F%E4%B8%80"><span class="nav-number">3.3.1.</span> <span class="nav-text">①大小写规则不统一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A1%E5%8A%A0%E4%B8%8B%E5%88%92%E7%BA%BF%E8%A7%84%E5%88%99%E4%B8%8D%E7%BB%9F%E4%B8%80"><span class="nav-number">3.3.2.</span> <span class="nav-text">②加下划线规则不统一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%91%A2%E5%AD%97%E6%AE%B5%E8%A1%A8%E7%A4%BA%E4%B8%8D%E6%98%8E%E7%A1%AE"><span class="nav-number">3.3.3.</span> <span class="nav-text">③字段表示不明确</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B%E8%A7%84%E8%8C%83"><span class="nav-number">3.4.</span> <span class="nav-text">3.4字段类型规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%89%80%E6%9C%89%E5%AD%97%E6%AE%B5%E5%9C%A8%E8%AE%BE%E8%AE%A1%E6%97%B6%EF%BC%8C%E9%99%A4%E4%BB%A5%E4%B8%8B%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8Btimestamp%E3%80%81image%E3%80%81datetime%E3%80%81smalldatetime%E3%80%81uniqueidentifier%E3%80%81binary%E3%80%81sql-variant%E3%80%81binary-%E3%80%81varbinary%E5%A4%96%EF%BC%8C%E5%BF%85%E9%A1%BB%E6%9C%89%E9%BB%98%E8%AE%A4%E5%80%BC%EF%BC%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E7%9A%84%E9%BB%98%E8%AE%A4%E5%80%BC%E4%B8%BA%E4%B8%80%E4%B8%AA%E7%A9%BA%E5%AD%97%E7%AC%A6%E5%80%BC%E4%B8%B2%E2%80%99%E2%80%99%EF%BC%8C%E6%95%B0%E5%80%BC%E5%9E%8B%E7%9A%84%E9%BB%98%E8%AE%A4%E5%80%BC%E4%B8%BA%E6%95%B0%E5%80%BC0%EF%BC%8C%E9%80%BB%E8%BE%91%E5%9E%8B%E7%9A%84%E9%BB%98%E8%AE%A4%E5%80%BC%E4%B8%BA%E6%95%B0%E5%80%BC0"><span class="nav-number">3.4.1.</span> <span class="nav-text">（1）所有字段在设计时，除以下数据类型timestamp、image、datetime、smalldatetime、uniqueidentifier、binary、sql_variant、binary 、varbinary外，必须有默认值，字符型的默认值为一个空字符值串’’，数值型的默认值为数值0，逻辑型的默认值为数值0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E7%B3%BB%E7%BB%9F%E4%B8%AD%E6%89%80%E6%9C%89%E9%80%BB%E8%BE%91%E5%9E%8B%E4%B8%AD%E6%95%B0%E5%80%BC0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E2%80%9C%E5%81%87%E2%80%9D%EF%BC%8C%E6%95%B0%E5%80%BC1%E8%A1%A8%E7%A4%BA%E4%B8%BA%E2%80%9C%E7%9C%9F%E2%80%9D%EF%BC%8Cdatetime%E3%80%81smalldatetime%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%AD%97%E6%AE%B5%E6%B2%A1%E6%9C%89%E9%BB%98%E8%AE%A4%E5%80%BC%EF%BC%8C%E5%BF%85%E9%A1%BB%E4%B8%BANULL"><span class="nav-number">3.4.2.</span> <span class="nav-text">（2）系统中所有逻辑型中数值0表示为“假”，数值1表示为“真”，datetime、smalldatetime类型的字段没有默认值，必须为NULL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E7%94%A8%E5%B0%BD%E9%87%8F%E5%B0%91%E7%9A%84%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4%E6%9D%A5%E5%AD%98%E5%82%A8%E4%B8%80%E4%B8%AA%E5%AD%97%E6%AE%B5%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-number">3.4.3.</span> <span class="nav-text">（3）用尽量少的存储空间来存储一个字段的数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E7%94%A8%E5%90%88%E9%80%82%E7%9A%84%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B%E8%8A%82%E7%BA%A6%E7%A9%BA%E9%97%B4"><span class="nav-number">3.4.4.</span> <span class="nav-text">（4）用合适的字段类型节约空间</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E6%AF%8F%E4%B8%AA%E5%AD%97%E6%AE%B5%E7%9A%84%E8%A7%84%E8%8C%83%E6%8F%8F%E8%BF%B0"><span class="nav-number">3.5.</span> <span class="nav-text">3.5数据库中每个字段的规范描述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%B0%BD%E9%87%8F%E9%81%B5%E5%AE%88%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8F%E7%9A%84%E6%A0%87%E5%87%86%EF%BC%883NF%EF%BC%89"><span class="nav-number">3.5.1.</span> <span class="nav-text">（1）尽量遵守第三范式的标准（3NF）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%A6%82%E6%9E%9C%E5%AD%97%E6%AE%B5%E4%BA%8B%E5%AE%9E%E4%B8%8A%E6%98%AF%E4%B8%8E%E5%85%B6%E5%AE%83%E8%A1%A8%E7%9A%84%E5%85%B3%E9%94%AE%E5%AD%97%E7%9B%B8%E5%85%B3%E8%81%94%E8%80%8C%E6%9C%AA%E8%AE%BE%E8%AE%A1%E4%B8%BA%E5%A4%96%E9%94%AE%E5%BC%95%E7%94%A8%EF%BC%8C%E9%9C%80%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="nav-number">3.5.2.</span> <span class="nav-text">(2)如果字段事实上是与其它表的关键字相关联而未设计为外键引用，需建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%A6%82%E6%9E%9C%E5%AD%97%E6%AE%B5%E4%B8%8E%E5%85%B6%E5%AE%83%E8%A1%A8%E7%9A%84%E5%AD%97%E6%AE%B5%E7%9B%B8%E5%85%B3%E8%81%94%EF%BC%8C%E9%9C%80%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="nav-number">3.5.3.</span> <span class="nav-text">(3)如果字段与其它表的字段相关联，需建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%A6%82%E6%9E%9C%E5%AD%97%E6%AE%B5%E9%9C%80%E5%81%9A%E6%A8%A1%E7%B3%8A%E6%9F%A5%E8%AF%A2%E4%B9%8B%E5%A4%96%E7%9A%84%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2%EF%BC%8C%E9%9C%80%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="nav-number">3.5.4.</span> <span class="nav-text">(4)如果字段需做模糊查询之外的条件查询，需建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E9%99%A4%E4%BA%86%E4%B8%BB%E5%85%B3%E9%94%AE%E5%AD%97%E5%85%81%E8%AE%B8%E5%BB%BA%E7%AB%8B%E7%B0%87%E7%B4%A2%E5%BC%95%E5%A4%96%EF%BC%8C%E5%85%B6%E5%AE%83%E5%AD%97%E6%AE%B5%E6%89%80%E5%BB%BA%E7%B4%A2%E5%BC%95%E5%BF%85%E9%A1%BB%E4%B8%BA%E9%9D%9E%E7%B0%87%E7%B4%A2%E5%BC%95"><span class="nav-number">3.5.5.</span> <span class="nav-text">(5)除了主关键字允许建立簇索引外，其它字段所建索引必须为非簇索引</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81SQL%E8%AF%AD%E8%A8%80%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83"><span class="nav-number">4.</span> <span class="nav-text">四、SQL语言编码规范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E8%8C%83"><span class="nav-number">4.1.</span> <span class="nav-text">4.1大小写规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%89%80%E6%9C%89%E5%85%B3%E9%94%AE%E5%AD%97%E5%BF%85%E9%A1%BB%E5%A4%A7%E5%86%99%EF%BC%8C%E5%A6%82%EF%BC%9AINSERT%E3%80%81UPDATE%E3%80%81DELETE%E3%80%81SELECT%E5%8F%8A%E5%85%B6%E5%AD%90%E5%8F%A5%EF%BC%8CIF%E2%80%A6%E2%80%A6ELSE%E3%80%81CASE%E3%80%81DECLARE%E7%AD%89"><span class="nav-number">4.1.1.</span> <span class="nav-text">（1）所有关键字必须大写，如：INSERT、UPDATE、DELETE、SELECT及其子句，IF……ELSE、CASE、DECLARE等</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%89%80%E6%9C%89%E5%87%BD%E6%95%B0%E5%8F%8A%E5%85%B6%E5%8F%82%E6%95%B0%E4%B8%AD%E9%99%A4%E7%94%A8%E6%88%B7%E5%8F%98%E9%87%8F%E4%BB%A5%E5%A4%96%E7%9A%84%E9%83%A8%E5%88%86%E5%BF%85%E9%A1%BB%E5%A4%A7%E5%86%99"><span class="nav-number">4.1.2.</span> <span class="nav-text">（2）所有函数及其参数中除用户变量以外的部分必须大写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%9C%A8%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F%E6%97%B6%E7%94%A8%E5%88%B0%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%BF%85%E9%A1%BB%E5%B0%8F%E5%86%99"><span class="nav-number">4.1.3.</span> <span class="nav-text">（3）在定义变量时用到的数据类型必须小写</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2%E6%B3%A8%E9%87%8A"><span class="nav-number">4.2.</span> <span class="nav-text">4.2注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%B3%A8%E9%87%8A%E4%BB%A5%E8%8B%B1%E6%96%87%E4%B8%BA%E4%B8%BB%EF%BC%8C%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E4%B8%AD%EF%BC%8C%E5%8F%91%E7%8E%B0%E4%BB%A5%E4%B8%AD%E6%96%87%E6%B3%A8%E9%87%8A%E7%9A%84SQL%E8%AF%AD%E5%8F%A5%E7%89%88%E6%9C%AC%E5%9C%A8%E8%8B%B1%E6%96%87%E7%8E%AF%E5%A2%83%E4%B8%AD%E4%B8%8D%E5%8F%AF%E7%94%A8%EF%BC%8C%E4%B8%BA%E9%81%BF%E5%85%8D%E5%90%8E%E7%BB%AD%E7%89%88%E6%9C%AC%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%8F%91%E7%94%9F%E6%9F%90%E4%BA%9B%E5%BC%82%E5%B8%B8%E9%94%99%E8%AF%AF%EF%BC%8C%E5%BB%BA%E8%AE%AE%E4%BD%BF%E7%94%A8%E8%8B%B1%E6%96%87%E6%B3%A8%E9%87%8A"><span class="nav-number">4.2.1.</span> <span class="nav-text">（1）注释以英文为主，实际应用中，发现以中文注释的SQL语句版本在英文环境中不可用，为避免后续版本执行过程中发生某些异常错误，建议使用英文注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%B3%A8%E9%87%8A%E5%B0%BD%E5%8F%AF%E8%83%BD%E8%AF%A6%E7%BB%86%E3%80%81%E5%85%A8%E9%9D%A2%E5%88%9B%E5%BB%BA%E6%AF%8F%E4%B8%80%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1%E5%89%8D%EF%BC%8C%E5%BA%94%E5%85%B7%E4%BD%93%E6%8F%8F%E8%BF%B0%E8%AF%A5%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%8A%9F%E8%83%BD%E5%92%8C%E7%94%A8%E9%80%94%EF%BC%8C%E4%BC%A0%E5%85%A5%E5%8F%82%E6%95%B0%E7%9A%84%E5%90%AB%E4%B9%89%E5%BA%94%E8%AF%A5%E6%9C%89%E6%89%80%E8%AF%B4%E6%98%8E%EF%BC%8C%E5%A6%82%E6%9E%9C%E5%8F%96%E5%80%BC%E8%8C%83%E5%9B%B4%E7%A1%AE%E5%AE%9A%EF%BC%8C%E4%B9%9F%E5%BA%94%E8%AF%A5%E4%B8%80%E5%B9%B6%E8%AF%B4%E6%98%8E%EF%BC%8C%E5%8F%96%E5%80%BC%E6%9C%89%E7%89%B9%E5%AE%9A%E5%90%AB%E4%B9%89%E7%9A%84%E5%8F%98%E9%87%8F%EF%BC%88%E5%A6%82boolean%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%EF%BC%89%EF%BC%8C%E5%BA%94%E7%BB%99%E5%87%BA%E6%AF%8F%E4%B8%AA%E5%80%BC%E7%9A%84%E5%90%AB%E4%B9%89"><span class="nav-number">4.2.2.</span> <span class="nav-text">（2）注释尽可能详细、全面创建每一数据对象前，应具体描述该对象的功能和用途，传入参数的含义应该有所说明，如果取值范围确定，也应该一并说明，取值有特定含义的变量（如boolean类型变量），应给出每个值的含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E6%B3%A8%E9%87%8A%E8%AF%AD%E6%B3%95%EF%BC%9A%E5%8D%95%E8%A1%8C%E6%B3%A8%E9%87%8A%E3%80%81%E5%A4%9A%E8%A1%8C%E6%B3%A8%E9%87%8A"><span class="nav-number">4.2.3.</span> <span class="nav-text">（3）注释语法：单行注释、多行注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E6%B3%A8%E9%87%8A%E7%AE%80%E6%B4%81%EF%BC%8C%E5%90%8C%E6%97%B6%E5%BA%94%E6%8F%8F%E8%BF%B0%E6%B8%85%E6%99%B0"><span class="nav-number">4.2.4.</span> <span class="nav-text">（4）注释简洁，同时应描述清晰</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E5%87%BD%E6%95%B0%E6%B3%A8%E9%87%8A%EF%BC%9A"><span class="nav-number">4.2.5.</span> <span class="nav-text">（5）函数注释：</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2019/02/22/sql%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="sql代码规范 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          sql代码规范
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-22 15:18:00" itemprop="dateCreated datePublished" datetime="2019-02-22T15:18:00+08:00">2019-02-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-02-28 11:14:03" itemprop="dateModified" datetime="2019-02-28T11:14:03+08:00">2019-02-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>摘要：当前研发工作中经常出现因数据库表、数据库表字段格式不规则而影响开发进度的问题，在后续开发使用原来数据库表时，也会因为数据库表的可读性不够高，表字段规则不统一，造成数据查询，数据使用效率低的问题，所以有必要整理出一套合适的数据库表字段命名规范来解决优化这些问题。</p>
+<span id="more"></span>
+<p>本文是一篇包含了数据库命名、数据库表命名、数据库表字段命名及SQL语言编码的规范文档，针对研发中易产生的问题和常见错误做了一个整理和修改，为日后涉及到数据库相关的研发工作做好准备。<a target="_blank" rel="noopener" href="https://www.mysql.com/">mysql</a>!</p>
+<h1 id="一、数据库命名规范"><a href="#一、数据库命名规范" class="headerlink" title="一、数据库命名规范"></a>一、数据库命名规范</h1><p>采用26个英文字母(区分大小写)和0-9的自然数(经常不需要)加上下划线’_‘组成，命名简洁明确，多个单词用下划线’_‘分隔，一个项目一个数据库，多个项目慎用同一个数据库</p>
+<h1 id="二、数据库表命名规范"><a href="#二、数据库表命名规范" class="headerlink" title="二、数据库表命名规范"></a>二、数据库表命名规范</h1><h2 id="2-1数据表命名规范"><a href="#2-1数据表命名规范" class="headerlink" title="2.1数据表命名规范"></a>2.1数据表命名规范</h2><h3 id="（1）采用26个英文字母-区分大小写-和0-9的自然数-经常不需要-加上下划线’‘组成，命名简洁明确，多个单词用下划线’‘分隔"><a href="#（1）采用26个英文字母-区分大小写-和0-9的自然数-经常不需要-加上下划线’‘组成，命名简洁明确，多个单词用下划线’‘分隔" class="headerlink" title="（1）采用26个英文字母(区分大小写)和0-9的自然数(经常不需要)加上下划线’‘组成，命名简洁明确，多个单词用下划线’‘分隔"></a>（1）采用26个英文字母(区分大小写)和0-9的自然数(经常不需要)加上下划线’<em>‘组成，命名简洁明确，多个单词用下划线’</em>‘分隔</h3><h3 id="（2）全部小写命名，禁止出现大写"><a href="#（2）全部小写命名，禁止出现大写" class="headerlink" title="（2）全部小写命名，禁止出现大写"></a>（2）全部小写命名，禁止出现大写</h3><h3 id="（3）禁止使用数据库关键字，如：name，time-，datetime，password等"><a href="#（3）禁止使用数据库关键字，如：name，time-，datetime，password等" class="headerlink" title="（3）禁止使用数据库关键字，如：name，time ，datetime，password等"></a>（3）禁止使用数据库关键字，如：name，time ，datetime，password等</h3><h3 id="（4）表名称不应该取得太长（一般不超过三个英文单词）"><a href="#（4）表名称不应该取得太长（一般不超过三个英文单词）" class="headerlink" title="（4）表名称不应该取得太长（一般不超过三个英文单词）"></a>（4）表名称不应该取得太长（一般不超过三个英文单词）</h3><h3 id="（5）表的名称一般使用名词或者动宾短语"><a href="#（5）表的名称一般使用名词或者动宾短语" class="headerlink" title="（5）表的名称一般使用名词或者动宾短语"></a>（5）表的名称一般使用名词或者动宾短语</h3><h3 id="（6）用单数形式表示名称，例如，使用-employee，而不是-employees"><a href="#（6）用单数形式表示名称，例如，使用-employee，而不是-employees" class="headerlink" title="（6）用单数形式表示名称，例如，使用 employee，而不是 employees"></a>（6）用单数形式表示名称，例如，使用 employee，而不是 employees</h3><p>明细表的名称为：主表的名称+字符dtl（detail缩写）</p>
+<p>例如：采购定单的名称为：po_order，则采购定单的明细表为：po_orderdtl </p>
+<h3 id="（7）表必须填写描述信息（使用SQL语句建表时）"><a href="#（7）表必须填写描述信息（使用SQL语句建表时）" class="headerlink" title="（7）表必须填写描述信息（使用SQL语句建表时）"></a>（7）表必须填写描述信息（使用SQL语句建表时）</h3><h2 id="2-2命名规范"><a href="#2-2命名规范" class="headerlink" title="2.2命名规范"></a>2.2命名规范</h2><h3 id="①模块-功能点-示例：alllive-log-alllive-category"><a href="#①模块-功能点-示例：alllive-log-alllive-category" class="headerlink" title="①模块_+功能点  示例：alllive_log   alllive_category"></a>①模块_+功能点  示例：alllive_log   alllive_category</h3><h3 id="②功能点-示例：live-message"><a href="#②功能点-示例：live-message" class="headerlink" title="②功能点  示例：live   message"></a>②功能点  示例：live   message</h3><h3 id="③通用表-示例：all-user"><a href="#③通用表-示例：all-user" class="headerlink" title="③通用表  示例：all_user"></a>③通用表  示例：all_user</h3><h2 id="2-3待优化命名示例"><a href="#2-3待优化命名示例" class="headerlink" title="2.3待优化命名示例"></a>2.3待优化命名示例</h2><h3 id="①冗余："><a href="#①冗余：" class="headerlink" title="①冗余："></a>①冗余：</h3><p>错误示例：yy_alllive_video_recomment    yy_alllive_open_close_log</p>
+<p>说明：去除项目名，简化表名长度，去除”yy_”</p>
+<h3 id="②相同类别表命名存在差异，管理性差"><a href="#②相同类别表命名存在差异，管理性差" class="headerlink" title="②相同类别表命名存在差异，管理性差"></a>②相同类别表命名存在差异，管理性差</h3><p>错误示例：yy_all_live_category    yy_alllive_comment_user</p>
+<p>说明：去除项目名，统一命名规则，均为”yy_alllive_”开头即可</p>
+<h3 id="③命名格式存在差异"><a href="#③命名格式存在差异" class="headerlink" title="③命名格式存在差异"></a>③命名格式存在差异</h3><p>错误示例：yy_showfriend    yy_user_getpoints    yy_live_program_get</p>
+<p>说明：去除项目名，统一命名规则，动宾短语分离且动宾逻辑顺序统一</p>
+<h1 id="三、数据库字段命名规范"><a href="#三、数据库字段命名规范" class="headerlink" title="三、数据库字段命名规范"></a>三、数据库字段命名规范</h1><h2 id="3-1字段命名规范"><a href="#3-1字段命名规范" class="headerlink" title="3.1字段命名规范"></a>3.1字段命名规范</h2><h3 id="（1）采用26个英文字母-区分大小写-和0-9的自然数-经常不需要-加上下划线’‘组成，命名简洁明确，多个单词用下划线’‘分隔-1"><a href="#（1）采用26个英文字母-区分大小写-和0-9的自然数-经常不需要-加上下划线’‘组成，命名简洁明确，多个单词用下划线’‘分隔-1" class="headerlink" title="（1）采用26个英文字母(区分大小写)和0-9的自然数(经常不需要)加上下划线’‘组成，命名简洁明确，多个单词用下划线’‘分隔"></a>（1）采用26个英文字母(区分大小写)和0-9的自然数(经常不需要)加上下划线’<em>‘组成，命名简洁明确，多个单词用下划线’</em>‘分隔</h3><h3 id="（2）全部小写命名，禁止出现大写-1"><a href="#（2）全部小写命名，禁止出现大写-1" class="headerlink" title="（2）全部小写命名，禁止出现大写"></a>（2）全部小写命名，禁止出现大写</h3><h3 id="（3）字段必须填写描述信息"><a href="#（3）字段必须填写描述信息" class="headerlink" title="（3）字段必须填写描述信息"></a>（3）字段必须填写描述信息</h3><h3 id="（4）禁止使用数据库关键字，如：name，time-，datetime-password-等"><a href="#（4）禁止使用数据库关键字，如：name，time-，datetime-password-等" class="headerlink" title="（4）禁止使用数据库关键字，如：name，time ，datetime password 等"></a>（4）禁止使用数据库关键字，如：name，time ，datetime password 等</h3><h3 id="（5）字段名称一般采用名词或动宾短语"><a href="#（5）字段名称一般采用名词或动宾短语" class="headerlink" title="（5）字段名称一般采用名词或动宾短语"></a>（5）字段名称一般采用名词或动宾短语</h3><h3 id="（6）采用字段的名称必须是易于理解，一般不超过三个英文单词"><a href="#（6）采用字段的名称必须是易于理解，一般不超过三个英文单词" class="headerlink" title="（6）采用字段的名称必须是易于理解，一般不超过三个英文单词"></a>（6）采用字段的名称必须是易于理解，一般不超过三个英文单词</h3><h3 id="（7）在命名表的列时，不要重复表的名称"><a href="#（7）在命名表的列时，不要重复表的名称" class="headerlink" title="（7）在命名表的列时，不要重复表的名称"></a>（7）在命名表的列时，不要重复表的名称</h3><p>例如，在名employe的表中避免使用名为employee_lastname的字段</p>
+<h3 id="（8）不要在列的名称中包含数据类型"><a href="#（8）不要在列的名称中包含数据类型" class="headerlink" title="（8）不要在列的名称中包含数据类型"></a>（8）不要在列的名称中包含数据类型</h3><h3 id="（9）字段命名使用完整名称，禁止缩写"><a href="#（9）字段命名使用完整名称，禁止缩写" class="headerlink" title="（9）字段命名使用完整名称，禁止缩写"></a>（9）字段命名使用完整名称，禁止缩写</h3><h2 id="3-2命名规范"><a href="#3-2命名规范" class="headerlink" title="3.2命名规范"></a>3.2命名规范</h2><h3 id="①名词-示例：user-id-user-name-sex"><a href="#①名词-示例：user-id-user-name-sex" class="headerlink" title="①名词  示例：user_id    user_name    sex"></a>①名词  示例：user_id    user_name    sex</h3><h3 id="②动宾短语-示例：is-friend-is-good"><a href="#②动宾短语-示例：is-friend-is-good" class="headerlink" title="②动宾短语  示例：is_friend   is_good"></a>②动宾短语  示例：is_friend   is_good</h3><h2 id="3-3待优化命名示例"><a href="#3-3待优化命名示例" class="headerlink" title="3.3待优化命名示例"></a>3.3待优化命名示例</h2><h3 id="①大小写规则不统一"><a href="#①大小写规则不统一" class="headerlink" title="①大小写规则不统一"></a>①大小写规则不统一</h3><p>错误示例：user_id    houseID</p>
+<p>说明：使用统一规则，修改为”user_id”，”house_id”</p>
+<h3 id="②加下划线规则不统一"><a href="#②加下划线规则不统一" class="headerlink" title="②加下划线规则不统一"></a>②加下划线规则不统一</h3><p>错误示例：username    userid    isfriend    isgood</p>
+<p>说明：使用下划线进行分类，提升可性，方便管理，修改为”user_name”，”user_id”，”is_friend”，”is_good”</p>
+<h3 id="③字段表示不明确"><a href="#③字段表示不明确" class="headerlink" title="③字段表示不明确"></a>③字段表示不明确</h3><p>错误示例：uid    pid</p>
+<p>说明：使用完整名称，提高可读性，修改为”user_id”，”person_id”</p>
+<h2 id="3-4字段类型规范"><a href="#3-4字段类型规范" class="headerlink" title="3.4字段类型规范"></a>3.4字段类型规范</h2><h3 id="（1）所有字段在设计时，除以下数据类型timestamp、image、datetime、smalldatetime、uniqueidentifier、binary、sql-variant、binary-、varbinary外，必须有默认值，字符型的默认值为一个空字符值串’’，数值型的默认值为数值0，逻辑型的默认值为数值0"><a href="#（1）所有字段在设计时，除以下数据类型timestamp、image、datetime、smalldatetime、uniqueidentifier、binary、sql-variant、binary-、varbinary外，必须有默认值，字符型的默认值为一个空字符值串’’，数值型的默认值为数值0，逻辑型的默认值为数值0" class="headerlink" title="（1）所有字段在设计时，除以下数据类型timestamp、image、datetime、smalldatetime、uniqueidentifier、binary、sql_variant、binary 、varbinary外，必须有默认值，字符型的默认值为一个空字符值串’’，数值型的默认值为数值0，逻辑型的默认值为数值0"></a>（1）所有字段在设计时，除以下数据类型timestamp、image、datetime、smalldatetime、uniqueidentifier、binary、sql_variant、binary 、varbinary外，必须有默认值，字符型的默认值为一个空字符值串’’，数值型的默认值为数值0，逻辑型的默认值为数值0</h3><h3 id="（2）系统中所有逻辑型中数值0表示为“假”，数值1表示为“真”，datetime、smalldatetime类型的字段没有默认值，必须为NULL"><a href="#（2）系统中所有逻辑型中数值0表示为“假”，数值1表示为“真”，datetime、smalldatetime类型的字段没有默认值，必须为NULL" class="headerlink" title="（2）系统中所有逻辑型中数值0表示为“假”，数值1表示为“真”，datetime、smalldatetime类型的字段没有默认值，必须为NULL"></a>（2）系统中所有逻辑型中数值0表示为“假”，数值1表示为“真”，datetime、smalldatetime类型的字段没有默认值，必须为NULL</h3><h3 id="（3）用尽量少的存储空间来存储一个字段的数据"><a href="#（3）用尽量少的存储空间来存储一个字段的数据" class="headerlink" title="（3）用尽量少的存储空间来存储一个字段的数据"></a>（3）用尽量少的存储空间来存储一个字段的数据</h3><p>使用int就不要使用varchar、char，</p>
+<p>用varchar(16)就不要使varchar(256)</p>
+<p>IP地址使用int类型</p>
+<p>固定长度的类型最好使用char，例如：邮编(postcode)</p>
+<p>能使用tinyint就不要使用smallint，int</p>
+<p>最好给每个字段一个默认值，最好不能为null</p>
+<h3 id="（4）用合适的字段类型节约空间"><a href="#（4）用合适的字段类型节约空间" class="headerlink" title="（4）用合适的字段类型节约空间"></a>（4）用合适的字段类型节约空间</h3><p>字符转化为数字(能转化的最好转化，同样节约空间、提高查询性能)</p>
+<p>避免使用NULL字段(NULL字段很难查询优化、NULL字段的索引需要额外空间、NULL字段的复合索引无效)</p>
+<p>少用text类型(尽量使用varchar代替text字段)</p>
+<h2 id="3-5数据库中每个字段的规范描述"><a href="#3-5数据库中每个字段的规范描述" class="headerlink" title="3.5数据库中每个字段的规范描述"></a>3.5数据库中每个字段的规范描述</h2><h3 id="（1）尽量遵守第三范式的标准（3NF）"><a href="#（1）尽量遵守第三范式的标准（3NF）" class="headerlink" title="（1）尽量遵守第三范式的标准（3NF）"></a>（1）尽量遵守第三范式的标准（3NF）</h3><pre><code> 表内的每一个值只能被表达一次 
+
+ 表内的每一行都应当被唯一的标示 
+
+ 表内不应该存储依赖于其他键的非键信息
+</code></pre>
+<h3 id="2-如果字段事实上是与其它表的关键字相关联而未设计为外键引用，需建索引"><a href="#2-如果字段事实上是与其它表的关键字相关联而未设计为外键引用，需建索引" class="headerlink" title="(2)如果字段事实上是与其它表的关键字相关联而未设计为外键引用，需建索引"></a>(2)如果字段事实上是与其它表的关键字相关联而未设计为外键引用，需建索引</h3><h3 id="3-如果字段与其它表的字段相关联，需建索引"><a href="#3-如果字段与其它表的字段相关联，需建索引" class="headerlink" title="(3)如果字段与其它表的字段相关联，需建索引"></a>(3)如果字段与其它表的字段相关联，需建索引</h3><h3 id="4-如果字段需做模糊查询之外的条件查询，需建索引"><a href="#4-如果字段需做模糊查询之外的条件查询，需建索引" class="headerlink" title="(4)如果字段需做模糊查询之外的条件查询，需建索引"></a>(4)如果字段需做模糊查询之外的条件查询，需建索引</h3><h3 id="5-除了主关键字允许建立簇索引外，其它字段所建索引必须为非簇索引"><a href="#5-除了主关键字允许建立簇索引外，其它字段所建索引必须为非簇索引" class="headerlink" title="(5)除了主关键字允许建立簇索引外，其它字段所建索引必须为非簇索引"></a>(5)除了主关键字允许建立簇索引外，其它字段所建索引必须为非簇索引</h3><h1 id="四、SQL语言编码规范"><a href="#四、SQL语言编码规范" class="headerlink" title="四、SQL语言编码规范"></a>四、SQL语言编码规范</h1><h2 id="4-1大小写规范"><a href="#4-1大小写规范" class="headerlink" title="4.1大小写规范"></a>4.1大小写规范</h2><h3 id="（1）所有关键字必须大写，如：INSERT、UPDATE、DELETE、SELECT及其子句，IF……ELSE、CASE、DECLARE等"><a href="#（1）所有关键字必须大写，如：INSERT、UPDATE、DELETE、SELECT及其子句，IF……ELSE、CASE、DECLARE等" class="headerlink" title="（1）所有关键字必须大写，如：INSERT、UPDATE、DELETE、SELECT及其子句，IF……ELSE、CASE、DECLARE等"></a>（1）所有关键字必须大写，如：INSERT、UPDATE、DELETE、SELECT及其子句，IF……ELSE、CASE、DECLARE等</h3><h3 id="（2）所有函数及其参数中除用户变量以外的部分必须大写"><a href="#（2）所有函数及其参数中除用户变量以外的部分必须大写" class="headerlink" title="（2）所有函数及其参数中除用户变量以外的部分必须大写"></a>（2）所有函数及其参数中除用户变量以外的部分必须大写</h3><h3 id="（3）在定义变量时用到的数据类型必须小写"><a href="#（3）在定义变量时用到的数据类型必须小写" class="headerlink" title="（3）在定义变量时用到的数据类型必须小写"></a>（3）在定义变量时用到的数据类型必须小写</h3><h2 id="4-2注释"><a href="#4-2注释" class="headerlink" title="4.2注释"></a>4.2注释</h2><p>注释可以包含在批处理中，在触发器、存储过程中包含描述性注释将大大增加文本的可读性和可维护性，本规范建议： </p>
+<h3 id="（1）注释以英文为主，实际应用中，发现以中文注释的SQL语句版本在英文环境中不可用，为避免后续版本执行过程中发生某些异常错误，建议使用英文注释"><a href="#（1）注释以英文为主，实际应用中，发现以中文注释的SQL语句版本在英文环境中不可用，为避免后续版本执行过程中发生某些异常错误，建议使用英文注释" class="headerlink" title="（1）注释以英文为主，实际应用中，发现以中文注释的SQL语句版本在英文环境中不可用，为避免后续版本执行过程中发生某些异常错误，建议使用英文注释"></a>（1）注释以英文为主，实际应用中，发现以中文注释的SQL语句版本在英文环境中不可用，为避免后续版本执行过程中发生某些异常错误，建议使用英文注释</h3><h3 id="（2）注释尽可能详细、全面创建每一数据对象前，应具体描述该对象的功能和用途，传入参数的含义应该有所说明，如果取值范围确定，也应该一并说明，取值有特定含义的变量（如boolean类型变量），应给出每个值的含义"><a href="#（2）注释尽可能详细、全面创建每一数据对象前，应具体描述该对象的功能和用途，传入参数的含义应该有所说明，如果取值范围确定，也应该一并说明，取值有特定含义的变量（如boolean类型变量），应给出每个值的含义" class="headerlink" title="（2）注释尽可能详细、全面创建每一数据对象前，应具体描述该对象的功能和用途，传入参数的含义应该有所说明，如果取值范围确定，也应该一并说明，取值有特定含义的变量（如boolean类型变量），应给出每个值的含义"></a>（2）注释尽可能详细、全面创建每一数据对象前，应具体描述该对象的功能和用途，传入参数的含义应该有所说明，如果取值范围确定，也应该一并说明，取值有特定含义的变量（如boolean类型变量），应给出每个值的含义</h3><h3 id="（3）注释语法：单行注释、多行注释"><a href="#（3）注释语法：单行注释、多行注释" class="headerlink" title="（3）注释语法：单行注释、多行注释"></a>（3）注释语法：单行注释、多行注释</h3><p>单行注释：注释前有两个连字符（–）对变量、条件子句可以采用该类注释</p>
+<p>多行注释：符号之间的内容为注释内容，对某项完整的操作建议使用该类注释</p>
+<h3 id="（4）注释简洁，同时应描述清晰"><a href="#（4）注释简洁，同时应描述清晰" class="headerlink" title="（4）注释简洁，同时应描述清晰"></a>（4）注释简洁，同时应描述清晰</h3><h3 id="（5）函数注释："><a href="#（5）函数注释：" class="headerlink" title="（5）函数注释："></a>（5）函数注释：</h3><p>编写函数文本–如触发器、存储过程以及其他数据对象–时，必须为每个函数增加适当注释，该注释以多行注释为主，主要结构如下： </p>
+<p>CREATE PROCEDURE sp_xxx </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/sql/" rel="tag"># sql</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/22/%E3%80%90%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E3%80%91Windows-Server-2008-2012-%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E9%85%8D%E7%BD%AE%EF%BC%88%E4%BB%BB%E5%8A%A1%E8%AE%A1%E5%88%92%E7%A8%8B%E5%BA%8F%EF%BC%89%E6%AF%8F%E5%88%86%E9%92%9F%E6%89%A7%E8%A1%8CBAT/" rel="next" title="【定时任务|开机启动】Windows Server 2008/2012 计划任务配置（任务计划程序）每分钟执行BAT">
+                  【定时任务|开机启动】Windows Server 2008/2012 计划任务配置（任务计划程序）每分钟执行BAT <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

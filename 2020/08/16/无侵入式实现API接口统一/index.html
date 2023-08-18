@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Spring Boot 无侵入式 实现 API 接口统一 JSON 格式返回 转载自 blog.csdn.net&#x2F;qq_34347620&#x2F;article&#x2F;details&#x2F;102239179现在自从增加了每天的通勤路程，感觉每天时间都很紧张。这个文章并没有实际操作一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="无侵入式实现API接口统一">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/08/16/%E6%97%A0%E4%BE%B5%E5%85%A5%E5%BC%8F%E5%AE%9E%E7%8E%B0API%E6%8E%A5%E5%8F%A3%E7%BB%9F%E4%B8%80/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="Spring Boot 无侵入式 实现 API 接口统一 JSON 格式返回 转载自 blog.csdn.net&#x2F;qq_34347620&#x2F;article&#x2F;details&#x2F;102239179现在自从增加了每天的通勤路程，感觉每天时间都很紧张。这个文章并没有实际操作一下。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-16T08:32:51.000Z">
+<meta property="article:modified_time" content="2021-02-26T09:58:01.105Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="Spring boot">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/08/16/%E6%97%A0%E4%BE%B5%E5%85%A5%E5%BC%8F%E5%AE%9E%E7%8E%B0API%E6%8E%A5%E5%8F%A3%E7%BB%9F%E4%B8%80/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/08/16/%E6%97%A0%E4%BE%B5%E5%85%A5%E5%BC%8F%E5%AE%9E%E7%8E%B0API%E6%8E%A5%E5%8F%A3%E7%BB%9F%E4%B8%80/","path":"2020/08/16/无侵入式实现API接口统一/","title":"无侵入式实现API接口统一"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>无侵入式实现API接口统一 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Boot-%E6%97%A0%E4%BE%B5%E5%85%A5%E5%BC%8F-%E5%AE%9E%E7%8E%B0-API-%E6%8E%A5%E5%8F%A3%E7%BB%9F%E4%B8%80-JSON-%E6%A0%BC%E5%BC%8F%E8%BF%94%E5%9B%9E"><span class="nav-number">1.</span> <span class="nav-text">Spring Boot 无侵入式 实现 API 接口统一 JSON 格式返回</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E4%BE%B5%E5%85%A5%E5%BC%8F-%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9EJSON%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">无侵入式 统一返回JSON格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89JSON%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">定义JSON格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E8%BF%94%E5%9B%9EJSON%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.3.1.</span> <span class="nav-text">定义返回JSON格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89JavaBean%E5%AD%97%E6%AE%B5"><span class="nav-number">1.4.</span> <span class="nav-text">定义JavaBean字段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E7%8A%B6%E6%80%81%E7%A0%81%E6%9E%9A%E4%B8%BE%E7%B1%BB"><span class="nav-number">1.4.1.</span> <span class="nav-text">定义状态码枚举类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E8%BF%94%E5%9B%9E%E4%BD%93%E7%B1%BB"><span class="nav-number">1.4.2.</span> <span class="nav-text">定义返回体类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Result%E5%AE%9E%E4%BD%93%E8%BF%94%E5%9B%9E%E6%B5%8B%E8%AF%95"><span class="nav-number">1.4.3.</span> <span class="nav-text">Result实体返回测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9EJSON%E6%A0%BC%E5%BC%8F%E8%BF%9B%E9%98%B6-%E5%85%A8%E5%B1%80%E5%A4%84%E7%90%86-RestControllerAdvice"><span class="nav-number">1.5.</span> <span class="nav-text">统一返回JSON格式进阶-全局处理(@RestControllerAdvice)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ResponseBody%E7%BB%A7%E6%89%BF%E7%B1%BB"><span class="nav-number">1.5.1.</span> <span class="nav-text">@ResponseBody继承类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ResponseBody%E7%BB%A7%E6%89%BF%E7%B1%BB-1"><span class="nav-number">1.5.2.</span> <span class="nav-text">@ResponseBody继承类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RestControllerAdvice%E8%BF%94%E5%9B%9E%E6%B5%8B%E8%AF%95"><span class="nav-number">1.5.3.</span> <span class="nav-text">RestControllerAdvice返回测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9EJSON%E6%A0%BC%E5%BC%8F%E8%BF%9B%E9%98%B6-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86-ExceptionHandler"><span class="nav-number">1.5.4.</span> <span class="nav-text">统一返回JSON格式进阶-异常处理(@ExceptionHandler))</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86-ResponseStatus-%E4%B8%8D%E6%8E%A8%E8%8D%90"><span class="nav-number">1.5.5.</span> <span class="nav-text">异常处理@ResponseStatus(不推荐)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86-ExceptionHandler-%E6%8E%A8%E8%8D%90"><span class="nav-number">1.5.6.</span> <span class="nav-text">全局异常处理@ExceptionHandler(推荐)</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/08/16/%E6%97%A0%E4%BE%B5%E5%85%A5%E5%BC%8F%E5%AE%9E%E7%8E%B0API%E6%8E%A5%E5%8F%A3%E7%BB%9F%E4%B8%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="无侵入式实现API接口统一 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          无侵入式实现API接口统一
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-16 16:32:51" itemprop="dateCreated datePublished" datetime="2020-08-16T16:32:51+08:00">2020-08-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-02-26 17:58:01" itemprop="dateModified" datetime="2021-02-26T17:58:01+08:00">2021-02-26</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Spring-Boot-无侵入式-实现-API-接口统一-JSON-格式返回"><a href="#Spring-Boot-无侵入式-实现-API-接口统一-JSON-格式返回" class="headerlink" title="Spring Boot 无侵入式 实现 API 接口统一 JSON 格式返回"></a>Spring Boot 无侵入式 实现 API 接口统一 JSON 格式返回</h1><blockquote>
+<p>转载自 <a href="blog.csdn.net/qq_34347620/article/details/102239179">blog.csdn.net&#x2F;qq_34347620&#x2F;article&#x2F;details&#x2F;102239179</a><br>现在自从增加了每天的通勤路程，感觉每天时间都很紧张。这个文章并没有实际操作一下。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><ul>
+<li>无侵入式 统一返回JSON格式<ul>
+<li>定义JSON格式</li>
+<li>定义JavaBean字段</li>
+<li>Result实体返回测试</li>
+</ul>
+</li>
+<li>统一返回JSON格式进阶-全局处理(@RestControllerAdvice)<ul>
+<li>@ResponseBody继承类</li>
+<li>ResponseBodyAdvice继承类</li>
+<li>RestControllerAdvice返回测试</li>
+</ul>
+</li>
+<li>统一返回JSON格式进阶-异常处理(@ExceptionHandler))<ul>
+<li>异常处理@ResponseStatus(不推荐)</li>
+<li>全局异常处理@ExceptionHandler(推荐)</li>
+</ul>
+</li>
+</ul>
+<h2 id="无侵入式-统一返回JSON格式"><a href="#无侵入式-统一返回JSON格式" class="headerlink" title="无侵入式 统一返回JSON格式"></a>无侵入式 统一返回JSON格式</h2><p>其实本没有没打算写这篇博客的，但还是要写一下写这篇博客的起因是因为，现在呆着的这家公司居然没有统一的API返回格式?，询问主管他居然告诉我用HTTP状态码就够用了（fxxk），天哪HTTP状态码真的够用吗？<br>在仔细的阅读了项目源码后发现，在API请求的是居然没有业务异常（黑人问好）。好吧 居然入坑了只能遵照项目风格了，懒得吐槽了。<br>因为项目已经开发了半年多了, 要是全部接口都做修改工作量还是挺大的, 只能用这种无侵入式的方案来解决.</p>
+<blockquote>
+<p>我感觉这种事情会经常碰到，尤其是维护老项目代码。</p>
+</blockquote>
+<h2 id="定义JSON格式"><a href="#定义JSON格式" class="headerlink" title="定义JSON格式"></a>定义JSON格式</h2><h3 id="定义返回JSON格式"><a href="#定义返回JSON格式" class="headerlink" title="定义返回JSON格式"></a>定义返回JSON格式</h3><p>后端返回给前端一般情况下使用JSON格式, 定义如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;code&quot;</span>: <span class="number">200</span>,</span><br><span class="line">    <span class="string">&quot;message&quot;</span>: <span class="string">&quot;OK&quot;</span>,</span><br><span class="line">    <span class="string">&quot;data&quot;</span>: &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>code: 返回状态码</li>
+<li>message: 返回信息的描述</li>
+<li>data: 返回值</li>
+</ul>
+<h2 id="定义JavaBean字段"><a href="#定义JavaBean字段" class="headerlink" title="定义JavaBean字段"></a>定义JavaBean字段</h2><h3 id="定义状态码枚举类"><a href="#定义状态码枚举类" class="headerlink" title="定义状态码枚举类"></a>定义状态码枚举类</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@ToString</span><br><span class="line">@Getter</span><br><span class="line">public enum ResultStatus &#123;</span><br><span class="line"></span><br><span class="line">    SUCCESS(HttpStatus.OK, 200, &quot;OK&quot;),</span><br><span class="line">    BAD_REQUEST(HttpStatus.BAD_REQUEST, 400, &quot;Bad Request&quot;),</span><br><span class="line">    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, &quot;Internal Server Error&quot;),;</span><br><span class="line"></span><br><span class="line">    /** 返回的HTTP状态码, 符合http请求 */</span><br><span class="line">    private HttpStatus httpStatus;</span><br><span class="line">    /** 业务异常码 */</span><br><span class="line">    private Integer code;</span><br><span class="line">    /** 业务异常信息描述 */</span><br><span class="line">    private String message;</span><br><span class="line"></span><br><span class="line">    ResultStatus(HttpStatus httpStatus, Integer code, String message) &#123;</span><br><span class="line">        this.httpStatus = httpStatus;</span><br><span class="line">        this.code = code;</span><br><span class="line">        this.message = message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>状态码和信息以及http状态码就能一一对应了便于维护, 有同学有疑问了为什么要用到http状态码呀,因为我要兼容项目以前的代码, 没有其他原因, 当然其他同学不喜欢http状态码的可以吧源码中HttpStatus给删除了</p>
+<h3 id="定义返回体类"><a href="#定义返回体类" class="headerlink" title="定义返回体类"></a>定义返回体类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Result</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="comment">/** 业务错误码 */</span></span><br><span class="line">    <span class="keyword">private</span> Integer code;</span><br><span class="line">    <span class="comment">/** 信息描述 */</span></span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line">    <span class="comment">/** 返回参数 */</span></span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Result</span><span class="params">(ResultStatus resultStatus, T data)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.code = resultStatus.getCode();</span><br><span class="line">        <span class="built_in">this</span>.message = resultStatus.getMessage();</span><br><span class="line">        <span class="built_in">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务成功返回业务代码和描述信息 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Result&lt;Void&gt; <span class="title function_">success</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Result</span>&lt;Void&gt;(ResultStatus.SUCCESS, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务成功返回业务代码,描述和返回的参数 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; Result&lt;T&gt; <span class="title function_">success</span><span class="params">(T data)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Result</span>&lt;T&gt;(ResultStatus.SUCCESS, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务成功返回业务代码,描述和返回的参数 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; Result&lt;T&gt; <span class="title function_">success</span><span class="params">(ResultStatus resultStatus, T data)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (resultStatus == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> success(data);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Result</span>&lt;T&gt;(resultStatus, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务异常返回业务代码和描述信息 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; Result&lt;T&gt; <span class="title function_">failure</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Result</span>&lt;T&gt;(ResultStatus.INTERNAL_SERVER_ERROR, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务异常返回业务代码,描述和返回的参数 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; Result&lt;T&gt; <span class="title function_">failure</span><span class="params">(ResultStatus resultStatus)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> failure(resultStatus, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 业务异常返回业务代码,描述和返回的参数 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; Result&lt;T&gt; <span class="title function_">failure</span><span class="params">(ResultStatus resultStatus, T data)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (resultStatus == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Result</span>&lt;T&gt;(ResultStatus.INTERNAL_SERVER_ERROR, <span class="literal">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Result</span>&lt;T&gt;(resultStatus, data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为使用构造方法进行创建对象太麻烦了, 我们使用静态方法来创建对象这样简单明了</p>
+<h3 id="Result实体返回测试"><a href="#Result实体返回测试" class="headerlink" title="Result实体返回测试"></a>Result实体返回测试</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/hello&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> HashMap&lt;String, Object&gt; INFO;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        INFO = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        INFO.put(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;galaxy&quot;</span>);</span><br><span class="line">        INFO.put(<span class="string">&quot;age&quot;</span>, <span class="string">&quot;70&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/hello&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> INFO;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/result&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> Result&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">helloResult</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> Result.success(INFO);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>到这里我们已经简单的实现了统一JSON格式了, 但是我们也发现了一个问题了,想要返回统一的JSON格式需要返回Result&lt;Object&gt;才可以, 我明明返回Object可以了, 为什么要重复劳动, 有没有解决方法, 当然是有的啦, 下面我们开始优化我们的代码吧</p>
+<h2 id="统一返回JSON格式进阶-全局处理-RestControllerAdvice"><a href="#统一返回JSON格式进阶-全局处理-RestControllerAdvice" class="headerlink" title="统一返回JSON格式进阶-全局处理(@RestControllerAdvice)"></a>统一返回JSON格式进阶-全局处理(@RestControllerAdvice)</h2><p>我师傅经常告诉我的一句话: “你就是一个小屁孩, 你遇到的问题都已经不知道有多少人遇到过了, 你会想到的问题, 已经有前辈想到过了. 你准备解决的问题, 已经有人把坑填了”。是不是很鸡汤, 是不是很励志, 让我对前辈们充满着崇拜, 事实上他对我说的是: “自己去百度”, 这五个大字, 其实这五个大字已经说明上明的B话了, 通过不断的百度和Google发现了很多的解决方案.</p>
+<p>我们都知道使用@ResponseBody注解会把返回Object序列化成JSON字符串,就先从这个入手吧, 大致就是在序列化前把Object赋值给Result&lt;Object&gt;就可以了, 大家可以观摩<br>org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice<br>和<br>org.springframework.web.bind.annotation.ResponseBody</p>
+<h3 id="ResponseBody继承类"><a href="#ResponseBody继承类" class="headerlink" title="@ResponseBody继承类"></a>@ResponseBody继承类</h3><p>我们已经决定从@ResponseBody注解入手了就创建一个注解类继承@ResponseBody, 很干净什么都没有哈哈,@ResponseResultBody 可以标记在类和方法上这样我们就可以跟自由的进行使用了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(&#123;ElementType.TYPE, ElementType.METHOD&#125;)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ResponseResultBody &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="ResponseBody继承类-1"><a href="#ResponseBody继承类-1" class="headerlink" title="@ResponseBody继承类"></a>@ResponseBody继承类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ResponseResultBodyAdvice</span> <span class="keyword">implements</span> <span class="title class_">ResponseBodyAdvice</span>&lt;Object&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt; ANNOTATION_TYPE = ResponseResultBody.class;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断类或者方法是否使用了 <span class="doctag">@ResponseResultBody</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">supports</span><span class="params">(MethodParameter returnType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; converterType)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ANNOTATION_TYPE) || returnType.hasMethodAnnotation(ANNOTATION_TYPE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 当类或者方法使用了 <span class="doctag">@ResponseResultBody</span> 就会调用这个方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">beforeBodyWrite</span><span class="params">(Object body, MethodParameter returnType, MediaType selectedContentType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; selectedConverterType, ServerHttpRequest request, ServerHttpResponse response)</span> &#123;</span><br><span class="line">        <span class="comment">// 防止重复包裹的问题出现</span></span><br><span class="line">        <span class="keyword">if</span> (body <span class="keyword">instanceof</span> Result) &#123;</span><br><span class="line">            <span class="keyword">return</span> body;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Result.success(body);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="RestControllerAdvice返回测试"><a href="#RestControllerAdvice返回测试" class="headerlink" title="RestControllerAdvice返回测试"></a>RestControllerAdvice返回测试</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/helloResult&quot;)</span></span><br><span class="line"><span class="meta">@ResponseResultBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloResultController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> HashMap&lt;String, Object&gt; INFO;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        INFO = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Object&gt;();</span><br><span class="line">        INFO.put(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;galaxy&quot;</span>);</span><br><span class="line">        INFO.put(<span class="string">&quot;age&quot;</span>, <span class="string">&quot;70&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;hello&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> INFO;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 测试重复包裹 */</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;result&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Result&lt;Map&lt;String, Object&gt;&gt; <span class="title function_">helloResult</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> Result.success(INFO);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;helloError&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title function_">helloError</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;helloError&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;helloMyError&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title function_">helloMyError</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ResultException</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>是不是很神奇, 直接返回Object就可以统一JSON格式了, 就不用每个返回都返回Result&lt;T&gt;对象了,直接让SpringMVC帮助我们进行统一的管理, 简直完美。<br>只想看接口哦, helloError和helloMyError是会直接抛出异常的接口,我好像没有对异常返回进行统一的处理哦</p>
+<h3 id="统一返回JSON格式进阶-异常处理-ExceptionHandler"><a href="#统一返回JSON格式进阶-异常处理-ExceptionHandler" class="headerlink" title="统一返回JSON格式进阶-异常处理(@ExceptionHandler))"></a>统一返回JSON格式进阶-异常处理(@ExceptionHandler))</h3><p>卧槽, 异常处理, 差点把这茬给忘了, 这个异常处理就有很多方法了,先看看我师傅的处理方式, 我刚拿到这个代码的时候很想吐槽, 对异常类的处理这么残暴的吗, 直接用PrintWriter直接输出结果, 果然是老师傅, 我要是有100个异常类, 不得要写100个 if else了. 赶紧改改睡吧</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyExceptionHandler</span> <span class="keyword">implements</span> <span class="title class_">HandlerExceptionResolver</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ModelAndView <span class="title function_">resolveException</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span><br><span class="line"><span class="params">                                         Object handler, Exception ex)</span> &#123;</span><br><span class="line">        <span class="type">PrintWriter</span> <span class="variable">out</span> <span class="operator">=</span> getPrintWrite(response);</span><br><span class="line">        <span class="keyword">if</span> (ex <span class="keyword">instanceof</span> XXXException) &#123;</span><br><span class="line">            out.write(JsonUtil.formatJson(ResultEnum.PAY_ERROR.getCode(), ex.getMessage()));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            out.write(JsonUtil.formatJson(ResultEnum.FAIL.getCode(), <span class="string">&quot;服务器异常&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="literal">null</span> != out) &#123;</span><br><span class="line">            out.close();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> mav;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> PrintWriter <span class="title function_">getPrintWrite</span><span class="params">(HttpServletResponse response)</span> &#123;</span><br><span class="line">        <span class="type">PrintWriter</span> <span class="variable">out</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            response.setHeader(<span class="string">&quot;Content-type&quot;</span>, <span class="string">&quot;text/html;charset=UTF-8&quot;</span>);</span><br><span class="line">            response.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">            out = response.getWriter();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            log.error(<span class="string">&quot;PrintWriter is exception&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> out;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码看看还是没有问题的, 别学过去哦,</p>
+<h3 id="异常处理-ResponseStatus-不推荐"><a href="#异常处理-ResponseStatus-不推荐" class="headerlink" title="异常处理@ResponseStatus(不推荐)"></a>异常处理@ResponseStatus(不推荐)</h3><p>@ResponseStatus用法如下,可用在Controller类和Controller方法上以及Exception类上但是这样的工作量还是挺大的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/error&quot;)</span></span><br><span class="line"><span class="meta">@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = &quot;Java的异常&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloExceptionController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> HashMap&lt;String, Object&gt; INFO;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        INFO = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Object&gt;();</span><br><span class="line">        INFO.put(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;galaxy&quot;</span>);</span><br><span class="line">        INFO.put(<span class="string">&quot;age&quot;</span>, <span class="string">&quot;70&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping()</span></span><br><span class="line">    <span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title function_">helloError</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;helloError&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;helloJavaError&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = &quot;Java的异常&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title function_">helloJavaError</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;helloError&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;helloMyError&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> HashMap&lt;String, Object&gt; <span class="title function_">helloMyError</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">MyException</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = &quot;自己定义的异常&quot;)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyException</span> <span class="keyword">extends</span> <span class="title class_">Exception</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="全局异常处理-ExceptionHandler-推荐"><a href="#全局异常处理-ExceptionHandler-推荐" class="headerlink" title="全局异常处理@ExceptionHandler(推荐)"></a>全局异常处理@ExceptionHandler(推荐)</h3><p>把ResponseResultBodyAdvice类进行改造一下,代码有点多了,<br>主要参考了<br>org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler#handleException()方法,<br>有空可以看一下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@RestControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ResponseResultBodyAdvice</span> <span class="keyword">implements</span> <span class="title class_">ResponseBodyAdvice</span>&lt;Object&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt; ANNOTATION_TYPE = ResponseResultBody.class;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 判断类或者方法是否使用了 <span class="doctag">@ResponseResultBody</span> */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">supports</span><span class="params">(MethodParameter returnType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; converterType)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ANNOTATION_TYPE) || returnType.hasMethodAnnotation(ANNOTATION_TYPE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 当类或者方法使用了 <span class="doctag">@ResponseResultBody</span> 就会调用这个方法 */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">beforeBodyWrite</span><span class="params">(Object body, MethodParameter returnType, MediaType selectedContentType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; selectedConverterType, ServerHttpRequest request, ServerHttpResponse response)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (body <span class="keyword">instanceof</span> Result) &#123;</span><br><span class="line">            <span class="keyword">return</span> body;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Result.success(body);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 提供对标准Spring MVC异常的处理</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ex the target exception</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> request the current request</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(Exception.class)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> ResponseEntity&lt;Result&lt;?&gt;&gt; exceptionHandler(Exception ex, WebRequest request) &#123;</span><br><span class="line">        log.error(<span class="string">&quot;ExceptionHandler: &#123;&#125;&quot;</span>, ex.getMessage());</span><br><span class="line">        <span class="type">HttpHeaders</span> <span class="variable">headers</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HttpHeaders</span>();</span><br><span class="line">        <span class="keyword">if</span> (ex <span class="keyword">instanceof</span> ResultException) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>.handleResultException((ResultException) ex, headers, request);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> 2019/10/05 galaxy 这里可以自定义其他的异常拦截</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.handleException(ex, headers, request);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 对ResultException类返回返回结果的处理 */</span></span><br><span class="line">    <span class="keyword">protected</span> ResponseEntity&lt;Result&lt;?&gt;&gt; handleResultException(ResultException ex, HttpHeaders headers, WebRequest request) &#123;</span><br><span class="line">        Result&lt;?&gt; body = Result.failure(ex.getResultStatus());</span><br><span class="line">        <span class="type">HttpStatus</span> <span class="variable">status</span> <span class="operator">=</span> ex.getResultStatus().getHttpStatus();</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.handleExceptionInternal(ex, body, headers, status, request);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 异常类的统一处理 */</span></span><br><span class="line">    <span class="keyword">protected</span> ResponseEntity&lt;Result&lt;?&gt;&gt; handleException(Exception ex, HttpHeaders headers, WebRequest request) &#123;</span><br><span class="line">        Result&lt;?&gt; body = Result.failure();</span><br><span class="line">        <span class="type">HttpStatus</span> <span class="variable">status</span> <span class="operator">=</span> HttpStatus.INTERNAL_SERVER_ERROR;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.handleExceptionInternal(ex, body, headers, status, request);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler#handleExceptionInternal(java.lang.Exception, java.lang.Object, org.springframework.http.HttpHeaders, org.springframework.http.HttpStatus, org.springframework.web.context.request.WebRequest)</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;</span></span><br><span class="line"><span class="comment">     * A single place to customize the response body of all exception types.</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;The default implementation sets the &#123;<span class="doctag">@link</span> WebUtils#ERROR_EXCEPTION_ATTRIBUTE&#125;</span></span><br><span class="line"><span class="comment">     * request attribute and creates a &#123;<span class="doctag">@link</span> ResponseEntity&#125; from the given</span></span><br><span class="line"><span class="comment">     * body, headers, and status.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">protected</span> ResponseEntity&lt;Result&lt;?&gt;&gt; handleExceptionInternal(</span><br><span class="line">            Exception ex, Result&lt;?&gt; body, HttpHeaders headers, HttpStatus status, WebRequest request) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) &#123;</span><br><span class="line">            request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, WebRequest.SCOPE_REQUEST);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ResponseEntity</span>&lt;&gt;(body, headers, status);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Spring-boot/" rel="tag"># Spring boot</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/08/08/%E9%83%A8%E7%BD%B2geojson%E5%88%87%E7%89%87%E6%9C%8D%E5%8A%A1/" rel="prev" title="部署geojson切片服务">
+                  <i class="fa fa-chevron-left"></i> 部署geojson切片服务
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/08/23/idea%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4%E8%BF%87%E9%95%BFbug/" rel="next" title="idea启动命令过长bug">
+                  idea启动命令过长bug <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

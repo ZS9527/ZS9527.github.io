@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="mycat服务器部署 记录一下自己将mycat部署到服务器上的步骤和遇到的bug。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mycat服务器部署">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2019/09/14/mycat%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="mycat服务器部署 记录一下自己将mycat部署到服务器上的步骤和遇到的bug。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-09-14T06:28:48.000Z">
+<meta property="article:modified_time" content="2019-09-19T08:10:05.177Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="mycat">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2019/09/14/mycat%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2019/09/14/mycat%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/","path":"2019/09/14/mycat服务器部署/","title":"mycat服务器部署"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>mycat服务器部署 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mycat%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2"><span class="nav-number">1.</span> <span class="nav-text">mycat服务器部署</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">前置条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDmycat"><span class="nav-number">1.2.</span> <span class="nav-text">下载mycat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%8E%8B%E5%90%8E%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.</span> <span class="nav-text">解压后配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rule-xml"><span class="nav-number">1.3.1.</span> <span class="nav-text">rule.xml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#schema-xml"><span class="nav-number">1.3.2.</span> <span class="nav-text">schema.xml</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%EF%BC%9A"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">实例：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%EF%BC%9A-1"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">实例：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%EF%BC%9A-2"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">实例：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#server-xml"><span class="nav-number">1.3.3.</span> <span class="nav-text">server.xml</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%88%90%E6%9C%8D%E5%8A%A1%E5%B9%B6%E5%90%AF%E5%8A%A8"><span class="nav-number">1.4.</span> <span class="nav-text">配置成服务并启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E8%AE%B0%EF%BC%9A"><span class="nav-number">1.5.</span> <span class="nav-text">后记：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84bug"><span class="nav-number">1.5.1.</span> <span class="nav-text">遇到的bug</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-jpa%E7%9A%84save%E6%96%B9%E6%B3%95%E5%9C%A8%E4%BC%A0%E5%85%A5id%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E6%97%B6%EF%BC%8C%E6%98%AF%E5%85%A8%E9%83%A8%E6%95%B0%E6%8D%AE%E5%AD%97%E6%AE%B5%E4%BF%AE%E6%94%B9%E3%80%82%E8%80%8Cmycat%E4%B8%8D%E8%83%BD%E4%BF%AE%E6%94%B9%E5%88%86%E7%89%87%E7%9A%84%E6%97%B6%E9%97%B4%E6%A0%B9%E6%8D%AE%E5%AD%97%E6%AE%B5%E3%80%82"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">1. jpa的save方法在传入id修改数据时，是全部数据字段修改。而mycat不能修改分片的时间根据字段。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-jpa%E5%AF%B9%E4%B8%80%E6%9D%A1%E6%95%B0%E6%8D%AE%E6%9F%A5%E5%87%BA%E6%9D%A5%E5%90%8E%EF%BC%8C%E7%9B%B4%E6%8E%A5%E6%8A%8A%E5%8E%9F%E6%95%B0%E6%8D%AE%E7%9A%84id%E6%94%B9%E4%B8%BAnull%E4%BC%9A%E6%8A%A5%E9%94%99"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">2.jpa对一条数据查出来后，直接把原数据的id改为null会报错</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%9C%A8rule-xml%E7%9A%84tableRule%E6%A0%87%E7%AD%BE%E4%B8%AD%E7%9A%84%E5%88%86%E7%89%87%E6%A0%B9%E6%8D%AE%E8%A1%A8%E5%AD%97%E6%AE%B5columns%E4%B8%8D%E8%83%BD%E4%B8%BA%E7%A9%BA%EF%BC%8C%E4%B8%BA%E7%A9%BA%E6%97%A0%E6%B3%95%E5%88%86%E7%89%87"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">3.在rule.xml的tableRule标签中的分片根据表字段columns不能为空，为空无法分片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-jpa%E5%88%A0%E9%99%A4%E6%97%B6%E6%B3%A8%E6%84%8F%E5%AE%9E%E9%99%85%E6%89%A7%E8%A1%8C%E8%AF%AD%E5%8F%A5%EF%BC%8C%E6%9C%89%E6%97%B6%E6%89%A7%E8%A1%8C%E8%AF%AD%E5%8F%A5%E6%98%AF%E6%8C%89id%E5%88%A0%E9%99%A4%E7%9A%84%E3%80%82mycat%E4%BC%9A%E6%8A%A5%E9%94%99"><span class="nav-number">1.5.1.4.</span> <span class="nav-text">4.jpa删除时注意实际执行语句，有时执行语句是按id删除的。mycat会报错</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2019/09/14/mycat%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="mycat服务器部署 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mycat服务器部署
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-09-14 14:28:48" itemprop="dateCreated datePublished" datetime="2019-09-14T14:28:48+08:00">2019-09-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-09-19 16:10:05" itemprop="dateModified" datetime="2019-09-19T16:10:05+08:00">2019-09-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="mycat服务器部署"><a href="#mycat服务器部署" class="headerlink" title="mycat服务器部署"></a>mycat服务器部署</h1><blockquote>
+<p>记录一下自己将mycat部署到服务器上的步骤和遇到的bug。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><p>已经完成在服务器部署多个mysql服务的任务，mysql版本选择为8.0以上。</p>
+<h2 id="下载mycat"><a href="#下载mycat" class="headerlink" title="下载mycat"></a>下载mycat</h2><p>直接从github上面下载最新版本的mycat，(<a target="_blank" rel="noopener" href="https://github.com/MyCATApache/Mycat-Server)[https://github.com/MyCATApache/Mycat-Server]">https://github.com/MyCATApache/Mycat-Server)[https://github.com/MyCATApache/Mycat-Server]</a> 。</p>
+<h2 id="解压后配置文件"><a href="#解压后配置文件" class="headerlink" title="解压后配置文件"></a>解压后配置文件</h2><blockquote>
+<p>目前版本为mycat1.6.7，之后的版本更新后配置方式以官方文档为准。</p>
+</blockquote>
+<p>重要的有三个文件需要配置</p>
+<h3 id="rule-xml"><a href="#rule-xml" class="headerlink" title="rule.xml"></a>rule.xml</h3><p>这个配置文件定义分片规则，目前只是用到了这些参数：时间格式，分片开始时间，结束时间。</p>
+<p><strong>注意：</strong>这里的这个时间段是要对应之后的schema.xml中的table标签的subTables属性的分表个数。例如下面的按月分表从2019年1月一直分到2024年12月的规则，那么相对应的subTables属性就需要固定好从2019年1月分到2024年12月的表名</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">function</span> <span class="attr">name</span>=<span class="string">&quot;partbymonthofair&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">class</span>=<span class="string">&quot;io.mycat.route.function.PartitionByMonth&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dateFormat&quot;</span>&gt;</span>yyyy-MM<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;sBeginDate&quot;</span>&gt;</span>2019-01<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;sEndDate&quot;</span>&gt;</span>2024-12<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">function</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>规定表分片规则</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">tableRule</span> <span class="attr">name</span>=<span class="string">&quot;env-air-sharding-by-date&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">rule</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">columns</span>&gt;</span>date_time<span class="tag">&lt;/<span class="name">columns</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">algorithm</span>&gt;</span>partbymonthofair<span class="tag">&lt;/<span class="name">algorithm</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">rule</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">tableRule</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="schema-xml"><a href="#schema-xml" class="headerlink" title="schema.xml"></a>schema.xml</h3><p>在这里定义表的规则。<br><strong>schema</strong>标签是用于定义具体的库，之后的server.xml中配置的访问用户需要有对这个库的操作权限。<br>其中的属性：</p>
+<ul>
+<li><strong>checkSQLschema</strong>是检查sql语句中是否带有env_v2这个名字，true为自动删除sql语句中的这个名字。</li>
+<li>** sqlMaxLimit**是指自动在查询语句中限制返回的条数，sql语句中有的话会自动替换。</li>
+<li><strong>dataNode</strong>是用于定义具体的库，之后的server.xml中配置的访问用户需要有对这个库的操作权限。</li>
+</ul>
+<p><strong>table</strong>标签定义MyCat 中的逻辑表。<br>其中的属性：</p>
+<ul>
+<li><strong>name</strong>定义逻辑表的表名，这个名字就如同我在数据库中执行 create table 命令指定的名字一样，同schema 标签中定义的名字必须唯一。</li>
+<li><strong>dataNode</strong>定义这个逻辑表所属的 dataNode, 该属性的值需要和 dataNode 标签中 name 属性的值相互对应。</li>
+<li>如果需要定义的 dn 过多 可以使用如下的方法减少配置。（此次出自mysql权威指南）</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span> <span class="attr">name</span>=<span class="string">&quot;travelrecord&quot;</span> <span class="attr">dataNode</span>=<span class="string">&quot;multipleDn$0-99,multipleDn2$100-199&quot;</span><span class="attr">rule</span>=<span class="string">&quot;auto-sharding-long&quot;</span> &gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dataNode</span> <span class="attr">name</span>=<span class="string">&quot;multipleDn$0-99&quot;</span> <span class="attr">dataHost</span>=<span class="string">&quot;localhost1&quot;</span> <span class="attr">database</span>=<span class="string">&quot;db$0-99&quot;</span>&lt;/<span class="attr">dataNode</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dataNode</span> <span class="attr">name</span>=<span class="string">&quot;multipleDn2$100-199&quot;</span> <span class="attr">dataHost</span>=<span class="string">&quot;localhost1&quot;</span> <span class="attr">database</span>=<span class="string">&quot; db$100-199&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">dataNode</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li><strong>rule</strong>该属性用于指定逻辑表要使用的规则名字，规则名字在 rule.xml 中定义，必须和tableRule 标签中 name 属性属性值一一对应。</li>
+<li><strong>needAddLimit</strong>是否需要自动的在每个语句后面加上 limit 限制，默认为true。</li>
+</ul>
+<h4 id="实例："><a href="#实例：" class="headerlink" title="实例："></a>实例：</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">schema</span> <span class="attr">name</span>=<span class="string">&quot;db&quot;</span> <span class="attr">checkSQLschema</span>=<span class="string">&quot;false&quot;</span> <span class="attr">sqlMaxLimit</span>=<span class="string">&quot;300&quot;</span> <span class="attr">dataNode</span>=<span class="string">&quot;dn2&quot;</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">table</span> <span class="attr">name</span>=<span class="string">&quot;gather_air_data&quot;</span> <span class="attr">subTables</span>=<span class="string">&quot;gather_air_data_$201901-201912,gather_air_data_$202001-202012,gather_air_data_$202101-202112,gather_air_data_$202201-202212,gather_air_data_$202301-202312,gather_air_data_$202401-202412&quot;</span> <span class="attr">dataNode</span>=<span class="string">&quot;dn3&quot;</span> <span class="attr">rule</span>=<span class="string">&quot;env-air-sharding-by-date&quot;</span>  <span class="attr">needAddLimit</span> =<span class="string">&quot;false&quot;</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">table</span> <span class="attr">name</span>=<span class="string">&quot;gather_city_aqi_data&quot;</span> <span class="attr">subTables</span>=<span class="string">&quot;gather_city_aqi_data_$201901-201912,gather_city_aqi_data_$202001-202012,gather_city_aqi_data_$202101-202112,gather_city_aqi_data_$202201-202212,gather_city_aqi_data_$202301-202312,gather_city_aqi_data_$202401-202412&quot;</span> <span class="attr">dataNode</span>=<span class="string">&quot;dn3&quot;</span> <span class="attr">rule</span>=<span class="string">&quot;env-air-sharding-by-date&quot;</span>  <span class="attr">needAddLimit</span> =<span class="string">&quot;false&quot;</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">table</span> <span class="attr">name</span>=<span class="string">&quot;gather_observation_factor&quot;</span> <span class="attr">subTables</span>=<span class="string">&quot;gather_observation_factor_$201901-201912,gather_observation_factor_$202001-202012,gather_observation_factor_$202101-202112,gather_observation_factor_$202201-202212,gather_observation_factor_$202301-202312,gather_observation_factor_$202401-202412&quot;</span> <span class="attr">dataNode</span>=<span class="string">&quot;dn3&quot;</span> <span class="attr">rule</span>=<span class="string">&quot;env-air-sharding-by-date&quot;</span>  <span class="attr">needAddLimit</span> =<span class="string">&quot;false&quot;</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">schema</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>dataNode</strong> 标签定义了 MyCat 中的数据节点<br>其中的属性：</p>
+<ul>
+<li><strong>name</strong>定义数据节点的名字</li>
+<li><strong>dataHost</strong>该属性用于定义该分片属于哪个数据库实例的，属性值是引用dataHost标签上定义的 name属性</li>
+<li><strong>database</strong>该属性用于定义该分片属性哪个具体数据库实例上的具体库</li>
+</ul>
+<h4 id="实例：-1"><a href="#实例：-1" class="headerlink" title="实例："></a>实例：</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dataNode</span> <span class="attr">name</span>=<span class="string">&quot;dn2&quot;</span> <span class="attr">dataHost</span>=<span class="string">&quot;localhost&quot;</span> <span class="attr">database</span>=<span class="string">&quot;db&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dataNode</span> <span class="attr">name</span>=<span class="string">&quot;dn3&quot;</span> <span class="attr">dataHost</span>=<span class="string">&quot;localhost&quot;</span> <span class="attr">database</span>=<span class="string">&quot;db_v2&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>dataHost</strong>标签定义了具体的数据库实例、读写分离配置和心跳语句<br>其中的属性：</p>
+<ul>
+<li><strong>maxCon</strong>与<strong>minCon</strong>指定每个读写实例连接池的最大与最小连接，以及初始化连接池的大小。</li>
+<li><strong>balance</strong>是负载均衡类型，有三种取值<ol>
+<li>balance&#x3D;”0”, 不开启读写分离机制，所有读操作都发送到当前可用的 writeHost 上</li>
+<li>balance&#x3D;”1”，全部的 readHost 与 stand by writeHost 参与 select 语句的负载均衡，简单的说，当双主双从模式(M1-&gt;S1，M2-&gt;S2，并且 M1 与 M2 互为主备)，正常情况下M2,S1,S2 都参与 select 语句的负载均衡。</li>
+<li>balance&#x3D;”2”，所有读操作都随机的在 writeHost、readhost 上分发。</li>
+<li>balance&#x3D;”3”，所有读请求随机的分发到 wiriterHost 对应的 readhost 执行，writerHost 不负担读压力。</li>
+</ol>
+</li>
+<li><strong>writeType</strong>负载均衡类型（具体还是不太明白，套的官方示例）</li>
+<li><strong>dbType</strong>指定后端连接的数据库类型</li>
+<li><strong>dbDriver</strong>指定连接后端数据库使用的 Driver，目前可选的值有 native 和 JDBC。</li>
+</ul>
+<p><strong>heartbeat</strong>标签内指明用于和后端数据库进行心跳检查的语句。例如,MYSQL 可以使用 select user()。</p>
+<p><strong>writeHost 标签</strong>、<strong>readHost 标签</strong>两个标签都指定后端数据库的相关配置给 mycat，用于实例化后端连接池。<br>其中的属性：</p>
+<ul>
+<li><strong>url</strong>后端实例连接地址</li>
+<li><strong>user</strong>后端存储实例需要的用户名字。</li>
+<li><strong>password</strong>后端存储实例需要的密码。</li>
+</ul>
+<h4 id="实例：-2"><a href="#实例：-2" class="headerlink" title="实例："></a>实例：</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dataHost</span> <span class="attr">name</span>=<span class="string">&quot;localhost&quot;</span> <span class="attr">maxCon</span>=<span class="string">&quot;1000&quot;</span> <span class="attr">minCon</span>=<span class="string">&quot;10&quot;</span> <span class="attr">balance</span>=<span class="string">&quot;1&quot;</span> <span class="attr">writeType</span>=<span class="string">&quot;0&quot;</span> <span class="attr">dbType</span>=<span class="string">&quot;mysql&quot;</span> <span class="attr">dbDriver</span>=<span class="string">&quot;native&quot;</span> <span class="attr">switchType</span>=<span class="string">&quot;-1&quot;</span>  <span class="attr">slaveThreshold</span>=<span class="string">&quot;100&quot;</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">heartbeat</span>&gt;</span>select user()<span class="tag">&lt;/<span class="name">heartbeat</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">writeHost</span> <span class="attr">host</span>=<span class="string">&quot;hostMaster&quot;</span> <span class="attr">url</span>=<span class="string">&quot;localhost:3306&quot;</span> <span class="attr">user</span>=<span class="string">&quot;root&quot;</span> <span class="attr">password</span>=<span class="string">&quot;root&quot;</span> /&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">writeHost</span> <span class="attr">host</span>=<span class="string">&quot;hostSalve&quot;</span> <span class="attr">url</span>=<span class="string">&quot;localhost:3308&quot;</span> <span class="attr">user</span>=<span class="string">&quot;root&quot;</span> <span class="attr">password</span>=<span class="string">&quot;root&quot;</span> /&gt;</span></span><br><span class="line">		</span><br><span class="line"><span class="tag">&lt;/<span class="name">dataHost</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="server-xml"><a href="#server-xml" class="headerlink" title="server.xml"></a>server.xml</h3><p>server.xml 几乎保存了所有 mycat 需要的系统配置信息。<br>以下内容出自mycat权威指南:</p>
+<ul>
+<li><p>server.xml 中的标签本就不多，这个标签主要用于定义登录 mycat 的用户和权限。例如上面的例子中，我定义了一个用户，用户名为 test、密码也为 test，可访问的 schema 也只有 TESTDB 一个。</p>
+</li>
+<li><p>如果我在 schema.xml 中定义了多个 schema，那么这个用户是无法访问其他的 schema。在 mysql 客户端看来则是无法使用 use 切换到这个其他的数据库。</p>
+</li>
+</ul>
+<p>实例：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">user</span> <span class="attr">name</span>=<span class="string">&quot;root&quot;</span> <span class="attr">defaultAccount</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span>&gt;</span>root<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;schemas&quot;</span>&gt;</span>db<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="配置成服务并启动"><a href="#配置成服务并启动" class="headerlink" title="配置成服务并启动"></a>配置成服务并启动</h2><p>从.&#x2F;bin目录下打开命令行启动mycat</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mycat install #配置成服务</span><br><span class="line"></span><br><span class="line">mycat start #启动服务</span><br><span class="line"></span><br><span class="line">mycat stop #停止服务</span><br></pre></td></tr></table></figure>
+<h2 id="后记："><a href="#后记：" class="headerlink" title="后记："></a>后记：</h2><p>可以使用在server.xml中配置好的用户去远程访问，记得开启服务器的防火墙8066端口。</p>
+<h3 id="遇到的bug"><a href="#遇到的bug" class="headerlink" title="遇到的bug"></a>遇到的bug</h3><p>在将程序部署到服务器上时遇到了一些问题。</p>
+<h4 id="1-jpa的save方法在传入id修改数据时，是全部数据字段修改。而mycat不能修改分片的时间根据字段。"><a href="#1-jpa的save方法在传入id修改数据时，是全部数据字段修改。而mycat不能修改分片的时间根据字段。" class="headerlink" title="1. jpa的save方法在传入id修改数据时，是全部数据字段修改。而mycat不能修改分片的时间根据字段。"></a>1. jpa的save方法在传入id修改数据时，是全部数据字段修改。而mycat不能修改分片的时间根据字段。</h4><p>报错：<strong>Sharding column can’t be updated GATHER_OBSERVATION_FACTOR-&gt;DATE_TIME</strong><br>处理方式：将datetime字段加上@Column(updatable&#x3D;false)注释</p>
+<h4 id="2-jpa对一条数据查出来后，直接把原数据的id改为null会报错"><a href="#2-jpa对一条数据查出来后，直接把原数据的id改为null会报错" class="headerlink" title="2.jpa对一条数据查出来后，直接把原数据的id改为null会报错"></a>2.jpa对一条数据查出来后，直接把原数据的id改为null会报错</h4><p>报错：<strong>identifier of an instance of .. altered to null</strong><br>处理方式：不能直接更新已经查到的数据，要new一个对象实例，进行属性复制（BeanUtils.copyProperties(source, dist)）</p>
+<h4 id="3-在rule-xml的tableRule标签中的分片根据表字段columns不能为空，为空无法分片"><a href="#3-在rule-xml的tableRule标签中的分片根据表字段columns不能为空，为空无法分片" class="headerlink" title="3.在rule.xml的tableRule标签中的分片根据表字段columns不能为空，为空无法分片"></a>3.在rule.xml的tableRule标签中的分片根据表字段columns不能为空，为空无法分片</h4><p>报错：<strong>columnValue:NULL Please check if the format satisfied.</strong><br>处理方式：删除掉为null的数据</p>
+<h4 id="4-jpa删除时注意实际执行语句，有时执行语句是按id删除的。mycat会报错"><a href="#4-jpa删除时注意实际执行语句，有时执行语句是按id删除的。mycat会报错" class="headerlink" title="4.jpa删除时注意实际执行语句，有时执行语句是按id删除的。mycat会报错"></a>4.jpa删除时注意实际执行语句，有时执行语句是按id删除的。mycat会报错</h4>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mycat/" rel="tag"># mycat</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/08/14/rebbitmq%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" rel="prev" title="rebbitmq安装与使用场景">
+                  <i class="fa fa-chevron-left"></i> rebbitmq安装与使用场景
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/09/20/mysql%E9%85%8D%E7%BD%AE%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" rel="next" title="mysql配置主从复制">
+                  mysql配置主从复制 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

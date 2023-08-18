@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="springboot配置redis多数据源 本文来自https:&#x2F;&#x2F;iogogogo.github.io&#x2F;2020&#x2F;01&#x2F;10&#x2F;spring-boot-redis-multi-instance&#x2F; ，我用了后记录一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springboot配置redis多数据源">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/12/12/springboot%E9%85%8D%E7%BD%AEredis%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="springboot配置redis多数据源 本文来自https:&#x2F;&#x2F;iogogogo.github.io&#x2F;2020&#x2F;01&#x2F;10&#x2F;spring-boot-redis-multi-instance&#x2F; ，我用了后记录一下。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b1.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b2.png">
+<meta property="article:published_time" content="2020-12-12T11:46:27.000Z">
+<meta property="article:modified_time" content="2021-03-03T02:32:42.219Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.worldofwarcraftchina.cn/b1.png">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/12/12/springboot%E9%85%8D%E7%BD%AEredis%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/12/12/springboot%E9%85%8D%E7%BD%AEredis%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/","path":"2020/12/12/springboot配置redis多数据源/","title":"springboot配置redis多数据源"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>springboot配置redis多数据源 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#springboot%E9%85%8D%E7%BD%AEredis%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="nav-number">1.</span> <span class="nav-text">springboot配置redis多数据源</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E7%AB%A0"><span class="nav-number">1.1.</span> <span class="nav-text">序章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="nav-number">1.2.</span> <span class="nav-text">实现思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BARedis%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.3.</span> <span class="nav-text">创建Redis服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AEpom%E9%85%8D%E7%BD%AE"><span class="nav-number">1.4.</span> <span class="nav-text">项目pom配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89RedisConfigure"><span class="nav-number">1.5.</span> <span class="nav-text">自定义RedisConfigure</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.5.1.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RedisConfigure"><span class="nav-number">1.5.2.</span> <span class="nav-text">RedisConfigure</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87debug%E6%9F%A5%E7%9C%8B%E9%85%8D%E7%BD%AE%E6%98%AF%E5%90%A6%E6%88%90%E5%8A%9F"><span class="nav-number">1.6.</span> <span class="nav-text">通过debug查看配置是否成功</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89RedisHandler%E5%92%8CRedisOperations"><span class="nav-number">1.7.</span> <span class="nav-text">自定义RedisHandler和RedisOperations</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.7.1.</span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RedisOperations"><span class="nav-number">1.7.2.</span> <span class="nav-text">RedisOperations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RedisHandler"><span class="nav-number">1.7.3.</span> <span class="nav-text">RedisHandler</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E7%BB%93%E6%9E%9C"><span class="nav-number">1.8.</span> <span class="nav-text">最终结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.9.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/12/12/springboot%E9%85%8D%E7%BD%AEredis%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="springboot配置redis多数据源 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          springboot配置redis多数据源
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-12 19:46:27" itemprop="dateCreated datePublished" datetime="2020-12-12T19:46:27+08:00">2020-12-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-03-03 10:32:42" itemprop="dateModified" datetime="2021-03-03T10:32:42+08:00">2021-03-03</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="springboot配置redis多数据源"><a href="#springboot配置redis多数据源" class="headerlink" title="springboot配置redis多数据源"></a>springboot配置redis多数据源</h1><blockquote>
+<p>本文来自<a target="_blank" rel="noopener" href="https://iogogogo.github.io/2020/01/10/spring-boot-redis-multi-instance/">https://iogogogo.github.io/2020/01/10/spring-boot-redis-multi-instance/</a> ，我用了后记录一下。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="序章"><a href="#序章" class="headerlink" title="序章"></a>序章</h2><p>Spring Boot 2.x版本升级以后，Redis连接库由原来的<code>Jedis</code>换成了<code>Lettuce</code>，但是提供给上层使用的api没有变化，在日常使用过程中难免会有需要使用多个库的情况，或者使用多个Redis实例，那么这个时候就需要维护两个Redis连接池或者说两个<code>RedisTemplate</code> 。</p>
+<h2 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h2><ol>
+<li>多数据源最终表现其实就是 <code>RedisConnectionFactory</code> 不同</li>
+<li>Spring Boot 通过<code>RedisStandaloneConfiguration</code>维护了一套默认的<code>RedisConnectionFactory</code>，要实现多个实例或者使用多个db，理论上只需要自己在维护一套<code>RedisConnectionFactory</code>即可。</li>
+<li>不管是Jedis或是Lettuce，都是通用的，所以我们可以将两个的实现方式都整理出来，区别如下：<ul>
+<li><code>Lettuce</code>使用的是<code>LettuceConnectionFactory</code></li>
+<li><code>Jedis</code>使用的是<code>JedisConnectionFactory</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="创建Redis服务"><a href="#创建Redis服务" class="headerlink" title="创建Redis服务"></a>创建Redis服务</h2><p>为了方便测试，直接使用<code>docker</code>创建一个Redis服务，以下是一个完整的启动脚本</p>
+<ol>
+<li><code>--restart=always</code>设置了Redis服务随着docker进程的启动而启动</li>
+<li><code>-p 6379:6379 </code>将docker启动的服务端口映射到宿主机，这里是必须的，否则宿主机和redis的端口是不能通信的</li>
+<li><code>--requirepass &quot;redis&quot;</code> 设置密码为<code>redis</code></li>
+<li><code>--appendonly yes</code>保存aof持久化文件</li>
+<li><code>-v ~/share/docker/data/redis:/data \</code> 将docker启动的redis的数据映射到宿主机目录</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/share/docker/data/redis</span><br><span class="line">chmod 755 -R ~/share/docker/data/redis</span><br><span class="line"></span><br><span class="line">docker run -dit --restart=always --name redis \</span><br><span class="line">    -v ~/share/docker/data/redis:/data \</span><br><span class="line">    -p 6379:6379 \</span><br><span class="line">    redis:latest redis-server --requirepass &quot;redis&quot; --appendonly yes</span><br></pre></td></tr></table></figure>
+<p>如果觉得不需要设置这么多，可以使用以下最简单的脚本，仅仅将端口做了映射，其他的都是最简单的配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -dit --name redis -p 6379:6379 redis:latest</span><br></pre></td></tr></table></figure>
+
+<h2 id="项目pom配置"><a href="#项目pom配置" class="headerlink" title="项目pom配置"></a>项目pom配置</h2><p>使用Spring Boot集成Redis，只需要将<code>spring-boot-starter-data-redis</code>和<code>commons-pool2</code>加到依赖即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="自定义RedisConfigure"><a href="#自定义RedisConfigure" class="headerlink" title="自定义RedisConfigure"></a>自定义RedisConfigure</h2><p>这里这一步是最重要的，因为Spring Boot默认帮我们维护了一个RedisConnectionFactory，前面说了要使用不同的Redis实例就需要自己在维护一个RedisConnectionFactory，这里就以使用两个redis的database为例</p>
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><p><code>spring.redis</code>开头的都是Spring Boot自动注入需要加载的配置，我们为了在使用一个db2，这里加了一个<code>spring.redis-db-2</code>开头的配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  redis:</span><br><span class="line">    database: 0</span><br><span class="line">    host: localhost</span><br><span class="line">    port: 6379</span><br><span class="line">    password:</span><br><span class="line">    timeout: 60000</span><br><span class="line">    lettuce:</span><br><span class="line">      pool:</span><br><span class="line">        max-active: 8 # 连接池最大连接数（使用负值表示没有限制） 默认 8</span><br><span class="line">        max-wait: -1 # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1</span><br><span class="line">        max-idle: 8 # 连接池中的最大空闲连接 默认 8</span><br><span class="line">        min-idle: 0 # 连接池中的最小空闲连接 默认 0</span><br><span class="line">  redis-db-2:</span><br><span class="line">    database: 2</span><br><span class="line">    host: 127.0.0.1</span><br><span class="line">    port: 6379</span><br><span class="line">    password:</span><br><span class="line">    timeout: 60000</span><br><span class="line">    lettuce:</span><br><span class="line">      pool:</span><br><span class="line">        max-active: 8</span><br><span class="line">        max-wait: 8</span><br><span class="line">        max-idle: 8</span><br><span class="line">        min-idle: 0</span><br></pre></td></tr></table></figure>
+<h3 id="RedisConfigure"><a href="#RedisConfigure" class="headerlink" title="RedisConfigure"></a>RedisConfigure</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.iogogogo.redis.configure;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.annotation.JsonAutoDetect;</span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.annotation.PropertyAccessor;</span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.ObjectMapper;</span><br><span class="line"><span class="keyword">import</span> io.vavr.Tuple;</span><br><span class="line"><span class="keyword">import</span> io.vavr.Tuple6;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.lang3.StringUtils;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.pool2.impl.GenericObjectPoolConfig;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.cache.annotation.EnableCaching;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.RedisConnectionFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.RedisPassword;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.RedisStandaloneConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.jedis.JedisClientConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.jedis.JedisConnectionFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.RedisTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.serializer.StringRedisSerializer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.time.Duration;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by tao.zeng on 2020-01-10.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Value</span>(&quot;$&#123;spring.redis-db-2.database&#125;&quot;) int database,</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Value</span>(&quot;$&#123;spring.redis-db-2.host&#125;&quot;) String host,</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Value</span>(&quot;$&#123;spring.redis-db-2.port&#125;&quot;) int port,</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Value</span>(&quot;$&#123;spring.redis-db-2.password&#125;&quot;) String password,</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Value</span>(&quot;$&#123;spring.redis-db-2.timeout&#125;&quot;) long timeout,</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Value</span>(&quot;$&#123;spring.redis-db-2.lettuce.pool.max-active&#125;&quot;) int maxActive,</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Value</span>(&quot;$&#123;spring.redis-db-2.lettuce.pool.max-wait&#125;&quot;) int maxWait,</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Value</span>(&quot;$&#123;spring.redis-db-2.lettuce.pool.max-idle&#125;&quot;) int maxIdle,</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Value</span>(&quot;$&#123;spring.redis-db-2.lettuce.pool.min-idle&#125;&quot;) int minIdle</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@EnableCaching</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisConfigure</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> RedisTemplate <span class="title function_">redisTemplateDB_2</span><span class="params">(Tuple6&lt;RedisStandaloneConfiguration, Long, Integer, Integer, Integer, Integer&gt; redisConfigurationDB_2)</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="type">Long</span> <span class="variable">timeout</span> <span class="operator">=</span> redisConfigurationDB_2._2();</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> <span class="variable">maxActive</span> <span class="operator">=</span> redisConfigurationDB_2._3(),</span><br><span class="line">                maxWait = redisConfigurationDB_2._4(),</span><br><span class="line">                maxIdle = redisConfigurationDB_2._5(),</span><br><span class="line">                minIdle = redisConfigurationDB_2._6();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* ========= 基本配置 ========= */</span></span><br><span class="line">        <span class="type">RedisStandaloneConfiguration</span> <span class="variable">standaloneConfiguration</span> <span class="operator">=</span> redisConfigurationDB_2._1();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* ========= 连接池通用配置 ========= */</span></span><br><span class="line">        <span class="type">GenericObjectPoolConfig</span> <span class="variable">genericObjectPoolConfig</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">GenericObjectPoolConfig</span>();</span><br><span class="line">        genericObjectPoolConfig.setMaxTotal(maxActive);</span><br><span class="line">        genericObjectPoolConfig.setMaxWaitMillis(maxWait);</span><br><span class="line">        genericObjectPoolConfig.setMaxIdle(maxIdle);</span><br><span class="line">        genericObjectPoolConfig.setMinIdle(minIdle);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* ========= jedis pool ========= */</span></span><br><span class="line">        <span class="comment">// jedisConnectionFactory(standaloneConfiguration, genericObjectPoolConfig, timeout);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* ========= lettuce pool ========= */</span></span><br><span class="line">        <span class="type">LettuceConnectionFactory</span> <span class="variable">connectionFactory</span> <span class="operator">=</span> lettuceConnectionFactory(standaloneConfiguration, genericObjectPoolConfig, timeout);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 连接池初始化</span></span><br><span class="line">        connectionFactory.afterPropertiesSet();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 创建 RedisTemplate</span></span><br><span class="line">        <span class="keyword">return</span> createRedisTemplate(connectionFactory);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * lettuceConnectionFactory</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> standaloneConfiguration Redis标准配置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> genericObjectPoolConfig Redis通用配置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> timeout                 超时时间</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> LettuceConnectionFactory <span class="title function_">lettuceConnectionFactory</span><span class="params">(RedisStandaloneConfiguration standaloneConfiguration, GenericObjectPoolConfig genericObjectPoolConfig, <span class="type">long</span> timeout)</span> &#123;</span><br><span class="line">        LettucePoolingClientConfiguration.<span class="type">LettucePoolingClientConfigurationBuilder</span> <span class="variable">builder</span> <span class="operator">=</span> LettucePoolingClientConfiguration.builder();</span><br><span class="line">        builder.poolConfig(genericObjectPoolConfig);</span><br><span class="line">        builder.commandTimeout(Duration.ofSeconds(timeout));</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">LettuceConnectionFactory</span>(standaloneConfiguration, builder.build());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * jedisConnectionFactory</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> standaloneConfiguration Redis标准配置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> genericObjectPoolConfig Redis通用配置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> timeout                 超时时间</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> JedisConnectionFactory <span class="title function_">jedisConnectionFactory</span><span class="params">(RedisStandaloneConfiguration standaloneConfiguration, GenericObjectPoolConfig genericObjectPoolConfig, <span class="type">long</span> timeout)</span> &#123;</span><br><span class="line">        JedisClientConfiguration.<span class="type">DefaultJedisClientConfigurationBuilder</span> <span class="variable">builder</span> <span class="operator">=</span> (JedisClientConfiguration.DefaultJedisClientConfigurationBuilder) JedisClientConfiguration</span><br><span class="line">                .builder();</span><br><span class="line">        builder.connectTimeout(Duration.ofSeconds(timeout));</span><br><span class="line">        builder.usePooling();</span><br><span class="line">        builder.poolConfig(genericObjectPoolConfig);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">JedisConnectionFactory</span>(standaloneConfiguration, builder.build());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> redisConnectionFactory</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> RedisTemplate <span class="title function_">redisTemplate</span><span class="params">(RedisConnectionFactory redisConnectionFactory)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> createRedisTemplate(redisConnectionFactory);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * json 实现 redisTemplate</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;</span></span><br><span class="line"><span class="comment">     * 该方法不能加 <span class="doctag">@Bean</span> 否则不管如何调用，RedisConnectionFactory 都会是默认配置</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> redisConnectionFactory</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> RedisTemplate <span class="title function_">createRedisTemplate</span><span class="params">(RedisConnectionFactory redisConnectionFactory)</span> &#123;</span><br><span class="line">        RedisTemplate&lt;String, Object&gt; redisTemplate = <span class="keyword">new</span> <span class="title class_">RedisTemplate</span>&lt;&gt;();</span><br><span class="line">        redisTemplate.setConnectionFactory(redisConnectionFactory);</span><br><span class="line"></span><br><span class="line">        Jackson2JsonRedisSerializer&lt;Object&gt; jackson2JsonRedisSerializer = <span class="keyword">new</span> <span class="title class_">Jackson2JsonRedisSerializer</span>&lt;&gt;(Object.class);</span><br><span class="line">        <span class="type">ObjectMapper</span> <span class="variable">objectMapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectMapper</span>();</span><br><span class="line">        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);</span><br><span class="line">        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);</span><br><span class="line">        jackson2JsonRedisSerializer.setObjectMapper(objectMapper);</span><br><span class="line"></span><br><span class="line">        <span class="type">StringRedisSerializer</span> <span class="variable">stringRedisSerializer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringRedisSerializer</span>();</span><br><span class="line"></span><br><span class="line">        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);</span><br><span class="line">        redisTemplate.setKeySerializer(stringRedisSerializer);</span><br><span class="line">        redisTemplate.afterPropertiesSet();</span><br><span class="line">        <span class="keyword">return</span> redisTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自定义Redis的配置加载</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> database</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> password</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> host</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> port</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> timeout</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> maxActive</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> maxWait</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> maxIdle</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> minIdle</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Tuple6&lt;RedisStandaloneConfiguration, Long, Integer, Integer, Integer, Integer&gt;</span><br><span class="line">    <span class="title function_">redisConfigurationDB_2</span><span class="params">(<span class="meta">@Value(&quot;$&#123;spring.redis-db-2.database&#125;&quot;)</span> <span class="type">int</span> database,</span></span><br><span class="line"><span class="params">                           <span class="meta">@Value(&quot;$&#123;spring.redis-db-2.password&#125;&quot;)</span> String password,</span></span><br><span class="line"><span class="params">                           <span class="meta">@Value(&quot;$&#123;spring.redis-db-2.host&#125;&quot;)</span> String host,</span></span><br><span class="line"><span class="params">                           <span class="meta">@Value(&quot;$&#123;spring.redis-db-2.port&#125;&quot;)</span> <span class="type">int</span> port,</span></span><br><span class="line"><span class="params">                           <span class="meta">@Value(&quot;$&#123;spring.redis-db-2.timeout&#125;&quot;)</span> <span class="type">long</span> timeout,</span></span><br><span class="line"><span class="params">                           <span class="meta">@Value(&quot;$&#123;spring.redis-db-2.lettuce.pool.max-active&#125;&quot;)</span> <span class="type">int</span> maxActive,</span></span><br><span class="line"><span class="params">                           <span class="meta">@Value(&quot;$&#123;spring.redis-db-2.lettuce.pool.max-wait&#125;&quot;)</span> <span class="type">int</span> maxWait,</span></span><br><span class="line"><span class="params">                           <span class="meta">@Value(&quot;$&#123;spring.redis-db-2.lettuce.pool.max-idle&#125;&quot;)</span> <span class="type">int</span> maxIdle,</span></span><br><span class="line"><span class="params">                           <span class="meta">@Value(&quot;$&#123;spring.redis-db-2.lettuce.pool.min-idle&#125;&quot;)</span> <span class="type">int</span> minIdle)</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="type">RedisStandaloneConfiguration</span> <span class="variable">standaloneConfiguration</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RedisStandaloneConfiguration</span>();</span><br><span class="line">        standaloneConfiguration.setDatabase(database);</span><br><span class="line">        standaloneConfiguration.setHostName(host);</span><br><span class="line">        standaloneConfiguration.setPort(port);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isNotEmpty(password)) &#123;</span><br><span class="line">            <span class="type">RedisPassword</span> <span class="variable">redisPassword</span> <span class="operator">=</span> RedisPassword.of(password);</span><br><span class="line">            standaloneConfiguration.setPassword(redisPassword);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Tuple.of(standaloneConfiguration, timeout, maxActive, maxWait, maxIdle, minIdle);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个配置有点长，但是都有注释，而且这里也用到了上篇文章中讲到的<code>tuple</code>（在方法有多个返回值时，元组真香）,其实就已经可以使用两个不同的<code>RedisTemplate</code>了，这时候我们在启动项目时分别注入<code>redisTemplate</code>和<code>redisTemplateDB_2</code>，别问我为啥名字是这两货。</p>
+<h2 id="通过debug查看配置是否成功"><a href="#通过debug查看配置是否成功" class="headerlink" title="通过debug查看配置是否成功"></a>通过debug查看配置是否成功</h2><p>启动类我们实现<code>CommandLineRunner</code>，然后通过debug查看<code>redisTemplate</code>和<code>redisTemplateDB2</code>的<code>RedisConnectionFactory</code><br>并且我们在database&#x3D;0存储了一个string数据，在database&#x3D;2存储了一个hash数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.iogogogo.redis;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.CommandLineRunner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.RedisTemplate;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by tao.zeng on 2020-01-10.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisApplication</span> <span class="keyword">implements</span> <span class="title class_">CommandLineRunner</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedisTemplate redisTemplateDB_2;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SpringApplication.run(RedisApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">(String... args)</span> &#123;</span><br><span class="line">        log.info(<span class="string">&quot;redisTemplate:&#123;&#125;&quot;</span>, redisTemplate);</span><br><span class="line">        redisTemplate.opsForValue().set(<span class="string">&quot;iogogogo&quot;</span>, <span class="string">&quot;redisTemplate save value&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        log.info(<span class="string">&quot;redisTemplateDB_2:&#123;&#125;&quot;</span>, redisTemplateDB2);</span><br><span class="line">        redisTemplateDB2.opsForHash().put(<span class="string">&quot;iogogogo&quot;</span>, <span class="string">&quot;iogogogo-hash&quot;</span>, <span class="string">&quot;redisTemplateDB_2 save value&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>redisTemplate<br><img src="/b1.png" alt="redisTemplate"></li>
+<li>redisTemplateDB_2<br><img src="/b2.png" alt="redisTemplateDB_2"></li>
+</ul>
+<p>略过原文的查看存储数据。。。</p>
+<p>通过以上日志我们可以看到分别在不同的数据库已经存储了不同的数据，到这里我们redis配置多实例就已经完成。但是我们每次注入的时候都要记得自己创建的Bean的名字，这样对其他人不太友好，那么我们可以进一步封装一下，自定义一个handler进行获取RedisTemplate，这样会不会更便捷呢？</p>
+<h2 id="自定义RedisHandler和RedisOperations"><a href="#自定义RedisHandler和RedisOperations" class="headerlink" title="自定义RedisHandler和RedisOperations"></a>自定义RedisHandler和RedisOperations</h2><p>做这一步主要是为了将下层的RedisTemplate进行统一的封装，对外只是一个<code>RedisHandler</code>和<code>RedisOperations</code>，<code>RedisHandler</code>提供获取<code>RedisOperations</code>的方法，<code>RedisOperations</code>里面可以封装一些常用的redis操作，这样就只需要和<code>RedisOperations</code>进行操作，从而避免同时操作多个<code>RedisTemplate</code></p>
+<h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">➜  example-redis git:(master) ✗ tree ./</span><br><span class="line">  ./</span><br><span class="line">  ├── example-redis.iml</span><br><span class="line">  ├── pom.xml</span><br><span class="line">  └── src</span><br><span class="line">      ├── main</span><br><span class="line">      │   ├── java</span><br><span class="line">      │   │   └── com</span><br><span class="line">      │   │       └── iogogogo</span><br><span class="line">      │   │           └── redis</span><br><span class="line">      │   │               ├── RedisApplication.java</span><br><span class="line">      │   │               └── configure</span><br><span class="line">      │   │                   ├── RedisConfigure.java</span><br><span class="line">      │   │                   ├── handler</span><br><span class="line">      │   │                   │   └── RedisHandler.java</span><br><span class="line">      │   │                   └── util</span><br><span class="line">      │   │                       └── RedisOperations.java</span><br><span class="line">      │   └── resources</span><br><span class="line">      │       └── application.yml</span><br><span class="line">      └── test</span><br><span class="line">          └── java</span><br></pre></td></tr></table></figure>
+
+<h3 id="RedisOperations"><a href="#RedisOperations" class="headerlink" title="RedisOperations"></a>RedisOperations</h3><p>该类可以作为redis的工具类使用，自己添加一些常用的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.iogogogo.redis.configure.util;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line">  <span class="keyword">import</span> org.springframework.data.redis.core.RedisTemplate;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Created by tao.zeng on 2020-01-10.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@Slf4j</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisOperations</span> &#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">private</span> RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">private</span> <span class="title function_">RedisOperations</span><span class="params">()</span> &#123;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">public</span> <span class="title function_">RedisOperations</span><span class="params">(RedisTemplate redisTemplate)</span> &#123;</span><br><span class="line">          <span class="built_in">this</span>.redisTemplate = redisTemplate;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">public</span> RedisTemplate <span class="title function_">redisTemplate</span><span class="params">()</span> &#123;</span><br><span class="line">          <span class="keyword">return</span> redisTemplate;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="RedisHandler"><a href="#RedisHandler" class="headerlink" title="RedisHandler"></a>RedisHandler</h3><p><code>RedisHandler</code>提供了统一操作<code>RedisTemplate</code>的入口，对用户来说下层的<code>RedisTemplate</code>是谁就不需要关心了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.iogogogo.redis.configure.handler;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">import</span> com.iogogogo.redis.configure.util.RedisOperations;</span><br><span class="line">  <span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">  <span class="keyword">import</span> org.springframework.data.redis.core.RedisTemplate;</span><br><span class="line">  <span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Created by tao.zeng on 2020-01-10.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@Component</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisHandler</span> &#123;</span><br><span class="line"></span><br><span class="line">      <span class="meta">@Autowired</span></span><br><span class="line">      <span class="keyword">private</span> RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line">      <span class="meta">@Autowired</span></span><br><span class="line">      <span class="keyword">private</span> RedisTemplate redisTemplateDB_2;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">private</span> RedisOperations redisOperations, redisDB2Operations;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">public</span> RedisOperations <span class="title function_">redisOperations</span><span class="params">()</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (redisOperations == <span class="literal">null</span>) &#123;</span><br><span class="line">              redisOperations = <span class="keyword">new</span> <span class="title class_">RedisOperations</span>(redisTemplate);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">return</span> redisOperations;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">public</span> RedisOperations <span class="title function_">redisDB2Operations</span><span class="params">()</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (redisDB2Operations == <span class="literal">null</span>) &#123;</span><br><span class="line">              redisDB2Operations = <span class="keyword">new</span> <span class="title class_">RedisOperations</span>(redisTemplateDB_2);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">return</span> redisDB2Operations;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="最终结果"><a href="#最终结果" class="headerlink" title="最终结果"></a>最终结果</h2><p>我们在启动时看一下经过RedisHandler保证的RedisTemplate是否和我们想的一致，修改以后的启动类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.iogogogo.redis;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.iogogogo.redis.configure.handler.RedisHandler;</span><br><span class="line"><span class="keyword">import</span> com.iogogogo.redis.configure.util.RedisOperations;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.CommandLineRunner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.RedisTemplate;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by tao.zeng on 2020-01-10.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisApplication</span> <span class="keyword">implements</span> <span class="title class_">CommandLineRunner</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedisTemplate redisTemplateDB_2;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedisHandler redisHandler;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SpringApplication.run(RedisApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">(String... args)</span> &#123;</span><br><span class="line">        log.info(<span class="string">&quot;redisTemplate:&#123;&#125;&quot;</span>, redisTemplate);</span><br><span class="line">        redisTemplate.opsForValue().set(<span class="string">&quot;iogogogo&quot;</span>, <span class="string">&quot;redisTemplate save value&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        log.info(<span class="string">&quot;redisTemplateDB_2:&#123;&#125;&quot;</span>, redisTemplateDB_2);</span><br><span class="line">        redisTemplateDB_2.opsForHash().put(<span class="string">&quot;iogogogo&quot;</span>, <span class="string">&quot;iogogogo-hash&quot;</span>, <span class="string">&quot;redisTemplateDB_2 save value&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 通过统一的RedisOperations对Redis进行操作</span></span><br><span class="line">        <span class="comment">// 这里可以自己封装一些常用的方法，这样就能把下层的RedisTemplate进行封装，对外仅仅只是一个RedisOperations而已</span></span><br><span class="line">        <span class="comment">// 当然这里也提供对应的方法获取不同RedisTemplate对象最后的封装实例</span></span><br><span class="line">        <span class="type">RedisOperations</span> <span class="variable">redisOperations</span> <span class="operator">=</span> redisHandler.redisOperations();</span><br><span class="line">        <span class="type">RedisOperations</span> <span class="variable">redisDB2Operations</span> <span class="operator">=</span> redisHandler.redisDB2Operations();</span><br><span class="line"></span><br><span class="line">        log.info(<span class="string">&quot;redisOperations redisTemplate:&#123;&#125;&quot;</span>, redisOperations.redisTemplate());</span><br><span class="line">        log.info(<span class="string">&quot;redisDB2Operations redisTemplate:&#123;&#125;&quot;</span>, redisDB2Operations.redisTemplate());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>启动日志</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">2020-01-10 23:54:39.579  INFO 66673 --- [           main] com.iogogogo.redis.RedisApplication      : Started RedisApplication in 8.672 seconds (JVM running for 10.951)</span><br><span class="line">2020-01-10 23:54:39.580  INFO 66673 --- [           main] com.iogogogo.redis.RedisApplication      : redisTemplate:org.springframework.data.redis.core.RedisTemplate@44924587</span><br><span class="line">2020-01-10 23:54:39.679  INFO 66673 --- [           main] io.lettuce.core.EpollProvider            : Starting without optional epoll library</span><br><span class="line">2020-01-10 23:54:39.682  INFO 66673 --- [           main] io.lettuce.core.KqueueProvider           : Starting without optional kqueue library</span><br><span class="line">2020-01-10 23:54:39.910  INFO 66673 --- [           main] com.iogogogo.redis.RedisApplication      : redisTemplateDB2:org.springframework.data.redis.core.RedisTemplate@7fb66650</span><br><span class="line">2020-01-10 23:54:39.927  INFO 66673 --- [           main] com.iogogogo.redis.RedisApplication      : redisOperations redisTemplate:org.springframework.data.redis.core.RedisTemplate@44924587</span><br><span class="line">2020-01-10 23:54:39.929  INFO 66673 --- [           main] com.iogogogo.redis.RedisApplication      : redisDB2Operations redisTemplate:org.springframework.data.redis.core.RedisTemplate@7fb66650</span><br></pre></td></tr></table></figure>
+<p>通过日志我们可以看到</p>
+<ol>
+<li><p><code>redisTemplate</code>和<code>redisOperations`` redisTemplate</code>是同一个对象</p>
+</li>
+<li><p><code>redisTemplateDB2</code> 和<code>redisDB2Operations`` redisTemplate</code>也是同一个对象</p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过本文，我们可以看到一个项目如果需要使用使用多个redis连接获取使用不同的数据库，完全可以使用自定义<code>RedisConnectionFactory</code>来完成，第二点就是如果定义的<code>RedisTemplate</code>过多，我们可以在上面定义一个<code>RedisHandler</code>来进行封装下层的API操作，暴露一个统一的入口进行简化处理。</p>
+<p>示例代码：<a target="_blank" rel="noopener" href="https://github.com/iogogogo/life-example/tree/master/example-redis">https://github.com/iogogogo/life-example/tree/master/example-redis</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/redis/" rel="tag"># redis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/12/12/%E4%BD%BF%E7%94%A8show%20profile%E8%BF%9B%E8%A1%8Cmysql%E8%B0%83%E4%BC%98/" rel="prev" title="使用show profile进行mysql调优">
+                  <i class="fa fa-chevron-left"></i> 使用show profile进行mysql调优
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/01/09/%E5%BD%93%E6%8B%BF%E5%88%B0WSDL%E8%BF%9E%E6%8E%A5%E5%90%8E%E6%80%8E%E4%B9%88%E8%B0%83%E7%94%A8/" rel="next" title="当拿到WSDL连接后怎么调用">
+                  当拿到WSDL连接后怎么调用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

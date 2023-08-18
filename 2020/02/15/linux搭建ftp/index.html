@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="linux搭建ftp 记录安装ftp过程以及遇到的问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux搭建ftp">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/02/15/linux%E6%90%AD%E5%BB%BAftp/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="linux搭建ftp 记录安装ftp过程以及遇到的问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-15T08:35:38.000Z">
+<meta property="article:modified_time" content="2020-03-13T08:05:11.409Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/02/15/linux%E6%90%AD%E5%BB%BAftp/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/02/15/linux%E6%90%AD%E5%BB%BAftp/","path":"2020/02/15/linux搭建ftp/","title":"linux搭建ftp"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>linux搭建ftp | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux%E6%90%AD%E5%BB%BAftp"><span class="nav-number">1.</span> <span class="nav-text">linux搭建ftp</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">安装流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%88%E5%B7%B2%E8%A7%A3%E5%86%B3%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">遇到的问题（已解决）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.1.</span> <span class="nav-text">解决方式</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/02/15/linux%E6%90%AD%E5%BB%BAftp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="linux搭建ftp | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux搭建ftp
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-02-15 16:35:38" itemprop="dateCreated datePublished" datetime="2020-02-15T16:35:38+08:00">2020-02-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-03-13 16:05:11" itemprop="dateModified" datetime="2020-03-13T16:05:11+08:00">2020-03-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="linux搭建ftp"><a href="#linux搭建ftp" class="headerlink" title="linux搭建ftp"></a>linux搭建ftp</h1><blockquote>
+<p>记录安装ftp过程以及遇到的问题。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="安装流程"><a href="#安装流程" class="headerlink" title="安装流程"></a>安装流程</h2><ol>
+<li><p>首先要确认服务器的端口开放情况，ftp被动模式使用21端口。</p>
+</li>
+<li><p>安装vsftp软件包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y vsftpd</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改ftp配置文件，默认位置在&#x2F;etc&#x2F;vsftpd&#x2F;。最好备份一下原始文件以便后期调整。</p>
+</li>
+<li><p>ftp配置文件vsftpd.conf详细内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">anonymous_enable=NO                    #不允许匿名用户登陆 </span><br><span class="line"></span><br><span class="line">local_enable=YES                      #vsftpd所在系统的用户可以登录vsftpd </span><br><span class="line"></span><br><span class="line">write_enable=YES                      #允许使用任何可以修改文件系统的FTP的指令 </span><br><span class="line"></span><br><span class="line">local_umask=000                        #匿名用户新增文件的umask数值 </span><br><span class="line"></span><br><span class="line">anon_upload_enable=NO                  #匿名用户不可以上传文件 </span><br><span class="line"></span><br><span class="line">anon_mkdir_write_enable=NO            #匿名用户不可以修改文件 </span><br><span class="line"></span><br><span class="line">xferlog_enable=YES                    #启用一个日志文件，用于详细记录上传和下载。                </span><br><span class="line">use_localtime=YES                      #使用本地时间而不是GMT </span><br><span class="line"></span><br><span class="line">vsftpd_log_file=/var/log/vsftpd.log    #vsftpd日志存放位置 </span><br><span class="line"></span><br><span class="line">dual_log_enable=YES                    #用户登陆日志 </span><br><span class="line"></span><br><span class="line">connect_from_port_20=YES              #开启20端口     </span><br><span class="line"></span><br><span class="line">xferlog_file=/var/log/xferlog          #记录上传下载文件的日志 </span><br><span class="line"></span><br><span class="line">xferlog_std_format=YES                #记录日志使用标准格式 </span><br><span class="line"></span><br><span class="line">idle_session_timeout=600              #登陆之后超时时间60秒，登陆之后，一分钟不操作，就会断开连接。 </span><br><span class="line"></span><br><span class="line">chroot_local_user=YES                  #用于指定用户列表文件中的用户,是否允许切换到上级目录      </span><br><span class="line"></span><br><span class="line">listen=YES                            #开启监听 </span><br><span class="line"></span><br><span class="line">pam_service_name=vsftpd            #验证文件的名字 </span><br><span class="line"></span><br><span class="line">tcp_wrappers=YES                      #支持tcp_wrappers,限制访问</span><br><span class="line"></span><br><span class="line">(/etc/hosts.allow,/etc/hosts.deny) </span><br><span class="line"></span><br><span class="line">pasv_min_port=35000  </span><br><span class="line">pasv_max_port=45000 </span><br><span class="line">pasv_enable=YES </span><br><span class="line">pasv_promiscuous=YES </span><br><span class="line"></span><br><span class="line">anon_other_write_enable=YES</span><br><span class="line"></span><br><span class="line">userlist_enable=YES                    </span><br><span class="line">userlist_deny=NO                      #允许由userlist_file指定文件中的用户登录FTP服务器</span><br></pre></td></tr></table></figure>
+<p>这里说明一下用户权限问题，和配置文件user_list与ftpusers有关。<br>1:userlist_enable和userlist_deny两个选项联合起来针对的是：本地全体用户（除去ftpusers中的用户）和出现在user_list文件中的用户以及不在在user_list文件中的用户这三类用户集合进行的设置。<br>2:当且仅当userlist_enable&#x3D;YES时：userlist_deny项的配置才有效，user_list文件才会被使用；当其为NO时，无论userlist_deny项为何值都是无效的，本地全体用户（ftpusers中的用户不能登入FTP）都可以登入FTP。<br>3:当userlist_enable&#x3D;YES时，userlist_deny&#x3D;YES时：user_list是一个黑名单，即：所有出现在名单中的用户都会被拒绝登入。<br>4:当userlist_enable&#x3D;YES时，userlist_deny&#x3D;NO时：user_list是一个白名单，即：只有出现在名单中的用户才会被准许登入(user_list之外的用户都被拒绝登入)。另外需要特别提醒的是：使用白名单后，匿名用户将无法登入！除非显式在user_list中加入一行：anonymous。</p>
+</li>
+<li><p>重启vsftpd</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 重启</span><br><span class="line">service vsftpd restart</span><br><span class="line"># 开启</span><br><span class="line">service vsftpd start</span><br><span class="line"># 停止</span><br><span class="line">service vsftpd stop</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加ftp用户<br>useradd 用户名 -s &#x2F;sbin&#x2F;nologin &#x2F;&#x2F;限定用户test不能telnet，只能ftp。</p>
+</li>
+</ol>
+<p>usermod -s &#x2F;sbin&#x2F;bash 用户名 &#x2F;&#x2F;用户恢复正常 。该账户路径默认指向&#x2F;home&#x2F;ftpadmin目录。</p>
+<p>设置ftpadmin用户密码，运行命令：”passwd ftpadmin” 。 输入两次密码，匹配成功后，就设置好了ftpadmin用户的密码了。</p>
+<p>测试连接，您可以在“我的电脑”地址栏中输入 <a href="ftp://ip/">ftp://IP</a> 来连接FTP服务器，根据提示输入账户密码。</p>
+<p>到这里正常的ftp配置已经完成了。</p>
+<ol start="7">
+<li>删除用户账号<br>使用 userdel -r xiaoluo命令删除。这个命令会删除用户的文件夹。</li>
+</ol>
+<h2 id="遇到的问题（已解决）"><a href="#遇到的问题（已解决）" class="headerlink" title="遇到的问题（已解决）"></a>遇到的问题（已解决）</h2><p>我想要修改一下ftp用户的默认文件夹。当用户登录ftp时，本身的默认文件夹位置是在&#x2F;home&#x2F;用户名。<br>查询后使用下面的命令更换</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">usermod -d /tmp test (test为你的用户名)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>更换后发现并不能从浏览器登录了。<br>在linux中使用命令登录：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ftp 127.0.0.1</span><br></pre></td></tr></table></figure>
+<p>出现如下的错误提示：-bash: ftp: command not found。<br>使用命令，安装ftp客户端。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install ftp</span><br></pre></td></tr></table></figure>
+<p>再次登录，输入用户名和密码后。报500 OOPS: cannot change directory。<br>查询后尝试使用下面的命令关闭了Selinux</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 查询Selinux状态</span><br><span class="line">sestatus -v</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>修改&#x2F;etc&#x2F;selinux&#x2F;config 文件。将SELINUX&#x3D;enforcing改为SELINUX&#x3D;disabled。依旧不行。<br>再次尝试修改文件夹权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chown 用户组:用户名 -R /tmp </span><br><span class="line">chmod -R 777 /tmp</span><br></pre></td></tr></table></figure>
+<p>还是不行。查询后大多数都是用这几种有关的命令解决。目前没有找到原因，暂时使用默认文件夹</p>
+<h3 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h3><blockquote>
+<p>2020年03月13号更新</p>
+</blockquote>
+<p>呼叫大佬后，大佬也没明白我都做了什么操作。发给了我一个博客，照着一步一步操作后很顺利的成功了。</p>
+<p>把博客贴在这里<a target="_blank" rel="noopener" href="https://blog.csdn.net/wsyh12345678/article/details/83244940">https://blog.csdn.net/wsyh12345678/article/details/83244940</a></p>
+<p>和我之前的配置文件有所不同的地方</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dirmessage_enable=YES</span><br><span class="line"></span><br><span class="line">xferlog_enable=YES</span><br><span class="line"></span><br><span class="line">ascii_upload_enable=YES</span><br><span class="line"></span><br><span class="line">ascii_download_enable=YES</span><br></pre></td></tr></table></figure>
+<p>同样将<strong>chroot_local_user&#x3D;YES</strong>设置为yes。</p>
+<p>被列入此文件的用户，在登录后将不能切换到自己目录以外的其他目录</p>
+<p>从而有利于FTP服务器的安全管理和隐私保护。此文件需自己建立 ,里面存入用户名，一个用户占一行chroot_list_file&#x3D;&#x2F;etc&#x2F;vsftpd&#x2F;chroot_list</p>
+<p>如果设置为<br>chroot_local_user＝YES#所有用户都只能访问自己的主目录</p>
+<p>chroot_list_enable&#x3D;YES(这行可以没有, 也可以有)</p>
+<p>chroot_list_file&#x3D;&#x2F;etc&#x2F;vsftpd.chroot_list</p>
+<p>那么, 凡是加在文件vsftpd.chroot_list中的用户都是不受限止的用户，即, 可以浏览其主目录的上级目录.</p>
+<p>如果不希望某用户能够浏览其主目录上级目录中的内容,可以如上设置,然后在文件vsftpd.chroot_list中去掉或不添加该用户即可。</p>
+<p>也可以如下配置</p>
+<p>chroot_local_user＝NO</p>
+<p>chroot_list_enable&#x3D;YES(这行必须要有, 否则文件vsftpd.chroot_list不会起作用)</p>
+<p>chroot_list_file&#x3D;&#x2F;etc&#x2F;vsftpd.chroot_list</p>
+<p>然后把所有不希望有这种浏览其主目录之上的各目录权限的用户添加到文件vsftpd.chroot_list中即可(一行一个用户名，此时, 在该文件中的用户都是不可以浏览其主目录之外的目录的)<br><strong>关键步骤：</strong></p>
+<ul>
+<li><p>Mkdir &#x2F;data&#x2F;wwwroot #这里是根据自己需求来建立（就是FTP用户可以访问那个目录）</p>
+</li>
+<li><p>进入用户配置目录，没有的话自己建立，注意和vsftpd.conf文件中的对应 user_config_dir&#x3D;&#x2F;etc&#x2F;vsftpd&#x2F;userconf<br>cd &#x2F;etc&#x2F;vsftpd&#x2F;userconf</p>
+</li>
+<li><p>建立一个同登录用户名称一样的文件(在配置userconf文件夹里创建)<br>vim ftpuser</p>
+</li>
+<li><p>写入用户登录FTP后能访问的目录位置：</p>
+</li>
+</ul>
+<p>local_root&#x3D;&#x2F;www&#x2F;test</p>
+<ul>
+<li>重启VSftp：</li>
+</ul>
+<p>&#x2F;etc&#x2F;init.d&#x2F;vsftpd restart</p>
+<p>之后即可用新建的用户访问自定义的文件夹了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/02/01/spring-boot%E5%8F%82%E8%80%83%E6%8C%87%E5%8D%97%E6%91%98%E6%8A%84%E4%BA%8C/" rel="prev" title="spring boot参考指南摘抄二">
+                  <i class="fa fa-chevron-left"></i> spring boot参考指南摘抄二
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/02/22/InnoDB%20%E4%B8%AD%E4%B8%80%E6%A3%B5%20B+%E6%A0%91%E8%83%BD%E5%AD%98%E5%A4%9A%E5%B0%91%E8%A1%8C%E6%95%B0%E6%8D%AE%EF%BC%9F/" rel="next" title="InnoDB 中一棵 B+ 树能存多少行数据？">
+                  InnoDB 中一棵 B+ 树能存多少行数据？ <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

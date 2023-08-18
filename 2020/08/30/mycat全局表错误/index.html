@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="mycat全局表错误 具体报错内容为：can’t find table define in schema DIC_HIDDEN_DANGER_ADM schema:risk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mycat全局表错误">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/08/30/mycat%E5%85%A8%E5%B1%80%E8%A1%A8%E9%94%99%E8%AF%AF/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="mycat全局表错误 具体报错内容为：can’t find table define in schema DIC_HIDDEN_DANGER_ADM schema:risk">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-30T07:28:41.000Z">
+<meta property="article:modified_time" content="2021-02-26T09:57:06.512Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="mycat">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/08/30/mycat%E5%85%A8%E5%B1%80%E8%A1%A8%E9%94%99%E8%AF%AF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/08/30/mycat%E5%85%A8%E5%B1%80%E8%A1%A8%E9%94%99%E8%AF%AF/","path":"2020/08/30/mycat全局表错误/","title":"mycat全局表错误"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>mycat全局表错误 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mycat%E5%85%A8%E5%B1%80%E8%A1%A8%E9%94%99%E8%AF%AF"><span class="nav-number">1.</span> <span class="nav-text">mycat全局表错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%98%E7%94%B1"><span class="nav-number">1.1.</span> <span class="nav-text">缘由</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E6%AC%A1%E6%8A%A5%E9%94%99"><span class="nav-number">1.3.</span> <span class="nav-text">二次报错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E6%AC%A1%E5%A4%84%E7%90%86"><span class="nav-number">1.4.</span> <span class="nav-text">二次处理</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/08/30/mycat%E5%85%A8%E5%B1%80%E8%A1%A8%E9%94%99%E8%AF%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="mycat全局表错误 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mycat全局表错误
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-30 15:28:41" itemprop="dateCreated datePublished" datetime="2020-08-30T15:28:41+08:00">2020-08-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-02-26 17:57:06" itemprop="dateModified" datetime="2021-02-26T17:57:06+08:00">2021-02-26</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="mycat全局表错误"><a href="#mycat全局表错误" class="headerlink" title="mycat全局表错误"></a>mycat全局表错误</h1><blockquote>
+<p>具体报错内容为：can’t find table define in schema DIC_HIDDEN_DANGER_ADM schema:risk</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h2><p>部署时新加入了字典表，在mycat连接的两个库里都写入了一次。但是在查询时，和第一个库的普通表 join 时可以查询。和在另一个库的分表后的表 join 时会显示无法查询出字典表。</p>
+<h2 id="处理"><a href="#处理" class="headerlink" title="处理"></a>处理</h2><p>在 schemal.xml 中将新写入的字典表加入 node 节点，添加  type&#x3D;”global” 标记为全局表</p>
+<h2 id="二次报错"><a href="#二次报错" class="headerlink" title="二次报错"></a>二次报错</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	r.dictionary_id <span class="keyword">AS</span> rid,</span><br><span class="line">	r.date_time <span class="keyword">AS</span> dateTime,</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	bs_mountain r</span><br><span class="line">	<span class="keyword">INNER</span> <span class="keyword">JOIN</span> dic_mountain ra <span class="keyword">ON</span> ra.id <span class="operator">=</span> r.dictionary_id</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	r.date_time <span class="keyword">BETWEEN</span> <span class="string">&#x27;2020-10-14 00:00:00&#x27;</span> </span><br><span class="line">	<span class="keyword">AND</span> <span class="string">&#x27;2020-10-15 00:00:00&#x27;</span> ;</span><br></pre></td></tr></table></figure>
+<p>可以确定的是 bs_mountain 表中是肯定有 dictionary_id 字段和 date_time ，但还是报出了 <code>Unknown column &#39;r.dictionary_id&#39; in &#39;field list&#39;</code> 错误。</p>
+<h2 id="二次处理"><a href="#二次处理" class="headerlink" title="二次处理"></a>二次处理</h2><p>通过 explain 关键字分析在 mycat 中执行的语句，得出结果<br>实际执行语句为</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	r.dictionary_id <span class="keyword">AS</span> rid,</span><br><span class="line">	r.date_time <span class="keyword">AS</span> dateTime,</span><br><span class="line">	</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	bs_mountain_32 </span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	r.date_time <span class="keyword">BETWEEN</span> <span class="string">&#x27;2020-10-14 00:00:00&#x27;</span> </span><br><span class="line">	<span class="keyword">AND</span> <span class="string">&#x27;2020-10-15 00:00:00&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>mycat 在改写 sql 语句到分表的时候漏下了别名</p>
+<p>而且当我的语句是：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">	r.dictionary_id <span class="keyword">AS</span> rid,</span><br><span class="line">	r.date_time <span class="keyword">AS</span> dateTime,</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">	bs_mountain r</span><br><span class="line">	<span class="keyword">INNER</span> <span class="keyword">JOIN</span> dic_mountain ra <span class="keyword">ON</span> ra.id <span class="operator">=</span> r.dictionary_id</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	r.date_time <span class="keyword">BETWEEN</span> <span class="string">&#x27;2020-10-14 00:00:00&#x27;</span> </span><br><span class="line">	<span class="keyword">AND</span> <span class="string">&#x27;2020-10-15 00:00:00&#x27;</span> </span><br><span class="line">	<span class="keyword">AND</span> ra.id <span class="operator">=</span> <span class="string">&#x27;1&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>会去执行一个全分表查询，不再单单只是定位到32分表的查询。</p>
+<p>开始百度关键字 <code>mycat 别名 全局表 join</code>，发现问题是出在 mycat 在单库分表和未分表关联查询时会出现的别名丢失问题。</p>
+<p>并没有去下载源码修改后重新打包，而是在业务中去过滤了。</p>
+<p>直接使用sql语句将要关联的表手动查询出来后，再代码中拼接关联查询。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mycat/" rel="tag"># mycat</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/08/23/idea%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4%E8%BF%87%E9%95%BFbug/" rel="prev" title="idea启动命令过长bug">
+                  <i class="fa fa-chevron-left"></i> idea启动命令过长bug
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/05/UBuntu%E7%9A%84%E5%88%9D%E6%AC%A1%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/" rel="next" title="Ubuntu的初次操作记录">
+                  Ubuntu的初次操作记录 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="LeetCode第5题解体思路 最近这忙于换工作电脑，换工作场地消耗了不少的时间。通勤时间也从10分钟增长到了来回1小时，每天也要7点钟起来去吃早餐了。原文地址https:&#x2F;&#x2F;leetcode.wang 感觉我的排版不行，可以选择直接去看原版。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode第5题解体思路">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/06/27/LeetCode%E7%AC%AC5%E9%A2%98%E8%A7%A3%E4%BD%93%E6%80%9D%E8%B7%AF/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="LeetCode第5题解体思路 最近这忙于换工作电脑，换工作场地消耗了不少的时间。通勤时间也从10分钟增长到了来回1小时，每天也要7点钟起来去吃早餐了。原文地址https:&#x2F;&#x2F;leetcode.wang 感觉我的排版不行，可以选择直接去看原版。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b1.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b2.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b3.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b4.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b5.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b6.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b7.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b8.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b9.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b10.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b11.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b12.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b13.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b15.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b15.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b16.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b17.png">
+<meta property="article:published_time" content="2020-06-27T01:40:14.000Z">
+<meta property="article:modified_time" content="2020-08-14T09:04:57.910Z">
+<meta property="article:author" content="Ezio">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.worldofwarcraftchina.cn/b1.png">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/06/27/LeetCode%E7%AC%AC5%E9%A2%98%E8%A7%A3%E4%BD%93%E6%80%9D%E8%B7%AF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/06/27/LeetCode%E7%AC%AC5%E9%A2%98%E8%A7%A3%E4%BD%93%E6%80%9D%E8%B7%AF/","path":"2020/06/27/LeetCode第5题解体思路/","title":"LeetCode第5题解体思路"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>LeetCode第5题解体思路 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LeetCode%E7%AC%AC5%E9%A2%98%E8%A7%A3%E4%BD%93%E6%80%9D%E8%B7%AF"><span class="nav-number">1.</span> <span class="nav-text">LeetCode第5题解体思路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">解法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%80%EF%BC%9A%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3"><span class="nav-number">1.2.1.</span> <span class="nav-text">解法一：暴力破解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95%E4%BA%8C%EF%BC%9A%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E4%B8%B2"><span class="nav-number">1.2.2.</span> <span class="nav-text">解法二：最长公共子串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%89%EF%BC%9A%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3%E4%BC%98%E5%8C%96"><span class="nav-number">1.2.3.</span> <span class="nav-text">解法三：暴力破解优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95%E5%9B%9B%EF%BC%9A%E6%89%A9%E5%B1%95%E4%B8%AD%E5%BF%83"><span class="nav-number">1.2.4.</span> <span class="nav-text">解法四：扩展中心</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B3%95%E4%BA%94%EF%BC%9AManacher%E2%80%99s-Algorithm-%E9%A9%AC%E6%8B%89%E8%BD%A6%E7%AE%97%E6%B3%95%E3%80%82"><span class="nav-number">1.2.5.</span> <span class="nav-text">解法五：Manacher’s Algorithm 马拉车算法。</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%B1%82%E5%8E%9F%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8B%E6%A0%87"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">1.求原字符串下标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%B1%82%E6%AF%8F%E4%B8%AA-P-i"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">2.求每个 P [ i ]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E8%80%83%E8%99%91-C-%E5%92%8C-R-%E7%9A%84%E6%9B%B4%E6%96%B0"><span class="nav-number">1.2.5.3.</span> <span class="nav-text">3.考虑 C 和 R 的更新</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/06/27/LeetCode%E7%AC%AC5%E9%A2%98%E8%A7%A3%E4%BD%93%E6%80%9D%E8%B7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="LeetCode第5题解体思路 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          LeetCode第5题解体思路
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-06-27 09:40:14" itemprop="dateCreated datePublished" datetime="2020-06-27T09:40:14+08:00">2020-06-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-08-14 17:04:57" itemprop="dateModified" datetime="2020-08-14T17:04:57+08:00">2020-08-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="LeetCode第5题解体思路"><a href="#LeetCode第5题解体思路" class="headerlink" title="LeetCode第5题解体思路"></a>LeetCode第5题解体思路</h1><blockquote>
+<p>最近这忙于换工作电脑，换工作场地消耗了不少的时间。通勤时间也从10分钟增长到了来回1小时，每天也要7点钟起来去吃早餐了。<br>原文地址<a target="_blank" rel="noopener" href="https://leetcode.wang/leetCode-5-Longest-Palindromic-Substring.html">https://leetcode.wang</a> 感觉我的排版不行，可以选择直接去看原版。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定一个字符串，输出最长的回文子串。回文串指的是正的读和反的读是一样的字符串，例如 “aba”，”ccbbcc”。</p>
+<h2 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h2><h3 id="解法一：暴力破解"><a href="#解法一：暴力破解" class="headerlink" title="解法一：暴力破解"></a>解法一：暴力破解</h3><p>暴力求解，列举所有的子串，判断是否为回文串，保存最长的回文串。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public boolean isPalindromic(String s) &#123;</span><br><span class="line">        int len = s.length();</span><br><span class="line">        for (int i = 0; i &lt; len / 2; i++) &#123;</span><br><span class="line">            if (s.charAt(i) != s.charAt(len - i - 1)) &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">// 暴力解法</span><br><span class="line">public String longestPalindrome(String s) &#123;</span><br><span class="line">    String ans = &quot;&quot;;</span><br><span class="line">    int max = 0;</span><br><span class="line">    int len = s.length();</span><br><span class="line">    for (int i = 0; i &lt; len; i++)</span><br><span class="line">        for (int j = i + 1; j &lt;= len; j++) &#123;</span><br><span class="line">            String test = s.substring(i, j);</span><br><span class="line">            if (isPalindromic(test) &amp;&amp; test.length() &gt; max) &#123;</span><br><span class="line">                ans = s.substring(i, j);</span><br><span class="line">                max = Math.max(max, ans.length());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：两层 for 循环 O（n²），for 循环里边判断是否为回文，O（n），所以时间复杂度为 O（n³）。</p>
+<p>空间复杂度：O（1），常数个变量。</p>
+<h3 id="解法二：最长公共子串"><a href="#解法二：最长公共子串" class="headerlink" title="解法二：最长公共子串"></a>解法二：最长公共子串</h3><p>根据回文串的定义，正着和反着读一样，那我们是不是把原来的字符串倒置了，然后找最长的公共子串就可以了。例如，S &#x3D; “ caba”，S’ &#x3D; “ abac”，最长公共子串是 “aba”，所以原字符串的最长回文串就是 “aba”。</p>
+<p>关于求最长公共子串（不是公共子序列），有很多方法，这里用动态规划的方法，可以先阅读下边的链接。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010397369/article/details/38979077">https://blog.csdn.net/u010397369/article/details/38979077</a><br><a target="_blank" rel="noopener" href="https://www.kancloud.cn/digest/pieces-algorithm/163624">https://www.kancloud.cn/digest/pieces-algorithm/163624</a></p>
+<p>整体思想就是，申请一个二维的数组初始化为 0，然后判断对应的字符是否相等，相等的话</p>
+<p>arr [ i ][ j ] &#x3D; arr [ i - 1 ][ j - 1] + 1 。</p>
+<p>当 i &#x3D; 0 或者 j &#x3D; 0 的时候单独分析，字符相等的话 arr [ i ][ j ] 就赋为 1 。</p>
+<p>arr [ i ][ j ] 保存的就是公共子串的长度。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public String longestPalindrome(String s) &#123;</span><br><span class="line">    if (s.equals(&quot;&quot;))</span><br><span class="line">        return &quot;&quot;;</span><br><span class="line">    String origin = s;</span><br><span class="line">    String reverse = new StringBuffer(s).reverse().toString(); //字符串倒置</span><br><span class="line">    int length = s.length();</span><br><span class="line">    int[][] arr = new int[length][length];</span><br><span class="line">    int maxLen = 0;</span><br><span class="line">    int maxEnd = 0;</span><br><span class="line">    for (int i = 0; i &lt; length; i++)</span><br><span class="line">        for (int j = 0; j &lt; length; j++) &#123;</span><br><span class="line">            if (origin.charAt(i) == reverse.charAt(j)) &#123;</span><br><span class="line">                if (i == 0 || j == 0) &#123;</span><br><span class="line">                    arr[i][j] = 1;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    arr[i][j] = arr[i - 1][j - 1] + 1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if (arr[i][j] &gt; maxLen) &#123; </span><br><span class="line">                maxLen = arr[i][j];</span><br><span class="line">                maxEnd = i; //以 i 位置结尾的字符</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return s.substring(maxEnd - maxLen + 1, maxEnd + 1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>再看一个例子，S &#x3D; “abc435cba”，S’ &#x3D; “abc534cba” ，最长公共子串是 “abc” 和 “cba” ，但很明显这两个字符串都不是回文串。</p>
+<p>所以我们求出最长公共子串后，并不一定是回文串，我们还需要判断该字符串倒置前的下标和当前的字符串下标是不是匹配。</p>
+<p>比如 S &#x3D; “ caba “，S’ &#x3D; “ abac “ ，S’ 中 aba 的下标是 0 1 2 ，倒置前是 3 2 1，和 S 中 aba 的下标符合，所以 aba 就是我们需要找的。当然我们不需要每个字符都判断，我们只需要判断末尾字符就可以。</p>
+<p><img src="/b1.png" alt="b1"></p>
+<p>首先 i ，j 始终指向子串的末尾字符。所以 j 指向的红色的 a 倒置前的下标是 beforeRev &#x3D; length - 1 - j &#x3D; 4 - 1 - 2 &#x3D; 1，对应的是字符串首位的下标，我们还需要加上字符串的长度才是末尾字符的下标，也就是 beforeRev + arr[ i ] [ j ] - 1 &#x3D; 1 + 3 - 1 &#x3D; 3，因为 arr[ i ] [ j ] 保存的就是当前子串的长度，也就是图中的数字 3 。此时再和它与 i 比较，如果相等，则说明它是我们要找的回文串。</p>
+<p>之前的 S &#x3D; “abc435cba”，S’ &#x3D; “abc534cba” ，可以看一下图示，为什么不符合。</p>
+<p><img src="/b2.png" alt="b2"></p>
+<p>当前 j 指向的 c ，倒置前的下标是 beforeRev &#x3D; length - 1 - j &#x3D; 9 - 1 - 2 &#x3D; 6，对应的末尾下标是 beforeRev + arr[ i ] [ j ] - 1 &#x3D; 6 + 3 - 1 &#x3D; 8 ，而此时 i &#x3D; 2 ，所以当前的子串不是回文串。</p>
+<p>代码的话，在上边的基础上，保存 maxLen 前判断一下下标匹不匹配就可以了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public String longestPalindrome(String s) &#123;</span><br><span class="line">    if (s.equals(&quot;&quot;))</span><br><span class="line">        return &quot;&quot;;</span><br><span class="line">    String origin = s;</span><br><span class="line">    String reverse = new StringBuffer(s).reverse().toString();</span><br><span class="line">    int length = s.length();</span><br><span class="line">    int[][] arr = new int[length][length];</span><br><span class="line">    int maxLen = 0;</span><br><span class="line">    int maxEnd = 0;</span><br><span class="line">    for (int i = 0; i &lt; length; i++)</span><br><span class="line">        for (int j = 0; j &lt; length; j++) &#123;</span><br><span class="line">            if (origin.charAt(i) == reverse.charAt(j)) &#123;</span><br><span class="line">                if (i == 0 || j == 0) &#123;</span><br><span class="line">                    arr[i][j] = 1;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    arr[i][j] = arr[i - 1][j - 1] + 1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            /**********修改的地方*******************/</span><br><span class="line">            if (arr[i][j] &gt; maxLen) &#123;</span><br><span class="line">                int beforeRev = length - 1 - j;</span><br><span class="line">                if (beforeRev + arr[i][j] - 1 == i) &#123; //判断下标是否对应</span><br><span class="line">                    maxLen = arr[i][j];</span><br><span class="line">                    maxEnd = i;</span><br><span class="line">                &#125;</span><br><span class="line">                /*************************************/</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    return s.substring(maxEnd - maxLen + 1, maxEnd + 1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：两层循环，O（n²）。</p>
+<p>空间复杂度：一个二维数组，O（n²）。</p>
+<p>空间复杂度其实可以再优化一下。</p>
+<p><img src="/b3.png" alt="b3"></p>
+<p>我们分析一下循环，i &#x3D; 0 ，j &#x3D; 0，1，2 … 8 更新一列，然后 i &#x3D; 1 ，再更新一列，而更新的时候我们其实只需要上一列的信息，更新第 3 列的时候，第 1 列的信息是没有用的。所以我们只需要一个一维数组就可以了。但是更新 arr [ i ] 的时候我们需要 arr [ i - 1 ] 的信息，假设 a [ 3 ] &#x3D; a [ 2 ] + 1，更新 a [ 4 ] 的时候， 我们需要 a [ 3 ] 的信息，但是 a [ 3 ] 在之前已经被更新了，所以 j 不能从 0 到 8 ，应该倒过来，a [ 8 ] &#x3D; a [ 7 ] + 1，a [ 7 ] &#x3D; a [ 6 ] + 1 , 这样更新 a [ 8 ] 的时候用 a [ 7 ] ，用完后才去更新 a [ 7 ]，保证了不会出错。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public String longestPalindrome(String s) &#123;</span><br><span class="line">    if (s.equals(&quot;&quot;))</span><br><span class="line">        return &quot;&quot;;</span><br><span class="line">    String origin = s;</span><br><span class="line">    String reverse = new StringBuffer(s).reverse().toString();</span><br><span class="line">    int length = s.length();</span><br><span class="line">    int[] arr = new int[length];</span><br><span class="line">    int maxLen = 0;</span><br><span class="line">    int maxEnd = 0;</span><br><span class="line">    for (int i = 0; i &lt; length; i++)</span><br><span class="line">        /**************修改的地方***************************/</span><br><span class="line">        for (int j = length - 1; j &gt;= 0; j--) &#123;</span><br><span class="line">        /**************************************************/</span><br><span class="line">            if (origin.charAt(i) == reverse.charAt(j)) &#123;</span><br><span class="line">                if (i == 0 || j == 0) &#123;</span><br><span class="line">                    arr[j] = 1;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    arr[j] = arr[j - 1] + 1;</span><br><span class="line">                &#125;</span><br><span class="line">            /**************修改的地方***************************/</span><br><span class="line">            //之前二维数组，每次用的是不同的列，所以不用置 0 。</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                arr[j] = 0;</span><br><span class="line">            &#125;</span><br><span class="line">            /**************************************************/</span><br><span class="line">            if (arr[j] &gt; maxLen) &#123;</span><br><span class="line">                int beforeRev = length - 1 - j;</span><br><span class="line">                if (beforeRev + arr[j] - 1 == i) &#123;</span><br><span class="line">                    maxLen = arr[j];</span><br><span class="line">                    maxEnd = i;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    return s.substring(maxEnd - maxLen + 1, maxEnd + 1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：O（n²）。</p>
+<p>空间复杂度：降为 O（n）。</p>
+<h3 id="解法三：暴力破解优化"><a href="#解法三：暴力破解优化" class="headerlink" title="解法三：暴力破解优化"></a>解法三：暴力破解优化</h3><p>解法一的暴力解法时间复杂度太高，在 leetCode 上并不能 AC 。我们可以考虑，去掉一些暴力解法中重复的判断。我们可以基于下边的发现，进行改进。</p>
+<p>首先定义 P（i，j）。<br><img src="/b4.png" alt="b4"></p>
+<p>接下来<br><img src="/b5.png" alt="b5"></p>
+<p>所以如果我们想知道 P（i，j）的情况，不需要调用判断回文串的函数了，只需要知道 P（i + 1，j - 1）的情况就可以了，这样时间复杂度就少了 O（n）。因此我们可以用动态规划的方法，空间换时间，把已经求出的 P（i，j）存储起来。</p>
+<p><img src="/b6.png" alt="b6"></p>
+<p>如果 S[i+1,j-1]S[i+1,j−1] 是回文串，那么只要 S [ i ] &#x3D;&#x3D; S [ j ] ，就可以确定 S [ i , j ] 也是回文串了。</p>
+<p>求 长度为 1 和长度为 2 的 P ( i , j ) 时不能用上边的公式，因为我们代入公式后会遇到 P[i][j]P[i][j] 中 i &gt; j 的情况，比如求 P[1][2]P[1][2] 的话，我们需要知道 P[1+1][2-1]&#x3D;P[2][1]P[1+1][2−1]&#x3D;P[2][1] ，而 P[2][1]P[2][1] 代表着 S[2,1]S[2,1] 是不是回文串，显然是不对的，所以我们需要单独判断。</p>
+<p>所以我们先初始化长度是 1 的回文串的 P [ i , j ]，这样利用上边提出的公式 P(i,j)&#x3D;(P(i+1,j-1)&amp;&amp;S[i]&#x3D;&#x3D;S[j])P(i,j)&#x3D;(P(i+1,j−1)&amp;&amp;S[i]&#x3D;&#x3D;S[j])，然后两边向外各扩充一个字符，长度为 3 的，为 5 的，所有奇数长度的就都求出来了。</p>
+<p>同理，初始化长度是 2 的回文串 P [ i , i + 1 ]，利用公式，长度为 4 的，6 的所有偶数长度的就都求出来了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public String longestPalindrome(String s) &#123;</span><br><span class="line">    int length = s.length();</span><br><span class="line">    boolean[][] P = new boolean[length][length];</span><br><span class="line">    int maxLen = 0;</span><br><span class="line">    String maxPal = &quot;&quot;;</span><br><span class="line">    for (int len = 1; len &lt;= length; len++) //遍历所有的长度</span><br><span class="line">        for (int start = 0; start &lt; length; start++) &#123;</span><br><span class="line">            int end = start + len - 1;</span><br><span class="line">            if (end &gt;= length) //下标已经越界，结束本次循环</span><br><span class="line">                break;</span><br><span class="line">            P[start][end] = (len == 1 || len == 2 || P[start + 1][end - 1]) &amp;&amp; s.charAt(start) == s.charAt(end); //长度为 1 和 2 的单独判断下</span><br><span class="line">            if (P[start][end] &amp;&amp; len &gt; maxLen) &#123;</span><br><span class="line">                maxPal = s.substring(start, end + 1);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    return maxPal;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：两层循环，O（n²）。</p>
+<p>空间复杂度：用二维数组 P 保存每个子串的情况，O（n²）。</p>
+<p>我们分析下每次循环用到的 P（i，j），看一看能不能向解法二一样优化一下空间复杂度。</p>
+<p><img src="/b7.png" alt="b7"></p>
+<p>当我们求长度为 6 和 5 的子串的情况时，其实只用到了 4 ， 3 长度的情况，而长度为 1 和 2 的子串情况其实已经不需要了。但是由于我们并不是用 P 数组的下标进行的循环，暂时没有想到优化的方法。</p>
+<p>之后看到了另一种动态规划的思路<br><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-palindromic-substring/discuss/2921/Share-my-Java-solution-using-dynamic-programming">https://leetcode.com/problems/longest-palindromic-substring/discuss/2921/Share-my-Java-solution-using-dynamic-programming</a></p>
+<p>公式还是这个不变</p>
+<p>首先定义 P（i，j）。</p>
+<p><img src="/b8.png" alt="b8"><br>接下来</p>
+<p><img src="/b9.png" alt="b9"><br>递推公式中我们可以看到，我们首先知道了 i +1 才会知道 i ，所以我们只需要倒着遍历就行了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public String longestPalindrome(String s) &#123;</span><br><span class="line">    int n = s.length();</span><br><span class="line">    String res = &quot;&quot;;</span><br><span class="line">    boolean[][] dp = new boolean[n][n];</span><br><span class="line">    for (int i = n - 1; i &gt;= 0; i--) &#123;</span><br><span class="line">        for (int j = i; j &lt; n; j++) &#123;</span><br><span class="line">            dp[i][j] = s.charAt(i) == s.charAt(j) &amp;&amp; (j - i &lt; 2 || dp[i + 1][j - 1]); //j - i 代表长度减去 1        </span><br><span class="line">            if (dp[i][j] &amp;&amp;  j - i + 1 &gt; res.length()) &#123;</span><br><span class="line">                res = s.substring(i, j + 1);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度和空间复杂和之前都没有变化，我们来看看可不可以优化空间复杂度。</p>
+<p><img src="/b10.png" alt="b10"></p>
+<p>当求第 i 行的时候我们只需要第 i + 1 行的信息，并且 j 的话需要 j - 1 的信息，所以和之前一样 j 也需要倒叙。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public String longestPalindrome7(String s) &#123;</span><br><span class="line">        int n = s.length();</span><br><span class="line">        String res = &quot;&quot;;</span><br><span class="line">        boolean[] P = new boolean[n];</span><br><span class="line">        for (int i = n - 1; i &gt;= 0; i--) &#123;</span><br><span class="line">            for (int j = n - 1; j &gt;= i; j--) &#123;</span><br><span class="line">                P[j] = s.charAt(i) == s.charAt(j) &amp;&amp; (j - i &lt; 3 || P[j - 1]);</span><br><span class="line">                if (P[j] &amp;&amp; j - i + 1 &gt; res.length()) &#123;</span><br><span class="line">                    res = s.substring(i, j + 1);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>时间复杂度：不变，O（n²）。</p>
+<p>空间复杂度：降为 O（n ) 。</p>
+<h3 id="解法四：扩展中心"><a href="#解法四：扩展中心" class="headerlink" title="解法四：扩展中心"></a>解法四：扩展中心</h3><p>我们知道回文串一定是对称的，所以我们可以每次循环选择一个中心，进行左右扩展，判断左右字符是否相等即可。</p>
+<p><img src="/b11.png" alt="b11"></p>
+<p>由于存在奇数的字符串和偶数的字符串，所以我们需要从一个字符开始扩展，或者从两个字符之间开始扩展，所以总共有 n + n - 1 个中心。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public String longestPalindrome(String s) &#123;</span><br><span class="line">    if (s == null || s.length() &lt; 1) return &quot;&quot;;</span><br><span class="line">    int start = 0, end = 0;</span><br><span class="line">    for (int i = 0; i &lt; s.length(); i++) &#123;</span><br><span class="line">        int len1 = expandAroundCenter(s, i, i);</span><br><span class="line">        int len2 = expandAroundCenter(s, i, i + 1);</span><br><span class="line">        int len = Math.max(len1, len2);</span><br><span class="line">        if (len &gt; end - start) &#123;</span><br><span class="line">            start = i - (len - 1) / 2;</span><br><span class="line">            end = i + len / 2;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return s.substring(start, end + 1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private int expandAroundCenter(String s, int left, int right) &#123;</span><br><span class="line">    int L = left, R = right;</span><br><span class="line">    while (L &gt;= 0 &amp;&amp; R &lt; s.length() &amp;&amp; s.charAt(L) == s.charAt(R)) &#123;</span><br><span class="line">        L--;</span><br><span class="line">        R++;</span><br><span class="line">    &#125;</span><br><span class="line">    return R - L - 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：O（n²）。</p>
+<p>空间复杂度：O（1）。</p>
+<h3 id="解法五：Manacher’s-Algorithm-马拉车算法。"><a href="#解法五：Manacher’s-Algorithm-马拉车算法。" class="headerlink" title="解法五：Manacher’s Algorithm 马拉车算法。"></a>解法五：Manacher’s Algorithm 马拉车算法。</h3><blockquote>
+<p>马拉车算法 Manacher‘s Algorithm 是用来查找一个字符串的最长回文子串的线性方法，由一个叫Manacher的人在1975年发明的，这个方法的最大贡献是在于将时间复杂度提升到了线性。</p>
+</blockquote>
+<p>主要参考了下边链接进行讲解。</p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000008484167">https://segmentfault.com/a/1190000008484167</a><br><a target="_blank" rel="noopener" href="https://blog.crimx.com/2017/07/06/manachers-algorithm/">https://blog.crimx.com/2017/07/06/manachers-algorithm/</a><br><a target="_blank" rel="noopener" href="http://ju.outofmemory.cn/entry/130005">http://ju.outofmemory.cn/entry/130005</a><br><a target="_blank" rel="noopener" href="https://articles.leetcode.com/longest-palindromic-substring-part-ii/">https://articles.leetcode.com/longest-palindromic-substring-part-ii/</a> （已经404了）</p>
+<p>首先我们解决下奇数和偶数的问题，在每个字符间插入”#”，并且为了使得扩展的过程中，到边界后自动结束，在两端分别插入 “^” 和 “$”，两个不可能在字符串中出现的字符，这样中心扩展的时候，判断两端字符是否相等的时候，如果到了边界就一定会不相等，从而出了循环。经过处理，字符串的长度永远都是奇数了。</p>
+<p><img src="/b12.png" alt="b12"></p>
+<p>首先我们用一个数组 P 保存从中心扩展的最大个数，而它刚好也是去掉 “#” 的原字符串的总长度。例如下图中下标是 6 的地方。可以看到 P[ 6 ] 等于 5，所以它是从左边扩展 5 个字符，相应的右边也是扩展 5 个字符，也就是 “#c#b#c#b#c#”。而去掉 # 恢复到原来的字符串，变成 “cbcbc”，它的长度刚好也就是 5。</p>
+<p><img src="/b13.png" alt="b13"></p>
+<h4 id="1-求原字符串下标"><a href="#1-求原字符串下标" class="headerlink" title="1.求原字符串下标"></a>1.求原字符串下标</h4><p>用 P 的下标 i 减去 P [ i ]，再除以 2 ，就是原字符串的开头下标了。</p>
+<p>例如我们找到 P[ i ] 的最大值为 5 ，也就是回文串的最大长度是 5 ，对应的下标是 6 ，所以原字符串的开头下标是 （6 - 5 ）&#x2F; 2 &#x3D; 0 。所以我们只需要返回原字符串的第 0 到 第 （5 - 1）位就可以了。</p>
+<h4 id="2-求每个-P-i"><a href="#2-求每个-P-i" class="headerlink" title="2.求每个 P [ i ]"></a>2.求每个 P [ i ]</h4><p>接下来是算法的关键了，它充分利用了回文串的对称性。</p>
+<p>我们用 C 表示回文串的中心，用 R 表示回文串的右边半径坐标，所以 R &#x3D; C + P[ C ] 。C 和 R 所对应的回文串是当前循环中 R 最靠右的回文串。</p>
+<p>让我们考虑求 P [ i ] 的时候，如下图。</p>
+<p>用 i_mirror 表示当前需要求的第 i 个字符关于 C 对应的下标。</p>
+<p><img src="/b15.png" alt="b15"></p>
+<p>我们现在要求 P [ i ]， 如果是用中心扩展法，那就向两边扩展比对就行了。但是我们其实可以利用回文串 C 的对称性。i 关于 C 的对称点是 i_mirror ，P [ i_mirror ] &#x3D; 3，所以 P [ i ] 也等于 3 。</p>
+<p>但是有三种情况将会造成直接赋值为 P [ i_mirror ] 是不正确的，下边一一讨论。</p>
+<p><strong>2.1 超出了 R</strong><br><img src="/b15.png" alt="b15"></p>
+<p>当我们要求 P [ i ] 的时候，P [ mirror ] &#x3D; 7，而此时 P [ i ] 并不等于 7 ，为什么呢，因为我们从 i 开始往后数 7 个，等于 22 ，已经超过了最右的 R ，此时不能利用对称性了，但我们一定可以扩展到 R 的，所以 P [ i ] 至少等于 R - i &#x3D; 20 - 15 &#x3D; 5，会不会更大呢，我们只需要比较 T [ R+1 ] 和 T [ R+1 ]关于 i 的对称点就行了，就像中心扩展法一样一个个扩展。</p>
+<p><strong>2.2 P [ i_mirror ] 遇到了原字符串的左边界</strong><br><img src="/b16.png" alt="b16"></p>
+<p>此时P [ i_mirror ] &#x3D; 1，但是 P [ i ] 赋值成 1 是不正确的，出现这种情况的原因是 P [ i_mirror ] 在扩展的时候首先是 “#” &#x3D;&#x3D; “#” ，之后遇到了 “^”和另一个字符比较，也就是到了边界，才终止循环的。而 P [ i ] 并没有遇到边界，所以我们可以继续通过中心扩展法一步一步向两边扩展就行了。</p>
+<p><strong>2.3 i 等于了 R</strong><br>此时我们先把 P [ i ] 赋值为 0 ，然后通过中心扩展法一步一步扩展就行了。</p>
+<h4 id="3-考虑-C-和-R-的更新"><a href="#3-考虑-C-和-R-的更新" class="headerlink" title="3.考虑 C 和 R 的更新"></a>3.考虑 C 和 R 的更新</h4><p>就这样一步一步的求出每个 P [ i ]，当求出的 P [ i ] 的右边界大于当前的 R 时，我们就需要更新 C 和 R 为当前的回文串了。因为我们必须保证 i 在 R 里面，所以一旦有更右边的 R 就要更新 R。</p>
+<p><img src="/b17.png" alt="b17"></p>
+<p>此时的 P [ i ] 求出来将会是 3 ，P [ i ] 对应的右边界将是 10 + 3 &#x3D; 13，所以大于当前的 R ，我们需要把 C 更新成 i 的值，也就是 10 ，R 更新成 13。继续下边的循环。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">public String preProcess(String s) &#123;</span><br><span class="line">    int n = s.length();</span><br><span class="line">    if (n == 0) &#123;</span><br><span class="line">        return &quot;^$&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    String ret = &quot;^&quot;;</span><br><span class="line">    for (int i = 0; i &lt; n; i++)</span><br><span class="line">        ret += &quot;#&quot; + s.charAt(i);</span><br><span class="line">    ret += &quot;#$&quot;;</span><br><span class="line">    return ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 马拉车算法</span><br><span class="line">public String longestPalindrome(String s) &#123;</span><br><span class="line">    String T = preProcess(s);</span><br><span class="line">    int n = T.length();</span><br><span class="line">    int[] P = new int[n];</span><br><span class="line">    int C = 0, R = 0;</span><br><span class="line">    for (int i = 1; i &lt; n - 1; i++) &#123;</span><br><span class="line">        int i_mirror = 2 * C - i;</span><br><span class="line">        if (R &gt; i) &#123;</span><br><span class="line">            P[i] = Math.min(R - i, P[i_mirror]);// 防止超出 R</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            P[i] = 0;// 等于 R 的情况</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 碰到之前讲的三种情况时候，需要利用中心扩展法</span><br><span class="line">        while (T.charAt(i + 1 + P[i]) == T.charAt(i - 1 - P[i])) &#123;</span><br><span class="line">            P[i]++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 判断是否需要更新 R</span><br><span class="line">        if (i + P[i] &gt; R) &#123;</span><br><span class="line">            C = i;</span><br><span class="line">            R = i + P[i];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 找出 P 的最大值</span><br><span class="line">    int maxLen = 0;</span><br><span class="line">    int centerIndex = 0;</span><br><span class="line">    for (int i = 1; i &lt; n - 1; i++) &#123;</span><br><span class="line">        if (P[i] &gt; maxLen) &#123;</span><br><span class="line">            maxLen = P[i];</span><br><span class="line">            centerIndex = i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    int start = (centerIndex - maxLen) / 2; //最开始讲的求原字符串下标</span><br><span class="line">    return s.substring(start, start + maxLen);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>时间复杂度：for 循环里边套了一层 while 循环，难道不是 O ( n² )？不！其实是 O ( n )。不严谨的想一下，因为 while 循环访问 R 右边的数字用来扩展，也就是那些还未求出的节点，然后不断扩展，而期间访问的节点下次就不会再进入 while 了，可以利用对称得到自己的解，所以每个节点访问都是常数次，所以是 O ( n )。</p>
+<p>空间复杂度：O（n）。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>时间复杂度从三次方降到了一次，美妙！这里两次用到了动态规划去求解，初步认识了动态规划，就是将之前求的值保存起来，方便后边的计算，使得一些多余的计算消失了。并且在动态规划中，通过观察数组的利用情况，从而降低了空间复杂度。而 Manacher 算法对回文串对称性的充分利用，不得不让人叹服，自己加油啦！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/06/19/LeetCode%E7%AC%AC4%E9%A2%98%E7%BB%93%E9%A2%98%E6%80%9D%E8%B7%AF/" rel="prev" title="LeetCode第4题结题思路">
+                  <i class="fa fa-chevron-left"></i> LeetCode第4题结题思路
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/07/04/%E5%9C%A8Java%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%89%93%E5%8D%B0%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF%EF%BC%8C%E6%8E%92%E6%9F%A5%E9%97%AE%E9%A2%98%E6%9B%B4%E6%96%B9%E4%BE%BF%EF%BC%8C%E9%9D%9E%E5%B8%B8%E5%AE%9E%E7%94%A8%EF%BC%88%E4%B8%8B%EF%BC%89/" rel="next" title="在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（下）">
+                  在Java项目中打印错误日志的正确姿势，排查问题更方便，非常实用（下） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

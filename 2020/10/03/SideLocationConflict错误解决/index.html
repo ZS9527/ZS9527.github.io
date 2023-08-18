@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="side location conflict错误解决 在进行两个面集合之间的关系比较时出现的问题有关博文 http:&#x2F;&#x2F;locationtech.github.io&#x2F;jts&#x2F;javadoc&#x2F;org&#x2F;locationtech&#x2F;jts&#x2F;geom&#x2F;Geometry.html jar 包的api 文档。和 https:&#x2F;&#x2F;github.com&#x2F;nettopologysuite&#x2F;nettopologysui">
+<meta property="og:type" content="article">
+<meta property="og:title" content="side location conflict错误解决">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/10/03/SideLocationConflict%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="side location conflict错误解决 在进行两个面集合之间的关系比较时出现的问题有关博文 http:&#x2F;&#x2F;locationtech.github.io&#x2F;jts&#x2F;javadoc&#x2F;org&#x2F;locationtech&#x2F;jts&#x2F;geom&#x2F;Geometry.html jar 包的api 文档。和 https:&#x2F;&#x2F;github.com&#x2F;nettopologysuite&#x2F;nettopologysui">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-03T03:35:15.000Z">
+<meta property="article:modified_time" content="2020-11-27T11:19:23.468Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="jts">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/10/03/SideLocationConflict%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/10/03/SideLocationConflict%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/","path":"2020/10/03/SideLocationConflict错误解决/","title":"side location conflict错误解决"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>side location conflict错误解决 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#side-location-conflict%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3"><span class="nav-number">1.</span> <span class="nav-text">side location conflict错误解决</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%99%E8%AF%AF"><span class="nav-number">1.1.</span> <span class="nav-text">错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">解决方法</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/10/03/SideLocationConflict%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="side location conflict错误解决 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          side location conflict错误解决
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-03 11:35:15" itemprop="dateCreated datePublished" datetime="2020-10-03T11:35:15+08:00">2020-10-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-11-27 19:19:23" itemprop="dateModified" datetime="2020-11-27T19:19:23+08:00">2020-11-27</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="side-location-conflict错误解决"><a href="#side-location-conflict错误解决" class="headerlink" title="side location conflict错误解决"></a>side location conflict错误解决</h1><blockquote>
+<p>在进行两个面集合之间的关系比较时出现的问题<br>有关博文 <a target="_blank" rel="noopener" href="http://locationtech.github.io/jts/javadoc/org/locationtech/jts/geom/Geometry.html">http://locationtech.github.io/jts/javadoc/org/locationtech/jts/geom/Geometry.html</a> jar 包的api 文档。和 <a target="_blank" rel="noopener" href="https://github.com/nettopologysuite/nettopologysuite/issues/129">https://github.com/nettopologysuite/nettopologysuite/issues/129</a> 的一句话。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.locationtech.jts.geom.TopologyException: side location conflict [ (112.094482, 25.851795, NaN) ]</span><br></pre></td></tr></table></figure>
+<p>在判断从 geojson 格式转成的 org.locationtech.jts.geom.Polygon 面之间的关系时发生</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>首先贴一下我的 geojson 转 Polygon 面的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">private List&lt;Polygon&gt; jsonToGeometry(String jsonFilePath) throws IOException &#123;</span><br><span class="line">        List&lt;Polygon&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">        try (InputStream is = GeoTools.class.getResourceAsStream(jsonFilePath)) &#123;</span><br><span class="line">            JSONObject city = JSON.parseObject(IoUtil.read(is, StandardCharsets.UTF_8));</span><br><span class="line">            list = city.getJSONArray(&quot;features&quot;).stream()</span><br><span class="line">                    .map(obj -&gt; &#123;</span><br><span class="line">                        JSONObject json = (JSONObject) obj;</span><br><span class="line">                        Polygon polygon = null;</span><br><span class="line">                        polygon = (Polygon) new GeoJSONReader().read(json.getJSONObject(&quot;geometry&quot;).toJSONString());</span><br><span class="line">                        polygon.setUserData(json.getJSONObject(&quot;properties&quot;));</span><br><span class="line">                        return polygon;</span><br><span class="line">                    &#125;)</span><br><span class="line">                    .collect(Collectors.toList());</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            throw new HandleException(e);</span><br><span class="line">        &#125;</span><br><span class="line">        return list;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>jsonFilePath 参数就是一个 geojson 的文件。<br>所需引用 jar 包为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation group: &#x27;org.locationtech.jts&#x27;, name: &#x27;jts-core&#x27;, version: &#x27;1.16.1&#x27;</span><br></pre></td></tr></table></figure>
+<p>我所使用的对比面与面之间关系的方法是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">     * 把县级所属城市标记出来</span><br><span class="line">     * @param polygons 县</span><br><span class="line">     * @param citypolygons 市</span><br><span class="line">     */</span><br><span class="line">    private List&lt;Polygon&gt; belongingCity(List&lt;Polygon&gt; polygons, List&lt;Polygon&gt; citypolygons) &#123;</span><br><span class="line">        polygons = polygons.stream().map(polygon -&gt; &#123;</span><br><span class="line">            List&lt;String&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">            citypolygons.stream().forEach(citypolygo -&gt; &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    Polygon union = polygon.isValid() ? polygon : (Polygon)polygon.buffer(0);</span><br><span class="line">                    Polygon cityunion = citypolygo.isValid() ? citypolygo : (Polygon)citypolygo.buffer(0);</span><br><span class="line">                    if (cityunion.contains(union) || cityunion.overlaps(union)) &#123;</span><br><span class="line">                        String name = ((JSONObject)polygon.getUserData()).getString(&quot;name&quot;);</span><br><span class="line">                        String cityName = ((JSONObject)citypolygo.getUserData()).getString(&quot;name&quot;);</span><br><span class="line">                            name = cityName + name;</span><br><span class="line">                        ((JSONObject)polygon.getUserData()).put(&quot;name&quot;, name);</span><br><span class="line">                        list.add(name);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                &#125; catch (TopologyException e) &#123;</span><br><span class="line">                   log.info(e.getMessage(), e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            return polygon;</span><br><span class="line">        &#125;).collect(Collectors.toList());</span><br><span class="line">        return polygons;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这个判断面与面之间的关系这里还是有一点问题，将一个县分到了两个市所属下。<br>其中解决这次报错的方法是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">polygon.isValid() ? polygon : (Polygon)polygon.buffer(0)</span><br></pre></td></tr></table></figure>
+
+<p><code>isValid</code>方法是判断 Geometry 根据OGC SFS规范测试这在拓扑上是否有效。<br>然后再用<code>buffer</code>方法拿出一个面。其中有一些要注意的点，在原文回答中有写：</p>
+<blockquote>
+<p>There are two possible reasons that you are getting this exception:<br>Most likely you have invalid geometries to start with. You can test geometries for validity by either checking feature.Geometry.IsValid property or by using the NetTopologySuite.Operation.Valid.IsValidOp class. The later gives you the location where the validation test failed.<br>If this is the case you can attempt to fix the geometry by assigning feature.Geometry &#x3D; feature.Geometry.Buffer(0);. While this works for most of the cases, it is not guaranteed to do so. An example where this might not work is a “bow-tie: or “figure-8” polygon, with one very small lobe and one large one. Depending on the orientations of the lobes, the Buffer(0) operation may keep the small lobe and discard the “valid” large lobe.<br>It can also happen during operations on geometries due to some subtle kinds of cross-geometry<br>topology, such as two line segments being almost but not quite coincident. This can be avoided by using the NetTopologySuite.Precision.GeometryPrecisionReducer.<br>I would need to see the geometries to tell more.</p>
+</blockquote>
+<p>要注意自相交面处理后的截取的面是否为小的那个面。<br>成功解决问题</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/jts/" rel="tag"># jts</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/26/jar%E5%8C%85%E5%86%B2%E7%AA%81%E5%90%8E%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B/" rel="prev" title="jar包冲突后的处理过程">
+                  <i class="fa fa-chevron-left"></i> jar包冲突后的处理过程
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/10/%E5%9C%A8linux%E4%B8%8A%E5%AE%89%E8%A3%85mbgl-renderer/" rel="next" title="在linux上安装mbgl-renderer">
+                  在linux上安装mbgl-renderer <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

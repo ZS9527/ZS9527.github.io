@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="气象相关MeteoInfo失败使用过程记录 虽然成功画图，但是依旧是不能够有足够的参数调整。图片一看就是有问题的图，更换文件类型去尝试，未能成功画图。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="气象相关MeteoInfo失败使用过程记录">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/05/09/%E6%B0%94%E8%B1%A1%E7%9B%B8%E5%85%B3MeteoInfo%E5%A4%B1%E8%B4%A5%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="气象相关MeteoInfo失败使用过程记录 虽然成功画图，但是依旧是不能够有足够的参数调整。图片一看就是有问题的图，更换文件类型去尝试，未能成功画图。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-09T10:21:01.000Z">
+<meta property="article:modified_time" content="2020-05-28T09:27:33.582Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="气象">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/05/09/%E6%B0%94%E8%B1%A1%E7%9B%B8%E5%85%B3MeteoInfo%E5%A4%B1%E8%B4%A5%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/05/09/%E6%B0%94%E8%B1%A1%E7%9B%B8%E5%85%B3MeteoInfo%E5%A4%B1%E8%B4%A5%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95/","path":"2020/05/09/气象相关MeteoInfo失败使用过程记录/","title":"气象相关MeteoInfo失败使用过程记录"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>气象相关MeteoInfo失败使用过程记录 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B0%94%E8%B1%A1%E7%9B%B8%E5%85%B3MeteoInfo%E5%A4%B1%E8%B4%A5%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">气象相关MeteoInfo失败使用过程记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E6%AD%A5%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.</span> <span class="nav-text">初步安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%8E%E7%A1%AE%E7%9B%AE%E7%9A%84"><span class="nav-number">1.2.</span> <span class="nav-text">明确目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%9D%E8%AF%95%E8%BF%87%E7%A8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">尝试过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.1.</span> <span class="nav-text">第一个文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E4%B8%AA%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.2.</span> <span class="nav-text">第二个文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E4%B8%AA%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.3.</span> <span class="nav-text">第三个文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">1.4.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/05/09/%E6%B0%94%E8%B1%A1%E7%9B%B8%E5%85%B3MeteoInfo%E5%A4%B1%E8%B4%A5%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="气象相关MeteoInfo失败使用过程记录 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          气象相关MeteoInfo失败使用过程记录
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-09 18:21:01" itemprop="dateCreated datePublished" datetime="2020-05-09T18:21:01+08:00">2020-05-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-05-28 17:27:33" itemprop="dateModified" datetime="2020-05-28T17:27:33+08:00">2020-05-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="气象相关MeteoInfo失败使用过程记录"><a href="#气象相关MeteoInfo失败使用过程记录" class="headerlink" title="气象相关MeteoInfo失败使用过程记录"></a>气象相关MeteoInfo失败使用过程记录</h1><blockquote>
+<p>虽然成功画图，但是依旧是不能够有足够的参数调整。图片一看就是有问题的图，更换文件类型去尝试，未能成功画图。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="初步安装"><a href="#初步安装" class="headerlink" title="初步安装"></a>初步安装</h2><p>meteoInfo的安装没有多麻烦。直接百度<a target="_blank" rel="noopener" href="http://meteothink.org/downloads/index.html">MeteoInfo</a> 找到压缩包，下载后解压，启动MeteoInfoLab.exe文件即可。</p>
+<h2 id="明确目的"><a href="#明确目的" class="headerlink" title="明确目的"></a>明确目的</h2><p>主要目的是为了nc类型文件，micap4类型文件等值线图的绘制。</p>
+<h2 id="尝试过程"><a href="#尝试过程" class="headerlink" title="尝试过程"></a>尝试过程</h2><p>一开始是想要寻找现成的脚本运行，然后发现都是有点专业和高级。百度后最快找到的教程是<a href="MeteoInfoLab">MeteoInfoLab脚本汇总贴</a>，在里面寻找到关键字相符的文章后，开始每个语句去试，不知是不是语句太简单的缘故，博主并没有注释。在官网中找到的文档404了。</p>
+<h3 id="第一个文件"><a href="#第一个文件" class="headerlink" title="第一个文件"></a>第一个文件</h3><p>尝试了一下<a target="_blank" rel="noopener" href="http://bbs.06climate.com/forum.php?mod=viewthread&tid=38489&extra=page=1">MeteoInfoLab脚本示例：创建netCDF文件（合并文件）</a><br>并不能成功的按照步骤来画图，我自己的nc文件并没找到方法读出lat和lon。再次仔细翻看帖子，并没有找到类似的文件解析。最终只好逐渐的一个语句一个语句的去尝试，结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = addfile(&#x27;C:/Users/Administrator/Desktop/nc.nc&#x27;)</span><br><span class="line">var = f[&#x27;CO&#x27;][:]</span><br><span class="line">contourf(var)</span><br><span class="line">print var</span><br></pre></td></tr></table></figure>
+<p>这个语句可以出图，但是没有边界线。也和之前的图片不同。</p>
+<h3 id="第二个文件"><a href="#第二个文件" class="headerlink" title="第二个文件"></a>第二个文件</h3><p>从一个帖子中得知，解压出的sample文件夹有事例文件。取出后用同样的语句进行尝试，这次却没能够重新画图，直接报错。并没有找到原因。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&quot;D:\Downloads\Compressed\MeteoInfo_2.2.1\MeteoInfo\pylib\mipylib\plotlib\miplot.py&quot;, line 2180, in contour</span><br><span class="line">    r = gca.contour(*args, **kwargs)</span><br><span class="line">  File &quot;D:\Downloads\Compressed\MeteoInfo_2.2.1\MeteoInfo\pylib\mipylib\plotlib\_axes.py&quot;, line 2048, in contour</span><br><span class="line">    gdata = np.asgriddata(args[0])</span><br><span class="line">  File &quot;D:\Downloads\Compressed\MeteoInfo_2.2.1\MeteoInfo\pylib\mipylib\numeric\core\numeric.py&quot;, line 2349, in asgriddata</span><br><span class="line">    return data.asgriddata()</span><br><span class="line">  File &quot;D:\Downloads\Compressed\MeteoInfo_2.2.1\MeteoInfo\pylib\mipylib\numeric\core\dimarray.py&quot;, line 667, in asgriddata</span><br><span class="line">    gdata = GridData(self._array, xdata, ydata, self.fill_value, self.proj)</span><br><span class="line">	at org.meteoinfo.data.GridData.&lt;init&gt;(GridData.java:149)</span><br><span class="line"></span><br><span class="line">	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)</span><br><span class="line"></span><br><span class="line">	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)</span><br><span class="line"></span><br><span class="line">	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)</span><br><span class="line"></span><br><span class="line">	at java.lang.reflect.Constructor.newInstance(Unknown Source)</span><br><span class="line"></span><br><span class="line">	at org.python.core.PyReflectedConstructor.constructProxy(PyReflectedConstructor.java:213)</span><br><span class="line"></span><br><span class="line">java.lang.ArrayIndexOutOfBoundsException: java.lang.ArrayIndexOutOfBoundsException: 12</span><br></pre></td></tr></table></figure>
+
+<h3 id="第三个文件"><a href="#第三个文件" class="headerlink" title="第三个文件"></a>第三个文件</h3><p>这次是尝试使用MICAP4类型文件，根据<a target="_blank" rel="noopener" href="http://bbs.06climate.com/forum.php?mod=viewthread&tid=45105&extra=page=1">MeteoInfoLab脚本示例：micaps4类数据</a>画出的图片十分的奇怪，直接就可以看出来是个失败的了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">f = addfile_micaps(&#x27;C:\\Users\\Administrator\\Desktop\\20041520.000&#x27;)</span><br><span class="line">t1 = f.gettime(0)</span><br><span class="line">data = f[&#x27;var&#x27;][0,0,:,:]</span><br><span class="line">axesm()</span><br><span class="line">geoshow(&#x27;cn_province&#x27;)</span><br><span class="line">geoshow(&#x27;country&#x27;, edgecolor=&#x27;k&#x27;)</span><br><span class="line">levs = [0.1,2,5,10,20,30,50,80,100,120,150]</span><br><span class="line">cols = makecolors(len(levs)+1, cmap=&#x27;MPL_rainbow&#x27;)</span><br><span class="line">cols[0] = &#x27;w&#x27;</span><br><span class="line">layer = imshowm(data, levs, colors=cols)</span><br><span class="line">colorbar(layer, label=&#x27;mm&#x27;, extendrect=False)</span><br></pre></td></tr></table></figure>
+
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>由于时间，以及资料太少了的原因。画图暂停继续研究，试图从客户那边直接要一个程序，我们直接采集图片。</p>
+<p>专业的知识还是比较难以搜索，从百度中查找关键词MICAP4只能查到一些莫名其妙的东西。google查meteoInfo也没查出太多有用的东西。这两个关键字大都是指向了气象家园这个论坛。ncl的关键词查询稍稍多了一些，关联到了PyNGL这个技术。然后又牵扯到了python，没用的网页瞬间多了不少呢。</p>
+<p>看来专业的知识还是需要花功夫去查一查书籍。直接找脚本还是有些困难的。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B0%94%E8%B1%A1/" rel="tag"># 气象</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/05/01/hexo-next%E6%B7%BB%E5%8A%A0live2d%E5%92%8C%E6%90%9C%E7%B4%A2%E5%8A%9F%E8%83%BD/" rel="prev" title="hexo+next添加live2d和搜索功能">
+                  <i class="fa fa-chevron-left"></i> hexo+next添加live2d和搜索功能
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/05/15/mysql%E7%AE%80%E6%B4%81%E9%85%8D%E7%BD%AE%E5%8F%AA%E8%AF%BB%E7%94%A8%E6%88%B7/" rel="next" title="mysql简洁配置只读用户">
+                  mysql简洁配置只读用户 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

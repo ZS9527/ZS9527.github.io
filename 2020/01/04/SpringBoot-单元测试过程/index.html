@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="SpringBoot-单元测试过程 记录一下在项目中使用过的spring-boot-starter-test">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot-单元测试过程">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/01/04/SpringBoot-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E8%BF%87%E7%A8%8B/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="SpringBoot-单元测试过程 记录一下在项目中使用过的spring-boot-starter-test">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-04T08:52:13.000Z">
+<meta property="article:modified_time" content="2020-05-28T09:31:56.663Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="Spring boot">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/01/04/SpringBoot-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E8%BF%87%E7%A8%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/01/04/SpringBoot-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E8%BF%87%E7%A8%8B/","path":"2020/01/04/SpringBoot-单元测试过程/","title":"SpringBoot-单元测试过程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SpringBoot-单元测试过程 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringBoot-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">SpringBoot-单元测试过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="nav-number">1.1.</span> <span class="nav-text">引入依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%B3%A8%E9%87%8A"><span class="nav-number">1.2.</span> <span class="nav-text">基本注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E6%B3%A8%E9%87%8A%E5%92%8C%E6%8A%BD%E8%B1%A1%E7%B1%BB"><span class="nav-number">1.2.1.</span> <span class="nav-text">类注释和抽象类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E6%B3%A8%E9%87%8A%E5%92%8C%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.2.</span> <span class="nav-text">方法注释和实现方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E4%BE%8B%E5%AD%90"><span class="nav-number">1.3.</span> <span class="nav-text">使用例子</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/01/04/SpringBoot-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E8%BF%87%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SpringBoot-单元测试过程 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringBoot-单元测试过程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-01-04 16:52:13" itemprop="dateCreated datePublished" datetime="2020-01-04T16:52:13+08:00">2020-01-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-05-28 17:31:56" itemprop="dateModified" datetime="2020-05-28T17:31:56+08:00">2020-05-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="SpringBoot-单元测试过程"><a href="#SpringBoot-单元测试过程" class="headerlink" title="SpringBoot-单元测试过程"></a>SpringBoot-单元测试过程</h1><blockquote>
+<p>记录一下在项目中使用过的spring-boot-starter-test</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">         &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">         &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;</span><br><span class="line">         &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>包内自带了junit和mockito，如果自己引入过的话，最好使用包内自带的。</p>
+<h2 id="基本注释"><a href="#基本注释" class="headerlink" title="基本注释"></a>基本注释</h2><p>说明一些我用到的注释和方法。</p>
+<h3 id="类注释和抽象类"><a href="#类注释和抽象类" class="headerlink" title="类注释和抽象类"></a>类注释和抽象类</h3><ul>
+<li><strong>@TestExecutionListeners：</strong>是一个类级别的注释，用于指定在测试类执行之前，可以做的一些动作。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@TestExecutionListeners(&#123;TransactionalTestExecutionListener.class, SqlScriptsTestExecutionListener.class&#125;)</span><br></pre></td></tr></table></figure></li>
+<li><strong>@ActiveProfiles：</strong>是一个类级别的注释，用于声明在加载 for测试类时应使用哪些活动bean定义配置文件ApplicationContext。就是指定你这个测试类所用的配置文件。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@ActiveProfiles(&quot;test&quot;)</span><br></pre></td></tr></table></figure></li>
+<li><strong>@SpringBootTest：</strong>是一个类级别的注释，指定启动类和web环境。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)</span><br></pre></td></tr></table></figure></li>
+<li><strong>AbstractTestNGSpringContextTests：</strong>抽象基础测试类，该类将Spring TestContext Framework 与TestNG 环境中的显式ApplicationContext测试支持集成在一起。</li>
+</ul>
+<h3 id="方法注释和实现方法"><a href="#方法注释和实现方法" class="headerlink" title="方法注释和实现方法"></a>方法注释和实现方法</h3><ul>
+<li><p><strong>@BeforeMethod：</strong>在测试方法前运行的方法。</p>
+</li>
+<li><p><strong>@AfterMethod：</strong>在测试方法后运行的方法。</p>
+</li>
+<li><p><strong>@Test：</strong>测试方法注释。</p>
+<ol>
+<li><strong>groups：</strong>给方法分组执行。</li>
+<li><strong>dependsOnGroups：</strong>说明这个方法依赖的组列表。这些组的方法都已经在此方法调用前被调用。如果被依赖的方法未执行成功，这个测试方法会被跳过。</li>
+<li><strong>dependsOnMethods：</strong>和（2）类似，是说明依赖的方法列表。</li>
+<li><strong>timeOut：</strong>方法应花费的最大毫秒数。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Test(groups = &#123;&quot;home&quot;&#125;, dependsOnGroups = &#123;&quot;login&quot;&#125;, dependsOnMethods = &#123;&#125;, timeOut = 300)</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p><strong>@Ignore：</strong>这个可以放在类上，将忽略类和其子类的测试。我使用时放在方法上，仅仅只是需要忽略方法。</p>
+</li>
+</ul>
+<h2 id="使用例子"><a href="#使用例子" class="headerlink" title="使用例子"></a>使用例子</h2><p>在这里放一个我使用时的例子。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">@TestExecutionListeners(&#123;TransactionalTestExecutionListener.class, SqlScriptsTestExecutionListener.class&#125;)</span><br><span class="line">@ActiveProfiles(&quot;test&quot;)</span><br><span class="line">@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)</span><br><span class="line">public class AuthControllerTest extends AbstractTestNGSpringContextTests &#123;//可以使用AbstractTestNGSpringContextTests来取消事务</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    WebApplicationContext context;</span><br><span class="line"></span><br><span class="line">    private ManualRestDocumentation restDocumentation = new ManualRestDocumentation();</span><br><span class="line">    private MockMvc mockMvc;</span><br><span class="line">    private String token = TestsConstant.DEFAULT_TOKEN;</span><br><span class="line"></span><br><span class="line">    @BeforeMethod</span><br><span class="line">    public void setUp(Method method) &#123;</span><br><span class="line">        mockMvc = ApplicationTests.initMockMvc(context, restDocumentation);</span><br><span class="line">        this.restDocumentation.beforeTest(getClass(), method.getName());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @AfterMethod</span><br><span class="line">    public void tearDown() &#123;</span><br><span class="line">        this.restDocumentation.afterTest();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Transactional</span><br><span class="line">    //@Test(priority = -1)//权重（默认为0，此处需要先登录才能进行下面的操作，所以需要设置为-1，使login先进行测试，再进行下面测试）</span><br><span class="line">    @Test(groups = &#123;&quot;login&quot;&#125;)</span><br><span class="line">    public void login() throws Exception &#123;</span><br><span class="line">        getVerificationCode();</span><br><span class="line">        String url = &quot;/auth/login&quot;;</span><br><span class="line"></span><br><span class="line">        // 登录本身不需要Authorization, 为了统一处理&#123; Header - Authorization &#125;, 登录这里先加上请求头, 在文档输出时再过滤掉</span><br><span class="line">        RequestBuilder builder = post(url)//把所有元素拼接起来组成一个访问url</span><br><span class="line">                .header(JwtUtils.TOKEN_HEADER, JwtUtils.getTokenHeaderValue(this.token))//添加头</span><br><span class="line">                .param(&quot;username&quot;, TestsConstant.USERNAME)</span><br><span class="line">                .param(&quot;password&quot;, TestsConstant.PASSWORD)//参数名称和值</span><br><span class="line">                .param(&quot;code&quot;,TestsConstant.CODE)</span><br><span class="line">                .accept(MediaType.APPLICATION_JSON);</span><br><span class="line"></span><br><span class="line">        String result = mockMvc.perform(builder)</span><br><span class="line">                .andExpect(status().isOk())</span><br><span class="line">                .andExpect(jsonPath(&quot;$.status&quot;).value(HttpStatus.OK.value()))//状态</span><br><span class="line">                .andExpect(jsonPath(&quot;$.body&quot;).exists())//body详细内容</span><br><span class="line">                .andDo(document(TestsConstant.DOCUMENT_IDENTIFIER, preprocessRequest(//打印配置</span><br><span class="line">                        removeHeaders(JwtUtils.TOKEN_HEADER)</span><br><span class="line">                ), requestParameters(</span><br><span class="line">                        parameterWithName(&quot;username&quot;).description(&quot;用户名（手机号）&quot;),</span><br><span class="line">                        parameterWithName(&quot;password&quot;).description(&quot;密码&quot;),</span><br><span class="line">                        parameterWithName(&quot;code&quot;).description(&quot;验证码&quot;),</span><br><span class="line">                        beneathPath(&quot;body&quot;),//解析文件时只解析body内容</span><br><span class="line">                        fieldWithPath(&quot;roles&quot;).description(&quot;角色&quot;)</span><br><span class="line">                )))</span><br><span class="line">                .andDo(print())//打印出测试结果（详细参数以及结果等等）</span><br><span class="line">                .andReturn()</span><br><span class="line">                .getResponse()</span><br><span class="line">                .getContentAsString();</span><br><span class="line"></span><br><span class="line">        this.token = JSONObject.parseObject(result).getJSONObject(&quot;body&quot;).getString(&quot;token&quot;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Spring-boot/" rel="tag"># Spring boot</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/12/21/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%EF%BC%8C%E5%90%AF%E5%8A%A8slave%E6%97%B6%E6%8A%A5%E9%94%99/" rel="prev" title="MySQL主从复制，启动slave时报错Slave failed to initialize relay log info structure from the repository">
+                  <i class="fa fa-chevron-left"></i> MySQL主从复制，启动slave时报错Slave failed to initialize relay log info structure from the repository
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/01/11/SpringIoc%E4%BB%8B%E7%BB%8D/" rel="next" title="SpringIoc介绍">
+                  SpringIoc介绍 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

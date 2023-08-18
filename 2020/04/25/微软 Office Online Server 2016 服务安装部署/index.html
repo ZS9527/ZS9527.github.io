@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="微软 Office Online Server 2016 服务安装部署 结合了几篇文章。每个文章都用了一部分。一、 微软 Office Online Server 2016 服务安装部署 + wopi代码实现二、Office Online Server 在线编辑Office文档，安装部署三、 https:&#x2F;&#x2F;www.netnr.com&#x2F;doc&#x2F;code&#x2F;4964095842855914510&#x2F;49">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微软 Office Online Server 2016 服务安装部署">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/04/25/%E5%BE%AE%E8%BD%AF%20Office%20Online%20Server%202016%20%E6%9C%8D%E5%8A%A1%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="微软 Office Online Server 2016 服务安装部署 结合了几篇文章。每个文章都用了一部分。一、 微软 Office Online Server 2016 服务安装部署 + wopi代码实现二、Office Online Server 在线编辑Office文档，安装部署三、 https:&#x2F;&#x2F;www.netnr.com&#x2F;doc&#x2F;code&#x2F;4964095842855914510&#x2F;49">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b1.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b2.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b3.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b5.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b6.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b7.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b8.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b4.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b9.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b10.png">
+<meta property="article:published_time" content="2020-04-25T02:52:38.000Z">
+<meta property="article:modified_time" content="2020-04-27T07:08:30.527Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="office">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.worldofwarcraftchina.cn/b1.png">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/04/25/%E5%BE%AE%E8%BD%AF%20Office%20Online%20Server%202016%20%E6%9C%8D%E5%8A%A1%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/04/25/%E5%BE%AE%E8%BD%AF%20Office%20Online%20Server%202016%20%E6%9C%8D%E5%8A%A1%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/","path":"2020/04/25/微软 Office Online Server 2016 服务安装部署/","title":"微软 Office Online Server 2016 服务安装部署"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>微软 Office Online Server 2016 服务安装部署 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%AE%E8%BD%AF-Office-Online-Server-2016-%E6%9C%8D%E5%8A%A1%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2"><span class="nav-number">1.</span> <span class="nav-text">微软 Office Online Server 2016 服务安装部署</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E8%BD%AC%E6%8D%A2%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2"><span class="nav-number">1.1.</span> <span class="nav-text">一、转换服务器部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#office-online%E8%B5%84%E6%BA%90"><span class="nav-number">1.1.1.</span> <span class="nav-text">office online资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85office-online"><span class="nav-number">1.1.2.</span> <span class="nav-text">安装office online</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%90%AF%E5%8A%A8office-online"><span class="nav-number">1.1.3.</span> <span class="nav-text">配置启动office online</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%9D%E5%A4%96%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.4.</span> <span class="nav-text">额外配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85wopi%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.2.</span> <span class="nav-text">安装wopi项目</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/04/25/%E5%BE%AE%E8%BD%AF%20Office%20Online%20Server%202016%20%E6%9C%8D%E5%8A%A1%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="微软 Office Online Server 2016 服务安装部署 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微软 Office Online Server 2016 服务安装部署
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-25 10:52:38" itemprop="dateCreated datePublished" datetime="2020-04-25T10:52:38+08:00">2020-04-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-04-27 15:08:30" itemprop="dateModified" datetime="2020-04-27T15:08:30+08:00">2020-04-27</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="微软-Office-Online-Server-2016-服务安装部署"><a href="#微软-Office-Online-Server-2016-服务安装部署" class="headerlink" title="微软 Office Online Server 2016 服务安装部署"></a>微软 Office Online Server 2016 服务安装部署</h1><blockquote>
+<p>结合了几篇文章。每个文章都用了一部分。<br>一、 <a target="_blank" rel="noopener" href="https://blog.csdn.net/jiaqu2177/article/details/81945692">微软 Office Online Server 2016 服务安装部署 + wopi代码实现</a><br>二、<a target="_blank" rel="noopener" href="https://www.netnr.com/home/list/114">Office Online Server 在线编辑Office文档，安装部署</a><br>三、 <a target="_blank" rel="noopener" href="https://www.netnr.com/doc/code/4964095842855914510/4935912187725186675">https://www.netnr.com/doc/code/4964095842855914510/4935912187725186675</a><br>四、 <a target="_blank" rel="noopener" href="https://blog.csdn.net/q386815991/article/details/81705128">office online server2016详细安装步骤及问题总结</a></p>
+</blockquote>
+<span id="more"></span>
+<h2 id="一、转换服务器部署"><a href="#一、转换服务器部署" class="headerlink" title="一、转换服务器部署"></a>一、转换服务器部署</h2><p>我在本机使用vmware打开两个虚拟机，将office online server 和wopi都安装在了转换服务器上，域服务器只提供了一个域。之前大佬曾经尝试过将东西都安装在一个服务器上，没有配置转换服务器。出现了word可以打开，但是没有图片。excel只能打开没有格式的空文件，ppt无法打开的情况。<br>有博客说：</p>
+<blockquote>
+<p>由于云服务器是克隆副本，加入域会报错：无法完成域加入，原因是试图加入的域的 SID 与本计算机的 SID 相同，解决方法，打开：windows&#x2F;System32&#x2F;Sysprep&#x2F;Sysprep.exe，勾选 通用 重启</p>
+</blockquote>
+<h3 id="office-online资源"><a href="#office-online资源" class="headerlink" title="office online资源"></a>office online资源</h3><p>office online server 2016的安装包使用的是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ed2k://|file|cn_office_online_server_last_updated_march_2017_x64_dvd_10245068.iso|730759168|DA70F58CB8FFAF37C02302F2501CE635|/</span><br></pre></td></tr></table></figure>
+
+<p>补丁包没有用上，安装的时候报找不到版本。但还是把连接放出来：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://download.microsoft.com/download/6/B/D/6BD1D664-1212-4AB2-9BE8-447731F2CA0E/wacserver2016-kb4011025-fullfile-x64-glb.exe</span><br></pre></td></tr></table></figure>
+
+<p>语言包还是要装的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://go.microsoft.com/fwlink/p/?LinkId=798136</span><br></pre></td></tr></table></figure>
+
+<p>这些资源来自二博客的下图：<br><img src="/b1.png"></p>
+<h3 id="安装office-online"><a href="#安装office-online" class="headerlink" title="安装office online"></a>安装office online</h3><ol>
+<li><p>运行 powershell， 输入命令（Windows Server 2012 R2版本）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Add-WindowsFeature Web-Server,Web-Mgmt-Tools,Web-Mgmt-Console,Web-WebServer,Web-Common-Http,Web-Default-Doc,Web-Static-Content,Web-Performance,Web-Stat-Compression,Web-Dyn-Compression,Web-Security,Web-Filtering,Web-Windows-Auth,Web-App-Dev,Web-Net-Ext45,Web-Asp-Net45,Web-ISAPI-Ext,Web-ISAPI-Filter,Web-Includes,InkandHandwritingServices,NET-Framework-Features,NET-Framework-Core,NET-HTTP-Activation,NET-Non-HTTP-Activ,NET-WCF-HTTP-Activation45,Windows-Identity-Foundation,Server-Media-Foundation</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置环境，一定要按顺序安装<br>.NET Framework 4.5.2</p>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://go.microsoft.com/fwlink/p/?LinkId=510096">https://go.microsoft.com/fwlink/p/?LinkId=510096</a></p>
+<p>Visual C++ Redistributable Packages for Visual Studio 2013</p>
+<p><a target="_blank" rel="noopener" href="https://www.microsoft.com/download/details.aspx?id=40784">https://www.microsoft.com/download/details.aspx?id=40784</a></p>
+<p>Visual C++ Redistributable for Visual Studio 2015</p>
+<p><a target="_blank" rel="noopener" href="https://go.microsoft.com/fwlink/p/?LinkId=620071">https://go.microsoft.com/fwlink/p/?LinkId=620071</a></p>
+<p>Microsoft.IdentityModel.Extention.dll</p>
+<p><a target="_blank" rel="noopener" href="https://go.microsoft.com/fwlink/p/?LinkId=620072">https://go.microsoft.com/fwlink/p/?LinkId=620072</a></p>
+<ol start="3">
+<li>将下载好的office online server安装包解压好，并点击setup.exe开始安装。一路下一步安装就行。</li>
+<li>注意事项<ul>
+<li>不要在装SQL Server等服务上运行</li>
+<li>不要在端口 80、443 或 809 上安装依赖 Web 服务器 (IIS) 角色的任何服务或角色</li>
+<li>不要安装任何版本的 Office</li>
+<li>不要在域控制器上安装 Office Online Server</li>
+<li>简而言之：一台干净的服务器</li>
+</ul>
+</li>
+</ol>
+<h3 id="配置启动office-online"><a href="#配置启动office-online" class="headerlink" title="配置启动office online"></a>配置启动office online</h3><p>打开安装好office online的转换服务器，打开powerShell<br>启动服务场</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Import-Module OfficeWebApps</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果报错，需要重启</p>
+</blockquote>
+<p>部署服务器场: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">New-OfficeWebAppsFarm -InternalURL “http://xx.domin.com” -ExternalUrl “http://192.168.37.138” -AllowHttp –EditingEnabled</span><br></pre></td></tr></table></figure>
+<p>–InternalURL内部访问地址，一般是<a target="_blank" rel="noopener" href="http://office主机名.ad域控地址(如下图);/">http://office主机名.AD域控地址(如下图)；</a> 全名的查看是在转换服务器的系统属性，计算机名里。</p>
+<p>–AllowHttp 是否允许http访问；</p>
+<p>–ExternalUrl 外部访问地址，一般是服务器的ip地址；</p>
+<p>–EditingEnabled 允许编辑office。</p>
+<blockquote>
+<p>请以域管理账号登录</p>
+</blockquote>
+<p>出现如下提示即部署成功<br><img src="/b2.png"></p>
+<p>这个时候用可以看下有没有启动起来<br>在office online 的浏览器 输入:<a target="_blank" rel="noopener" href="http://win-5ldi2svjqoj.test.com/hosting/discovery">http://win-5ldi2svjqoj.test.com/hosting/discovery</a> 得到以下的结果就ok 了<br><img src="/b3.png"><br>当然通过ip地址访问也是ok,<a target="_blank" rel="noopener" href="http://192.168.37.138/hosting/discovery">http://192.168.37.138/hosting/discovery</a><br>当然这两个地址在域控服务器上面访问 也是ok 的</p>
+<h3 id="额外配置"><a href="#额外配置" class="headerlink" title="额外配置"></a>额外配置</h3><p>office online的日志地址是<br><img src="/b5.png"></p>
+<p>安装后的office online server 对大文件会有限制，所以需要配置才能进行访问，具体配置路径如下<br><img src="/b6.png"><br><img src="/b7.png"><br>将上面两个文件夹中的settings文件进行修改，在其中填入并保存</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OpenFromUrlMaxFileSizeInKBytes=(System.Int32)512000</span><br></pre></td></tr></table></figure>
+<p><img src="/b8.png"><br>配置完成后打开CMD命令，输入services.msc打开服务，并找到office online服务。重启即可</p>
+<h2 id="安装wopi项目"><a href="#安装wopi项目" class="headerlink" title="安装wopi项目"></a>安装wopi项目</h2><p>本人使用的是<a target="_blank" rel="noopener" href="https://github.com/netnr/WopiHost">https://github.com/netnr/WopiHost</a> 。<br>下载压缩包，解压到任意文件夹中。<br>服务器管理器 -&gt; 工具 -&gt; （iis）管理器 -&gt; 添加了网站。<br><img src="/b4.png"><br>图中的接口配置为1080<br>配置好后尝试使用<br><a target="_blank" rel="noopener" href="http://192.168.37.138:1080/wopi/files/upload/word.docx/contents">http://192.168.37.138:1080/wopi/files/upload/word.docx/contents</a><br>可以访问到一个显示文件信息的界面<br><img src="/b9.png"></p>
+<p>根据第三个博客，将<a target="_blank" rel="noopener" href="http://192.168.37.138:1080/wopi/files/upload/word.docx">http://192.168.37.138:1080/wopi/files/upload/word.docx</a> 用<code>encodeURIComponent</code>重新进行编码。</p>
+<p>事例，其中的<code>officeserver</code>是上面的office online信息的访问地址或ip（win-5ldi2svjqoj.test.com 或 192.168.37.138）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://officeserver/we/WordEditorFrame.aspx?ui=zh-CN&amp;WOPISrc=http%3A%2F%2Fwopiserver%2Fwopi%2Ffiles%2Fupload%2Fdoc%2F2019%2F03%2Fword.docx%3Faccess_token%3D1%26UserId%3D1%26UserName%3D1</span><br><span class="line"></span><br><span class="line">http://officeserver/wv/WordViewer/request.pdf?type=accesspdf&amp;WOPISrc=http%3A%2F%2Fwopiserver%2Fwopi%2Ffiles%2Fupload%2Fdoc%2F2019%2F03%2Fword.docx%3Faccess_token%3D1%26UserId%3D1%26UserName%3D1</span><br></pre></td></tr></table></figure>
+
+<p>到这里可以显示下图就算成功。期间出现的一些bug，已经记录在了之前的博客里面。<br><img src="/b10.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/office/" rel="tag"># office</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/04/18/Windows%20Server%202012%20R2%E5%AE%89%E8%A3%85%E5%9F%9F%E6%8E%A7%E5%88%B6%E5%99%A8/" rel="prev" title="Windows Server 2012 R2安装域控制器">
+                  <i class="fa fa-chevron-left"></i> Windows Server 2012 R2安装域控制器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/04/30/%E6%B0%94%E8%B1%A1%E7%9B%B8%E5%85%B3Python%E7%89%88NCL%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E6%9C%AA%E6%88%90%E5%8A%9F%E4%BD%BF%E7%94%A8/" rel="next" title="气象相关Python版NCL的安装和未成功使用">
+                  气象相关Python版NCL的安装和未成功使用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

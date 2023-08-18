@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="在windows7上安装docker和hbase镜像和hadoop镜像 在之前的本机安装Hbase环境没有进展后，更换了docker镜像来搭建测试环境。参考基于 Docker 搭建 Mac 本地 HBase 环境（原文网址已经404）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在windows7上安装docker和hbase镜像和hadoop镜像">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2019/06/21/%E5%9C%A8windows7%E4%B8%8A%E5%AE%89%E8%A3%85docker%E5%92%8Chbase%E9%95%9C%E5%83%8F/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="在windows7上安装docker和hbase镜像和hadoop镜像 在之前的本机安装Hbase环境没有进展后，更换了docker镜像来搭建测试环境。参考基于 Docker 搭建 Mac 本地 HBase 环境（原文网址已经404）">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-06-21T13:43:56.000Z">
+<meta property="article:modified_time" content="2019-08-05T00:28:13.269Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2019/06/21/%E5%9C%A8windows7%E4%B8%8A%E5%AE%89%E8%A3%85docker%E5%92%8Chbase%E9%95%9C%E5%83%8F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2019/06/21/%E5%9C%A8windows7%E4%B8%8A%E5%AE%89%E8%A3%85docker%E5%92%8Chbase%E9%95%9C%E5%83%8F/","path":"2019/06/21/在windows7上安装docker和hbase镜像/","title":"在windows7上安装docker和hbase镜像和hadoop镜像"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>在windows7上安装docker和hbase镜像和hadoop镜像 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8windows7%E4%B8%8A%E5%AE%89%E8%A3%85docker%E5%92%8Chbase%E9%95%9C%E5%83%8F%E5%92%8Chadoop%E9%95%9C%E5%83%8F"><span class="nav-number">1.</span> <span class="nav-text">在windows7上安装docker和hbase镜像和hadoop镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-Docker"><span class="nav-number">1.1.</span> <span class="nav-text">安装 Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8-Docker"><span class="nav-number">1.1.1.</span> <span class="nav-text">启动 Docker</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-Hbase"><span class="nav-number">1.2.</span> <span class="nav-text">安装 Hbase</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E5%85%A5%E5%AE%B9%E5%99%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">进入容器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85hadoop%EF%BC%88%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%EF%BC%8C%E4%B8%8A%E9%9D%A2%E7%9A%84%E5%B7%B2%E7%BB%8F%E9%9B%86%E6%88%90%E4%BA%86%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">安装hadoop（没有必要，上面的已经集成了）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E5%AE%B9%E5%99%A8"><span class="nav-number">1.4.</span> <span class="nav-text">删除容器</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2019/06/21/%E5%9C%A8windows7%E4%B8%8A%E5%AE%89%E8%A3%85docker%E5%92%8Chbase%E9%95%9C%E5%83%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="在windows7上安装docker和hbase镜像和hadoop镜像 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在windows7上安装docker和hbase镜像和hadoop镜像
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-06-21 21:43:56" itemprop="dateCreated datePublished" datetime="2019-06-21T21:43:56+08:00">2019-06-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-08-05 08:28:13" itemprop="dateModified" datetime="2019-08-05T08:28:13+08:00">2019-08-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="在windows7上安装docker和hbase镜像和hadoop镜像"><a href="#在windows7上安装docker和hbase镜像和hadoop镜像" class="headerlink" title="在windows7上安装docker和hbase镜像和hadoop镜像"></a>在windows7上安装docker和hbase镜像和hadoop镜像</h1><blockquote>
+<p>在之前的本机安装Hbase环境没有进展后，更换了docker镜像来搭建测试环境。<del>参考<a target="_blank" rel="noopener" href="https://www.colabug.com/4772817.html">基于 Docker 搭建 Mac 本地 HBase 环境</a></del>（原文网址已经404）</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h2><p>本地环境为windows7 64位系统，直接从官网<a target="_blank" rel="noopener" href="https://docs.docker.com/toolbox/toolbox_install_windows/">https://docs.docker.com/toolbox/toolbox_install_windows&#x2F;</a> 上面安装<strong>Docker Toolbox</strong>。按照指示一直下一步即可完成安装。</p>
+<h3 id="启动-Docker"><a href="#启动-Docker" class="headerlink" title="启动 Docker"></a>启动 Docker</h3><ul>
+<li><p>第一次启动会默认安装一个default命名的虚拟机。因为需要阿里的镜像加速的缘故，我用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-machine stop default</span><br><span class="line">docker-machine rm default</span><br></pre></td></tr></table></figure>
+<p>这两个命令来删除了默认虚拟机。之后再根据阿里的镜像加速配置来操作</p>
+</li>
+<li><p>创建一台安装有Docker环境的Linux虚拟机，指定机器名称为default，同时配置Docker加速器地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create --engine-registry-mirror=https://ms4x763y.mirror.aliyuncs.com -d virtualbox default</span><br></pre></td></tr></table></figure></li>
+<li><p>查看机器的环境配置，并配置到本地，并通过Docker客户端访问Docker服务。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker-machine env default</span><br><span class="line">eval &quot;$(docker-machine env default)&quot;</span><br><span class="line">docker info</span><br></pre></td></tr></table></figure></li>
+<li><p>因为我本地环境为windows7并且没有装Docker for Windows，所以忽略官网文档其他的操作配置。</p>
+</li>
+</ul>
+<h2 id="安装-Hbase"><a href="#安装-Hbase" class="headerlink" title="安装 Hbase"></a>安装 Hbase</h2><ul>
+<li>获取容器镜像<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull harisekhon/hbase</span><br></pre></td></tr></table></figure></li>
+<li>启动容器<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -h myhbase -p 2181:2181 -p 8080:8080 -p 8085:8085 -p 9090:9090 -p 9095:9095 -p 16000:16000 -p 16010:16010 -p 16020:16020 -p 16030:16030 --name hbase1.3.1 harisekhon/hbase</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>-d: 后台启动。</li>
+<li>-h: 容器主机名，必须设置该项并配置 hosts，否则无法连通容器。</li>
+<li>-p: 网络端口映射，这里只把要使用的端口（zookeeper端口、HBase Master端口、HBase RegionServer端口等）映射了出来，你可以根据自己需要进行端口映射。</li>
+<li>–name: 容器别名。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p>添加说明：大多数的博客贴在进行到这里的时候都是映射端口为16201和16301，没有16020和16030。经过我查看<a target="_blank" rel="noopener" href="http://192.168.99.100:16010/master-status">http://192.168.99.100:16010/master-status</a> 页面发现我安装的最新hbase2.1.1版本默认启动的是16020和16030。这里特别注意</p>
+<h3 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h3><ul>
+<li><p>进入hbase命令行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it hbase1.3.1 /bin/bash</span><br><span class="line">/hbase/bin/hbase shell</span><br><span class="line">hbase(main):001:0&gt; create &#x27;t1&#x27;, &#123;NAME =&gt; &#x27;f1&#x27;, VERSIONS =&gt; 1&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在执行完第一个命令进入hbase容器后，可以执行<strong>netstat -anp | grep 16000</strong> 来查看hbase绑定的ip 172.17.0.2</p>
+</blockquote>
+</li>
+<li><p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Created table t1</span><br><span class="line">Took 2.6696 seconds</span><br><span class="line">=&gt; Hbase::Table - t1</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>这样就完成了整个安装过程。</p>
+<h2 id="安装hadoop（没有必要，上面的已经集成了）"><a href="#安装hadoop（没有必要，上面的已经集成了）" class="headerlink" title="安装hadoop（没有必要，上面的已经集成了）"></a>安装hadoop（没有必要，上面的已经集成了）</h2><ul>
+<li><p>搜索hadoop镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search hadoop</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>选择第一个镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull sequenceiq/hadoop-docker</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>当命令行显示<strong>Status: Downloaded newer image for sequenceiq&#x2F;hadoop-docker:latest</strong>时候开始下一步。</p>
+<ul>
+<li><p>启动镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name hadoop sequenceiq/hadoop-docker /etc/bootstrap.sh -bash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试运行:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd $HADOOP_PREFIX</span><br><span class="line"># run the mapreduce</span><br><span class="line">bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.0.jar grep input output &#x27;dfs[a-z.]+&#x27;</span><br><span class="line"></span><br><span class="line"># check the output</span><br><span class="line">bin/hdfs dfs -cat output/*</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h2><p>使用以下命令删除单个或多个容器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm &lt;CONTAINER ID|NAME&gt; &lt;CONTAINER ID|NAME&gt;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"># docker</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/06/08/hbase%E5%9C%A8windows%E4%B8%8A%E5%AE%89%E8%A3%85%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/" rel="prev" title="hbase在windows上安装踩坑记录">
+                  <i class="fa fa-chevron-left"></i> hbase在windows上安装踩坑记录
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/28/java%E8%BF%9E%E6%8E%A5hbase%E6%91%B8%E7%B4%A2%E8%BF%87%E7%A8%8B/" rel="next" title="java连接hbase摸索过程">
+                  java连接hbase摸索过程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

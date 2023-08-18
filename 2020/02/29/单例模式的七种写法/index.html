@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="单例模式的七种写法 在阅读公众号的时候看到了这篇文章，写的很好，网站的设计布局也很巧妙，记录一下http:&#x2F;&#x2F;www.hollischuang.com&#x2F;archives&#x2F;205 。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单例模式的七种写法">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/02/29/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%B8%83%E7%A7%8D%E5%86%99%E6%B3%95/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="单例模式的七种写法 在阅读公众号的时候看到了这篇文章，写的很好，网站的设计布局也很巧妙，记录一下http:&#x2F;&#x2F;www.hollischuang.com&#x2F;archives&#x2F;205 。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-29T09:06:10.000Z">
+<meta property="article:modified_time" content="2020-03-15T08:01:49.116Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/02/29/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%B8%83%E7%A7%8D%E5%86%99%E6%B3%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/02/29/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%B8%83%E7%A7%8D%E5%86%99%E6%B3%95/","path":"2020/02/29/单例模式的七种写法/","title":"单例模式的七种写法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>单例模式的七种写法 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%B8%83%E7%A7%8D%E5%86%99%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">单例模式的七种写法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E7%A7%8D%E5%86%99%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">七种写法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%EF%BC%88%E6%87%92%E6%B1%89%EF%BC%8C%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8%EF%BC%89%EF%BC%9A"><span class="nav-number">1.1.1.</span> <span class="nav-text">第一种（懒汉，线程不安全）：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%EF%BC%88%E6%87%92%E6%B1%89%EF%BC%8C%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%EF%BC%89%EF%BC%9A"><span class="nav-number">1.1.2.</span> <span class="nav-text">第二种（懒汉，线程安全）：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%A7%8D%EF%BC%88%E9%A5%BF%E6%B1%89%EF%BC%89%EF%BC%9A"><span class="nav-number">1.1.3.</span> <span class="nav-text">第三种（饿汉）：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%A7%8D%EF%BC%88%E9%A5%BF%E6%B1%89%EF%BC%8C%E5%8F%98%E7%A7%8D%EF%BC%89%EF%BC%9A"><span class="nav-number">1.1.4.</span> <span class="nav-text">第四种（饿汉，变种）：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%A7%8D%EF%BC%88%E9%9D%99%E6%80%81%E5%86%85%E9%83%A8%E7%B1%BB%EF%BC%89%EF%BC%9A"><span class="nav-number">1.1.5.</span> <span class="nav-text">第五种（静态内部类）：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E7%A7%8D%EF%BC%88%E6%9E%9A%E4%B8%BE%EF%BC%89%EF%BC%9A"><span class="nav-number">1.1.6.</span> <span class="nav-text">第六种（枚举）：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%83%E7%A7%8D%EF%BC%88%E5%8F%8C%E9%87%8D%E6%A0%A1%E9%AA%8C%E9%94%81%EF%BC%89%EF%BC%9A"><span class="nav-number">1.1.7.</span> <span class="nav-text">第七种（双重校验锁）：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.2.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E4%BA%BA%E6%80%BB%E7%BB%93"><span class="nav-number">1.2.1.</span> <span class="nav-text">本人总结</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/02/29/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%B8%83%E7%A7%8D%E5%86%99%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="单例模式的七种写法 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          单例模式的七种写法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-02-29 17:06:10" itemprop="dateCreated datePublished" datetime="2020-02-29T17:06:10+08:00">2020-02-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-03-15 16:01:49" itemprop="dateModified" datetime="2020-03-15T16:01:49+08:00">2020-03-15</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="单例模式的七种写法"><a href="#单例模式的七种写法" class="headerlink" title="单例模式的七种写法"></a>单例模式的七种写法</h1><blockquote>
+<p>在阅读公众号的时候看到了这篇文章，写的很好，网站的设计布局也很巧妙，记录一下<a target="_blank" rel="noopener" href="http://www.hollischuang.com/archives/205">http://www.hollischuang.com/archives/205</a> 。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="七种写法"><a href="#七种写法" class="headerlink" title="七种写法"></a>七种写法</h2><p>很喜欢他的鼠标停留注释，但是还是写markdown快一些。</p>
+<p><strong>懒汉：</strong>类初始化的时候并不创建，要用的时候才建。</p>
+<p><strong>饿汉：</strong>在类加载的时候就创建好一个对象。</p>
+<p><strong>lazy loading：</strong>只有在需要的时候才会去加载必要的数据，这样可以避免即时加载所带来的不必要的系统开销。</p>
+<h3 id="第一种（懒汉，线程不安全）："><a href="#第一种（懒汉，线程不安全）：" class="headerlink" title="第一种（懒汉，线程不安全）："></a>第一种（懒汉，线程不安全）：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;  </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span> <span class="params">()</span>&#123;&#125;  </span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;  </span><br><span class="line">    <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;  </span><br><span class="line">        instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>();  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> instance;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+<h3 id="第二种（懒汉，线程安全）："><a href="#第二种（懒汉，线程安全）：" class="headerlink" title="第二种（懒汉，线程安全）："></a>第二种（懒汉，线程安全）：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ublic <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;  </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span> <span class="params">()</span>&#123;&#125;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;  </span><br><span class="line">    <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;  </span><br><span class="line">        instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>();  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> instance;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+<p>这种写法能够在多线程中很好的工作，而且看起来它也具备很好的lazy loading，但是，遗憾的是，效率很低，99%情况下不需要同步。</p>
+<h3 id="第三种（饿汉）："><a href="#第三种（饿汉）：" class="headerlink" title="第三种（饿汉）："></a>第三种（饿汉）：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">Singleton</span> <span class="variable">instance</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();  </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span> <span class="params">()</span>&#123;&#125;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> instance;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+<p>这种方式基于classloder机制，在<a target="_blank" rel="noopener" href="http://www.hollischuang.com/archives/197">深度分析Java的ClassLoader机制（源码级别）</a>和<a target="_blank" rel="noopener" href="http://www.hollischuang.com/archives/201">Java类的加载、链接和初始化</a>两个文章中有关于CLassload而机制的线程安全问题的介绍，避免了多线程的同步问题，不过，instance在类装载时就实例化，虽然导致类装载的原因有很多种，在单例模式中大多数都是调用getInstance方法， 但是也不能确定有其他的方式（或者其他的静态方法）导致类装载，这时候初始化instance显然没有达到lazy loading的效果。</p>
+<h3 id="第四种（饿汉，变种）："><a href="#第四种（饿汉，变种）：" class="headerlink" title="第四种（饿汉，变种）："></a>第四种（饿汉，变种）：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="type">Singleton</span> <span class="variable">instance</span> <span class="operator">=</span> <span class="literal">null</span>;  </span><br><span class="line">    <span class="keyword">static</span> &#123;  </span><br><span class="line">    instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>();  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span> <span class="params">()</span>&#123;&#125;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.instance;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+<p>表面上看起来差别挺大，其实更第三种方式差不多，都是在类初始化即实例化instance。</p>
+<h3 id="第五种（静态内部类）："><a href="#第五种（静态内部类）：" class="headerlink" title="第五种（静态内部类）："></a>第五种（静态内部类）：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SingletonHolder</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span> <span class="params">()</span>&#123;&#125;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> SingletonHolder.INSTANCE;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+<p>这种方式同样利用了classloder的机制来保证初始化instance时只有一个线程，它跟第三种和第四种方式不同的是（很细微的差别）：第三种和第四种方式是只要Singleton类被装载了，那么instance就会被实例化（没有达到lazy loading效果），而这种方式是Singleton类被装载了，instance不一定被初始化。因为SingletonHolder类没有被主动使用，只有显示通过调用getInstance方法时，才会显示装载SingletonHolder类，从而实例化instance。想象一下，如果实例化instance很消耗资源，我想让他延迟加载，另外一方面，我不希望在Singleton类加载时就实例化，因为我不能确保Singleton类还可能在其他的地方被主动使用从而被加载，那么这个时候实例化instance显然是不合适的。这个时候，这种方式相比第三和第四种方式就显得很合理。</p>
+<h3 id="第六种（枚举）："><a href="#第六种（枚举）：" class="headerlink" title="第六种（枚举）："></a>第六种（枚举）：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">Singleton</span> &#123;  </span><br><span class="line">    INSTANCE;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">whateverMethod</span><span class="params">()</span> &#123;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+<p>这种方式是Effective Java作者Josh Bloch 提倡的方式，它不仅能避免多线程同步问题，而且还能防止反序列化重新创建新的对象，可谓是很坚强的壁垒啊，在《深度分析Java的枚举类型—-枚举的线程安全性及序列化问题》（此文章在我转载的时候就已经404了）中有详细介绍枚举的线程安全问题和序列化问题。不过，个人认为由于1.5中才加入enum特性，用这种方式写不免让人感觉生疏，在实际工作中，我也很少看见有人这么写过。</p>
+<h3 id="第七种（双重校验锁）："><a href="#第七种（双重校验锁）：" class="headerlink" title="第七种（双重校验锁）："></a>第七种（双重校验锁）：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton singleton;  </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span> <span class="params">()</span>&#123;&#125;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getSingleton</span><span class="params">()</span> &#123;  </span><br><span class="line">    <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;  </span><br><span class="line">        <span class="keyword">synchronized</span> (Singleton.class) &#123;  </span><br><span class="line">        <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;  </span><br><span class="line">            singleton = <span class="keyword">new</span> <span class="title class_">Singleton</span>();  </span><br><span class="line">        &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> singleton;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>有两个问题需要注意：</p>
+<p>1.如果单例由不同的类装载器装入，那便有可能存在多个单例类的实例。假定不是远端存取，例如一些servlet容器对每个servlet使用完全不同的类装载器，这样的话如果有两个servlet访问一个单例类，它们就都会有各自的实例。</p>
+<p>2.如果Singleton实现了java.io.Serializable接口，那么这个类的实例就可能被序列化和复原。不管怎样，如果你序列化一个单例类的对象，接下来复原多个那个对象，那你就会有多个单例类的实例。</p>
+<p>对第一个问题修复的办法是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Class <span class="title function_">getClass</span><span class="params">(String classname)</span>  </span><br><span class="line"><span class="keyword">throws</span> ClassNotFoundException &#123;  </span><br><span class="line">    <span class="type">ClassLoader</span> <span class="variable">classLoader</span> <span class="operator">=</span> Thread.currentThread().getContextClassLoader();</span><br><span class="line">    <span class="keyword">if</span>(classLoader == <span class="literal">null</span>)     </span><br><span class="line">          classLoader = Singleton.class.getClassLoader();     </span><br><span class="line">          <span class="keyword">return</span> (classLoader.loadClass(classname));     </span><br><span class="line">       &#125;     </span><br><span class="line">    &#125; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>对第二个问题修复的办法是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> <span class="keyword">implements</span> <span class="title class_">java</span>.io.Serializable &#123;     </span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();     </span><br><span class="line"></span><br><span class="line">   <span class="keyword">protected</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;     </span><br><span class="line"></span><br><span class="line">   &#125;     </span><br><span class="line">   <span class="keyword">private</span> Object <span class="title function_">readResolve</span><span class="params">()</span> &#123;     </span><br><span class="line">            <span class="keyword">return</span> INSTANCE;     </span><br><span class="line">      &#125;    </span><br><span class="line">&#125;   </span><br></pre></td></tr></table></figure>
+
+<p>对我来说，我比较喜欢第三种和第五种方式，简单易懂，而且在JVM层实现了线程安全（如果不是多个类加载器环境），一般的情况下，我会使用第三种方式，只有在要明确实现lazy loading效果时才会使用第五种方式，另外，如果涉及到反序列化创建对象时我会试着使用枚举的方式来实现单例，不过，我一直会保证我的程序是线程安全的，而且我永远不会使用第一种和第二种方式，如果有其他特殊的需求，我可能会使用第七种方式，毕竟，JDK1.5已经没有双重检查锁定的问题了。（此处的我是指原文作者）</p>
+<p>不过一般来说，第一种不算单例，第四种和第三种就是一种，如果算的话，第五种也可以分开写了。所以说，一般单例都是五种写法。懒汉，恶汉，双重校验锁，枚举和静态内部类。</p>
+<h3 id="本人总结"><a href="#本人总结" class="headerlink" title="本人总结"></a>本人总结</h3><p>算是记录设计模式的一个开端，平时只是机械的在用，现在要逐渐的学习。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/02/22/InnoDB%20%E4%B8%AD%E4%B8%80%E6%A3%B5%20B+%E6%A0%91%E8%83%BD%E5%AD%98%E5%A4%9A%E5%B0%91%E8%A1%8C%E6%95%B0%E6%8D%AE%EF%BC%9F/" rel="prev" title="InnoDB 中一棵 B+ 树能存多少行数据？">
+                  <i class="fa fa-chevron-left"></i> InnoDB 中一棵 B+ 树能存多少行数据？
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/03/07/jaocb%E7%9A%84%E7%AC%AC%E4%BA%8C%E6%AC%A1%E7%A0%94%E7%A9%B6/" rel="next" title="jacob的第二次研究">
+                  jacob的第二次研究 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

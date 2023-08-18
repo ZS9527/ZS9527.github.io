@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一个普通的日常bug（ Failed to configure a DataSource: ‘url’ attribute is not specified ） SpringBoot 2.0 报错: Failed to configure a DataSource: ‘url’ attribute is not specified and no embedded datasource could">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个普通的日常bug">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2019/07/19/%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E7%9A%84%E6%97%A5%E5%B8%B8bug/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="一个普通的日常bug（ Failed to configure a DataSource: ‘url’ attribute is not specified ） SpringBoot 2.0 报错: Failed to configure a DataSource: ‘url’ attribute is not specified and no embedded datasource could">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b2.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b3.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b1.png">
+<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b4.png">
+<meta property="article:published_time" content="2019-07-19T13:14:27.000Z">
+<meta property="article:modified_time" content="2019-07-18T07:32:00.327Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="bug">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.worldofwarcraftchina.cn/b2.png">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2019/07/19/%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E7%9A%84%E6%97%A5%E5%B8%B8bug/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2019/07/19/%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E7%9A%84%E6%97%A5%E5%B8%B8bug/","path":"2019/07/19/一个普通的日常bug/","title":"一个普通的日常bug"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>一个普通的日常bug | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E7%9A%84%E6%97%A5%E5%B8%B8bug%EF%BC%88-Failed-to-configure-a-DataSource-%E2%80%98url%E2%80%99-attribute-is-not-specified-%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">一个普通的日常bug（ Failed to configure a DataSource: ‘url’ attribute is not specified ）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bug%E6%97%A5%E5%BF%97"><span class="nav-number">1.1.</span> <span class="nav-text">bug日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%9D%E8%AF%95%E8%A7%A3%E5%86%B3"><span class="nav-number">1.2.</span> <span class="nav-text">尝试解决</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E4%B8%80%EF%BC%9A"><span class="nav-number">1.2.1.</span> <span class="nav-text">方案一：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9A"><span class="nav-number">1.2.2.</span> <span class="nav-text">方案二：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E4%B8%89%EF%BC%9A"><span class="nav-number">1.2.3.</span> <span class="nav-text">方案三：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E5%9B%9B%EF%BC%9A"><span class="nav-number">1.2.4.</span> <span class="nav-text">方案四：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E4%BA%94%EF%BC%88%E6%9C%80%E7%BB%88%E8%A7%A3%E5%86%B3%E7%89%88%EF%BC%89%EF%BC%9A"><span class="nav-number">1.2.5.</span> <span class="nav-text">方案五（最终解决版）：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E5%85%AD%EF%BC%88%E9%97%AE%E9%A2%98%E5%86%8D%E6%AC%A1%E8%AF%9E%E7%94%9F%E8%BF%87%E7%A8%8B%EF%BC%89%EF%BC%9A"><span class="nav-number">1.2.6.</span> <span class="nav-text">方案六（问题再次诞生过程）：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3bug%E9%80%94%E4%B8%AD%E4%BA%A7%E7%94%9F%E7%9A%84%E6%96%B0bug"><span class="nav-number">1.3.</span> <span class="nav-text">解决bug途中产生的新bug</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2019/07/19/%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E7%9A%84%E6%97%A5%E5%B8%B8bug/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="一个普通的日常bug | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一个普通的日常bug
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-07-19 21:14:27" itemprop="dateCreated datePublished" datetime="2019-07-19T21:14:27+08:00">2019-07-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-07-18 15:32:00" itemprop="dateModified" datetime="2019-07-18T15:32:00+08:00">2019-07-18</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="一个普通的日常bug（-Failed-to-configure-a-DataSource-‘url’-attribute-is-not-specified-）"><a href="#一个普通的日常bug（-Failed-to-configure-a-DataSource-‘url’-attribute-is-not-specified-）" class="headerlink" title="一个普通的日常bug（ Failed to configure a DataSource: ‘url’ attribute is not specified ）"></a>一个普通的日常bug（ Failed to configure a DataSource: ‘url’ attribute is not specified ）</h1><blockquote>
+<p>SpringBoot 2.0 报错: Failed to configure a DataSource: ‘url’ attribute is not specified and no embedded datasource could be configured.</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="bug日志"><a href="#bug日志" class="headerlink" title="bug日志"></a>bug日志</h2><p><strong>关键词：</strong> Failed to configure a DataSource: ‘url’ attribute is not specified and no embedded datasource could be configured.</p>
+<p><strong>关键词：</strong> Reason: Failed to determine a suitable driver class.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2019-07-15 11:11:27.857  INFO 7604 --- [           main] com.yiring.zjtq.Application              : Starting Application on myhbase with PID 7604 (E:\idea-workspace\zjtq-web\out\production\classes started by Administrator in E:\idea-workspace\zjtq-web)</span><br><span class="line">2019-07-15 11:11:27.867  INFO 7604 --- [           main] com.yiring.zjtq.Application              : The following profiles are active: prod</span><br><span class="line">2019-07-15 11:11:27.922  INFO 7604 --- [           main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@68567e20: startup date [Mon Jul 15 11:11:27 CST 2019]; root of context hierarchy</span><br><span class="line">2019-07-15 11:11:28.667  INFO 7604 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!</span><br><span class="line">2019-07-15 11:11:28.689  INFO 7604 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!</span><br><span class="line">2019-07-15 11:11:29.081  INFO 7604 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean &#x27;org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration&#x27; of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$5d98e995] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)</span><br><span class="line">2019-07-15 11:11:29.543  INFO 7604 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)</span><br><span class="line">2019-07-15 11:11:29.578  INFO 7604 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]</span><br><span class="line">2019-07-15 11:11:29.578  INFO 7604 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.32</span><br><span class="line">2019-07-15 11:11:29.583  INFO 7604 --- [ost-startStop-1] o.a.catalina.core.AprLifecycleListener   : The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk1.8.0_161\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\TortoiseSVN\bin;E:\apache-maven-3.5.2\bin;C:\Program Files (x86)\OpenGrADS\Contents\Cygwin\Versions\2.0.a9.oga.1\i686;C:\Program Files\Git\cmd;C:\Users\Administrator\.gradle\wrapper\dists\gradle-5.2.1-all\bviwmvmbexq6idcscbicws5me\gradle-5.2.1\bin;D:\nodejs\;C:\Program Files\TortoiseGit\bin;C:\Program Files\Microsoft VS Code\bin;D:\hadoop\hadoop-3.1.1\bin;C:\Program Files\Java\jdk1.8.0_161\bin;C:\Program Files\Java\jdk1.8.0_161\jre\bin;D:\hadoop\hbase-2.1.5\bin;C:\Program Files\Microsoft VS Code\bin;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\Programs\Fiddler;C:\Users\Administrator\AppData\Local\Yarn\bin;F:\docker\Docker Toolbox;.]</span><br><span class="line">2019-07-15 11:11:29.749  INFO 7604 --- [ost-startStop-1] o.a.c.c.C.[.[localhost].[/zjtq/v3]       : Initializing Spring embedded WebApplicationContext</span><br><span class="line">2019-07-15 11:11:29.750  INFO 7604 --- [ost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1828 ms</span><br><span class="line">2019-07-15 11:11:29.862  INFO 7604 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: &#x27;characterEncodingFilter&#x27; to: [/*]</span><br><span class="line">2019-07-15 11:11:29.863  INFO 7604 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: &#x27;hiddenHttpMethodFilter&#x27; to: [/*]</span><br><span class="line">2019-07-15 11:11:29.863  INFO 7604 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: &#x27;httpPutFormContentFilter&#x27; to: [/*]</span><br><span class="line">2019-07-15 11:11:29.863  INFO 7604 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: &#x27;requestContextFilter&#x27; to: [/*]</span><br><span class="line">2019-07-15 11:11:29.864  INFO 7604 --- [ost-startStop-1] .s.DelegatingFilterProxyRegistrationBean : Mapping filter: &#x27;springSecurityFilterChain&#x27; to: [/*]</span><br><span class="line">2019-07-15 11:11:29.864  INFO 7604 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: &#x27;webStatFilter&#x27; to urls: [/*]</span><br><span class="line">2019-07-15 11:11:29.864  INFO 7604 --- [ost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Servlet dispatcherServlet mapped to [/]</span><br><span class="line">2019-07-15 11:11:29.865  INFO 7604 --- [ost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Servlet statViewServlet mapped to [/druid/*]</span><br><span class="line">2019-07-15 11:11:29.900  INFO 7604 --- [           main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource</span><br><span class="line">2019-07-15 11:11:30.037  WARN 7604 --- [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name &#x27;org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaConfiguration&#x27;: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name &#x27;dataSource&#x27; defined in class path resource [com/alibaba/druid/spring/boot/autoconfigure/DruidDataSourceAutoConfigure.class]: Invocation of init method failed; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Failed to determine a suitable driver class</span><br><span class="line">2019-07-15 11:11:30.039  INFO 7604 --- [           main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]</span><br><span class="line">2019-07-15 11:11:30.074  INFO 7604 --- [           main] ConditionEvaluationReportLoggingListener : </span><br><span class="line"></span><br><span class="line">Error starting ApplicationContext. To display the conditions report re-run your application with &#x27;debug&#x27; enabled.</span><br><span class="line">2019-07-15 11:11:30.080 ERROR 7604 --- [           main] o.s.b.d.LoggingFailureAnalysisReporter   : </span><br><span class="line"></span><br><span class="line">***************************</span><br><span class="line">APPLICATION FAILED TO START</span><br><span class="line">***************************</span><br><span class="line"></span><br><span class="line">Description:</span><br><span class="line"></span><br><span class="line">Failed to configure a DataSource: &#x27;url&#x27; attribute is not specified and no embedded datasource could be configured.</span><br><span class="line"></span><br><span class="line">Reason: Failed to determine a suitable driver class</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Action:</span><br><span class="line"></span><br><span class="line">Consider the following:</span><br><span class="line">	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.</span><br><span class="line">	If you have database settings to be loaded from a particular profile you may need to activate it (no profiles are currently active).</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Process finished with exit code 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="尝试解决"><a href="#尝试解决" class="headerlink" title="尝试解决"></a>尝试解决</h2><p>首先使出一招百度一下，搜到了很多的同类报错解决方法。以下四种方法出自<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/836d455663da">https://www.jianshu.com/p/836d455663da</a></p>
+<h3 id="方案一："><a href="#方案一：" class="headerlink" title="方案一："></a>方案一：</h3><p>排除此类的autoconfig。启动以后就可以正常运行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication(exclude= &#123;DataSourceAutoConfiguration.class&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="方案二："><a href="#方案二：" class="headerlink" title="方案二："></a>方案二：</h3><p>在application.properties&#x2F;或者application.yml文件中没有添加数据库配置信息.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  datasource:</span><br><span class="line">    url: jdbc:mysql://localhost:3306/read_data?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false</span><br><span class="line">    username: root</span><br><span class="line">    password: 123456</span><br><span class="line">    driver-class-name: com.mysql.jdbc.Driver</span><br></pre></td></tr></table></figure>
+
+<h3 id="方案三："><a href="#方案三：" class="headerlink" title="方案三："></a>方案三：</h3><p>在spring xml配置文件中引用了数据库地址 所以需要对:等进行转义处理.但是在application.properties&#x2F;或者application.yml文件并不需要转义,错误和正确方法写在下面了.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//错误示例</span><br><span class="line">spring.datasource.url = jdbc:mysql\://192.168.0.20\:1504/f_me?setUnicode=true&amp;characterEncoding=utf8</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//正确示例</span><br><span class="line">spring.datasource.url = jdbc:mysql://192.168.0.20:1504/f_me?setUnicode=true&amp;characterEncoding=utf8</span><br></pre></td></tr></table></figure>
+<h3 id="方案四："><a href="#方案四：" class="headerlink" title="方案四："></a>方案四：</h3><p>yml或者properties文件没有被扫描到,需要在pom文件中<build></build>添加如下.来保证文件都能正常被扫描到并且加载成功.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 如果不添加此节点mybatis的mapper.xml文件都会被漏掉。 --&gt;</span><br><span class="line">&lt;resources&gt;</span><br><span class="line">    &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;src/main/java&lt;/directory&gt;</span><br><span class="line">        &lt;includes&gt;</span><br><span class="line">            &lt;include&gt;**/*.yml&lt;/include&gt;</span><br><span class="line">            &lt;include&gt;**/*.properties&lt;/include&gt;</span><br><span class="line">            &lt;include&gt;**/*.xml&lt;/include&gt;</span><br><span class="line">        &lt;/includes&gt;</span><br><span class="line">        &lt;filtering&gt;false&lt;/filtering&gt;</span><br><span class="line">    &lt;/resource&gt;</span><br><span class="line">    &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;src/main/resources&lt;/directory&gt;</span><br><span class="line">        &lt;includes&gt;</span><br><span class="line">            &lt;include&gt;**/*.yml&lt;/include&gt;</span><br><span class="line">            &lt;include&gt;**/*.properties&lt;/include&gt;</span><br><span class="line">            &lt;include&gt;**/*.xml&lt;/include&gt;</span><br><span class="line">        &lt;/includes&gt;</span><br><span class="line">        &lt;filtering&gt;false&lt;/filtering&gt;</span><br><span class="line">    &lt;/resource&gt;</span><br><span class="line">&lt;/resources&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="方案五（最终解决版）："><a href="#方案五（最终解决版）：" class="headerlink" title="方案五（最终解决版）："></a>方案五（最终解决版）：</h3><p>问题是出在了新导入jar包时，出现报错。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    maven &#123; url &#x27;http://download.osgeo.org/webdav/geotools/&#x27; &#125;</span><br><span class="line">    maven &#123; url &#x27;http://maven.aliyun.com/nexus/content/groups/public/&#x27; &#125;</span><br><span class="line">    maven &#123; url &#x27;https://repo.spring.io/libs-snapshot&#x27; &#125;</span><br><span class="line">    maven &#123; url &#x27;https://repo.spring.io/milestone&#x27; &#125;</span><br><span class="line">    mavenLocal()</span><br><span class="line">    mavenCentral()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/b2.png"></p>
+<p>此时的setting界面为：<br><img src="/b3.png"></p>
+<p>经过查询，找到下图的这个选项javac。将其修改为eclipse后，便解决了这个错误。<br><img src="/b1.png"></p>
+<h3 id="方案六（问题再次诞生过程）："><a href="#方案六（问题再次诞生过程）：" class="headerlink" title="方案六（问题再次诞生过程）："></a>方案六（问题再次诞生过程）：</h3><p>项目在导入jar包前可以正常运行。导入jar包为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    maven &#123; url &#x27;http://download.osgeo.org/webdav/geotools/&#x27; &#125;</span><br><span class="line">    maven &#123; url &#x27;http://maven.aliyun.com/nexus/content/groups/public/&#x27; &#125;</span><br><span class="line">    maven &#123; url &#x27;https://repo.spring.io/libs-snapshot&#x27; &#125;</span><br><span class="line">    maven &#123; url &#x27;https://repo.spring.io/milestone&#x27; &#125;</span><br><span class="line">    mavenLocal()</span><br><span class="line">    mavenCentral()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compile(&#x27;org.springframework.boot:spring-boot-starter-cache&#x27;)</span><br><span class="line">    compile(&#x27;org.springframework.boot:spring-boot-starter-data-jpa&#x27;)</span><br><span class="line">    compile(&#x27;org.springframework.boot:spring-boot-starter-jdbc&#x27;)</span><br><span class="line">    compile(&#x27;org.springframework.boot:spring-boot-starter-data-redis&#x27;)</span><br><span class="line">    compile(&#x27;org.springframework.boot:spring-boot-starter-security&#x27;)</span><br><span class="line">    compile(&#x27;org.springframework.boot:spring-boot-starter-validation&#x27;)</span><br><span class="line">    compile(&#x27;org.springframework.boot:spring-boot-starter-web&#x27;)</span><br><span class="line">    compile(&#x27;org.springframework.boot:spring-boot-starter-websocket&#x27;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    runtime(&#x27;mysql:mysql-connector-java&#x27;)</span><br><span class="line">    compileOnly(&#x27;org.projectlombok:lombok&#x27;)</span><br><span class="line">    compileOnly(&#x27;org.springframework.boot:spring-boot-configuration-processor&#x27;)</span><br><span class="line">    asciidoctor(&#x27;org.springframework.restdocs:spring-restdocs-asciidoctor&#x27;)</span><br><span class="line">    testCompile(&#x27;org.springframework.restdocs:spring-restdocs-mockmvc&#x27;)</span><br><span class="line">    testCompile(&#x27;org.springframework.security:spring-security-test&#x27;)</span><br><span class="line">    testCompile(&#x27;org.springframework.boot:spring-boot-starter-test&#x27;) &#123;</span><br><span class="line">        exclude group: &#x27;junit&#x27;, module: &#x27;junit;&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">    testCompile(&#x27;org.testng:testng:6.14.3&#x27;)</span><br><span class="line"></span><br><span class="line">    compile(&#x27;com.alibaba:druid-spring-boot-starter:1.1.10&#x27;)</span><br><span class="line">    compile(&#x27;org.apache.httpcomponents:httpclient:4.5.6&#x27;)</span><br><span class="line">    compile(&#x27;org.apache.httpcomponents:httpmime:4.5.6&#x27;)</span><br><span class="line">    compile(&#x27;com.google.guava:guava:26.0-jre&#x27;)</span><br><span class="line">    compile(&#x27;commons-net:commons-net:3.6&#x27;)</span><br><span class="line">    compile(&#x27;com.alibaba:fastjson:1.2.49&#x27;)</span><br><span class="line">    compile(&#x27;io.jsonwebtoken:jjwt:0.9.1&#x27;)</span><br><span class="line">    compile(&#x27;com.aliyun:aliyun-java-sdk-core:4.0.8&#x27;)</span><br><span class="line">    compile(&#x27;com.aliyun:aliyun-java-sdk-dysmsapi:1.1.0&#x27;)</span><br><span class="line">    compile(&#x27;jcifs:jcifs:1.3.17&#x27;) &#123;</span><br><span class="line">        exclude module: &#x27;servlet-api&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">    compile fileTree(dir: &#x27;lib&#x27;, includes: [&#x27;*jar&#x27;])</span><br><span class="line"></span><br><span class="line">    compile (&#x27;commons-fileupload:commons-fileupload:1.3.1&#x27;)</span><br><span class="line"></span><br><span class="line">    compile (&#x27;org.apache.commons:commons-pool2:2.6.0&#x27;)</span><br><span class="line"></span><br><span class="line">	//新导入jar包开始</span><br><span class="line">    implementation group: &#x27;org.geotools&#x27;, name: &#x27;gt-shapefile&#x27;, version: &#x27;21.0&#x27;</span><br><span class="line">    implementation group: &#x27;org.geotools&#x27;, name: &#x27;gt-geojson&#x27;, version: &#x27;21.0&#x27;</span><br><span class="line">    implementation group: &#x27;org.meteothink&#x27;, name: &#x27;wContour&#x27;, version: &#x27;1.6.1&#x27;</span><br><span class="line">    implementation group: &#x27;com.vividsolutions&#x27;, name: &#x27;jts&#x27;, version: &#x27;1.13&#x27;</span><br><span class="line">    implementation group: &#x27;org.locationtech.jts&#x27;, name: &#x27;jts-core&#x27;, version: &#x27;1.16.1&#x27;</span><br><span class="line">    //新导入jar包结束</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>初步怀疑是新jar包和之前的jar包冲突，或者是新导入jar包中有错误。方案五的解决办法在这种操作场景下并不能解决问题了。</p>
+<p>最终删除后重新git导入了整个项目，删除了gradle全局配置。重新导入一遍这个jar包，选择了一下idea-&gt;setting-&gt;Build,Execution,Deployment-&gt;complier-&gt;java Compiler中的use compiler为javac（在导入时注意提示。）</p>
+<h2 id="解决bug途中产生的新bug"><a href="#解决bug途中产生的新bug" class="headerlink" title="解决bug途中产生的新bug"></a>解决bug途中产生的新bug</h2><p><strong>关键字：</strong>错误: 找不到或无法加载主类 com.yiring.zjtq.Application<br>当edit configurations显示下面的错误时，可以重新rebuild一下项目。或者更改一下jar包管理文件，删除jar包再导入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Run Configuration Error: Not a valid Spring Boot application class</span><br></pre></td></tr></table></figure>
+<p><img src="/b4.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/bug/" rel="tag"># bug</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/06/28/java%E8%BF%9E%E6%8E%A5hbase%E6%91%B8%E7%B4%A2%E8%BF%87%E7%A8%8B/" rel="prev" title="java连接hbase摸索过程">
+                  <i class="fa fa-chevron-left"></i> java连接hbase摸索过程
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/26/%E4%BD%BF%E7%94%A8geotools%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84NoClassDefFoundError/" rel="next" title="使用geotools时遇到的NoClassDefFoundError">
+                  使用geotools时遇到的NoClassDefFoundError <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

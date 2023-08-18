@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="部署geojson文件矢量切片服务 客户答应的 Linux 虚拟机到了，终于可以直接部署 tippecanoe 了。原本的 Geojson 文件太大了，还是需要切片。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="部署geojson切片服务">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/08/08/%E9%83%A8%E7%BD%B2geojson%E5%88%87%E7%89%87%E6%9C%8D%E5%8A%A1/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="部署geojson文件矢量切片服务 客户答应的 Linux 虚拟机到了，终于可以直接部署 tippecanoe 了。原本的 Geojson 文件太大了，还是需要切片。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-08T12:42:27.000Z">
+<meta property="article:modified_time" content="2021-02-26T09:58:30.186Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="Geojson">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/08/08/%E9%83%A8%E7%BD%B2geojson%E5%88%87%E7%89%87%E6%9C%8D%E5%8A%A1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/08/08/%E9%83%A8%E7%BD%B2geojson%E5%88%87%E7%89%87%E6%9C%8D%E5%8A%A1/","path":"2020/08/08/部署geojson切片服务/","title":"部署geojson切片服务"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>部署geojson切片服务 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2geojson%E6%96%87%E4%BB%B6%E7%9F%A2%E9%87%8F%E5%88%87%E7%89%87%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.</span> <span class="nav-text">部署geojson文件矢量切片服务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-tippecanoe"><span class="nav-number">1.1.</span> <span class="nav-text">安装 tippecanoe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-FoxGIS-Server-Lite"><span class="nav-number">1.2.</span> <span class="nav-text">安装 FoxGIS Server Lite</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#02-23%E6%9B%B4%E6%96%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">02-23更新</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E8%B0%83%E7%94%A8%E5%91%BD%E4%BB%A4-jar-%E5%8C%85"><span class="nav-number">1.3.</span> <span class="nav-text">部署调用命令 jar 包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E4%B8%AD%E9%97%B4%E5%85%B3%E8%81%94%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.4.</span> <span class="nav-text">处理中间关联程序</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/08/08/%E9%83%A8%E7%BD%B2geojson%E5%88%87%E7%89%87%E6%9C%8D%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="部署geojson切片服务 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          部署geojson切片服务
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-08 20:42:27" itemprop="dateCreated datePublished" datetime="2020-08-08T20:42:27+08:00">2020-08-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-02-26 17:58:30" itemprop="dateModified" datetime="2021-02-26T17:58:30+08:00">2021-02-26</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="部署geojson文件矢量切片服务"><a href="#部署geojson文件矢量切片服务" class="headerlink" title="部署geojson文件矢量切片服务"></a>部署geojson文件矢量切片服务</h1><blockquote>
+<p>客户答应的 Linux 虚拟机到了，终于可以直接部署 tippecanoe 了。<br>原本的 Geojson 文件太大了，还是需要切片。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="安装-tippecanoe"><a href="#安装-tippecanoe" class="headerlink" title="安装 tippecanoe"></a>安装 tippecanoe</h2><p>登录 Linux 服务器</p>
+<ol>
+<li>准备好 tippecanoe 源码。</li>
+<li>将服务器的 yum 源更改为 阿里源</li>
+<li>下载依赖<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc-c++</span><br><span class="line">yum install sqlite-devel</span><br><span class="line">yum install -y zlib zlib-devel</span><br></pre></td></tr></table></figure></li>
+<li>将源码解压好后，在 tippecanoe 文件夹内<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make -j</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+完成<br>具体的命令行参数参考：<a target="_blank" rel="noopener" href="https://github.com/mapbox/tippecanoe">https://github.com/mapbox/tippecanoe</a></li>
+</ol>
+<h2 id="安装-FoxGIS-Server-Lite"><a href="#安装-FoxGIS-Server-Lite" class="headerlink" title="安装 FoxGIS Server Lite"></a>安装 FoxGIS Server Lite</h2><p>直接部署在了原本的 win 服务器上，通过 FTP 读取 tippecanoe 做好的矢量地图文件。</p>
+<p>通过<a target="_blank" rel="noopener" href="https://jingsam.github.io/foxgis-server-lite/#/deploy">https://jingsam.github.io/foxgis-server-lite/#/deploy</a> 下载 win 包，直接启动 exe 文件即可。</p>
+<h3 id="02-23更新"><a href="#02-23更新" class="headerlink" title="02-23更新"></a>02-23更新</h3><p>如果出现了环境问题，可以使用线上代码解决</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://gitee.com/jingsam/foxgis-server-lite.git map-server</span><br><span class="line">cd map-server</span><br><span class="line">yarn install</span><br><span class="line">npm start</span><br></pre></td></tr></table></figure>
+
+<h2 id="部署调用命令-jar-包"><a href="#部署调用命令-jar-包" class="headerlink" title="部署调用命令 jar 包"></a>部署调用命令 jar 包</h2><p>这个程序是负责调用 Linux 中的切片程序，只需要放在 Linux 任意文件夹中开启来就完事了。只是一个开发接口调用命令而已。</p>
+<h2 id="处理中间关联程序"><a href="#处理中间关联程序" class="headerlink" title="处理中间关联程序"></a>处理中间关联程序</h2><p>切片程序部署在 Linux 服务器上，将原本的 geojson 文件通过 FTP上传到 Linux 文件夹中。<br>再访问接口来启动切片命令，收到完成回复后，将 FTP 中切好的文件拿回 win 服务器。<br>放在 FoxGIS Server Lite 中，得到映射的 url 。</p>
+<p>注意中间我关闭了 Linux 服务器的防火墙和 SeLinux，部署 FTP 的方式是用的之前的文章。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Geojson/" rel="tag"># Geojson</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/08/01/LxRunOffline%E5%AE%89%E8%A3%85CentOS/" rel="prev" title="LxRunOffline安装CentOS">
+                  <i class="fa fa-chevron-left"></i> LxRunOffline安装CentOS
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/08/16/%E6%97%A0%E4%BE%B5%E5%85%A5%E5%BC%8F%E5%AE%9E%E7%8E%B0API%E6%8E%A5%E5%8F%A3%E7%BB%9F%E4%B8%80/" rel="next" title="无侵入式实现API接口统一">
+                  无侵入式实现API接口统一 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

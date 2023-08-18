@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="使用mycat分表后的A different object with the same identifier value错误 这个问题在之前使用mycat时并没有发生。这次的业务场景是我需要在同一事务中，先查询历史数据，然后再写入新的数据。该新的数据是按时间分表。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用mycat分表后的A different object with the same identifier value错误">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2019/10/26/%E4%BD%BF%E7%94%A8mycat%E5%88%86%E8%A1%A8%E5%90%8E%E7%9A%84A-different-object-with-the-same-identifier-value%E9%94%99%E8%AF%AF/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="使用mycat分表后的A different object with the same identifier value错误 这个问题在之前使用mycat时并没有发生。这次的业务场景是我需要在同一事务中，先查询历史数据，然后再写入新的数据。该新的数据是按时间分表。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-10-26T06:13:40.000Z">
+<meta property="article:modified_time" content="2019-10-24T08:21:50.343Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="mycat">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2019/10/26/%E4%BD%BF%E7%94%A8mycat%E5%88%86%E8%A1%A8%E5%90%8E%E7%9A%84A-different-object-with-the-same-identifier-value%E9%94%99%E8%AF%AF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2019/10/26/%E4%BD%BF%E7%94%A8mycat%E5%88%86%E8%A1%A8%E5%90%8E%E7%9A%84A-different-object-with-the-same-identifier-value%E9%94%99%E8%AF%AF/","path":"2019/10/26/使用mycat分表后的A-different-object-with-the-same-identifier-value错误/","title":"使用mycat分表后的A different object with the same identifier value错误"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用mycat分表后的A different object with the same identifier value错误 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8mycat%E5%88%86%E8%A1%A8%E5%90%8E%E7%9A%84A-different-object-with-the-same-identifier-value%E9%94%99%E8%AF%AF"><span class="nav-number">1.</span> <span class="nav-text">使用mycat分表后的A different object with the same identifier value错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">错误：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A6%96%E6%AC%A1%E5%B0%9D%E8%AF%95-%E6%9B%B4%E6%8D%A2JPA%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.2.</span> <span class="nav-text">首次尝试-更换JPA查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E5%B0%9D%E8%AF%95-%E6%9B%B4%E6%8D%A2%E6%88%90JDBC%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.3.</span> <span class="nav-text">第二次尝试-更换成JDBC查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AC%A1%E5%B0%9D%E8%AF%95-%E5%87%8F%E5%B0%91%E6%AF%8F%E6%AC%A1%E6%9F%A5%E8%AF%A2%E6%97%B6%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-number">1.4.</span> <span class="nav-text">第三次尝试-减少每次查询时的数据</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2019/10/26/%E4%BD%BF%E7%94%A8mycat%E5%88%86%E8%A1%A8%E5%90%8E%E7%9A%84A-different-object-with-the-same-identifier-value%E9%94%99%E8%AF%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用mycat分表后的A different object with the same identifier value错误 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用mycat分表后的A different object with the same identifier value错误
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-10-26 14:13:40" itemprop="dateCreated datePublished" datetime="2019-10-26T14:13:40+08:00">2019-10-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-10-24 16:21:50" itemprop="dateModified" datetime="2019-10-24T16:21:50+08:00">2019-10-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="使用mycat分表后的A-different-object-with-the-same-identifier-value错误"><a href="#使用mycat分表后的A-different-object-with-the-same-identifier-value错误" class="headerlink" title="使用mycat分表后的A different object with the same identifier value错误"></a>使用mycat分表后的A different object with the same identifier value错误</h1><blockquote>
+<p>这个问题在之前使用mycat时并没有发生。这次的业务场景是我需要在同一事务中，先查询历史数据，然后再写入新的数据。该新的数据是按时间分表。</p>
+</blockquote>
+<span id="more"></span>
+
+
+<h2 id="错误："><a href="#错误：" class="headerlink" title="错误："></a>错误：</h2><p><strong>A different object with the same identifier value was already associated with the session</strong> ：[com.yiring.risk.domain.hiddendangerpoint.HiddenDangerPointNationalScene#776]</p>
+<h2 id="首次尝试-更换JPA查询"><a href="#首次尝试-更换JPA查询" class="headerlink" title="首次尝试-更换JPA查询"></a>首次尝试-更换JPA查询</h2><p>产生这个bug的时候，任务时间很紧张。我就没有百度，直接询问团队大佬。大佬表示有可能是因为同一事务中的查出的数据id和要保存的数据id为同一个。</p>
+<p>就把JPA原本的findAllByDateTimeBetween改成了通过@Query(value&#x3D;”原生sql”，nativeQuery &#x3D; true)来直接查询出List&lt;Map&lt;String, Object&gt;&gt; </p>
+<p>本次尝试失败</p>
+<h2 id="第二次尝试-更换成JDBC查询"><a href="#第二次尝试-更换成JDBC查询" class="headerlink" title="第二次尝试-更换成JDBC查询"></a>第二次尝试-更换成JDBC查询</h2><p>上次的修改失败了之后，再次尝试将原生sql查询，更改为@JdbcTemplate注解后。通过jdbcTemplate.queryForList(sql);查询。</p>
+<p>再次尝试失败</p>
+<h2 id="第三次尝试-减少每次查询时的数据"><a href="#第三次尝试-减少每次查询时的数据" class="headerlink" title="第三次尝试-减少每次查询时的数据"></a>第三次尝试-减少每次查询时的数据</h2><p>大佬再次思考过后，认为是saveAll时的数据有不同的时间。在同一事务中的不同时间有可能分到不同的分表里，也就是可能在缓存区里有相同的id。</p>
+<p>决定把数据分为按同一时间存储</p>
+<p>目前解决了这个bug，但是具体的细节还是没有搞太明白。之后再进行补充</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mycat/" rel="tag"># mycat</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/10/20/%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95JPA%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%A0%E9%99%A4%E6%96%B9%E6%B3%95/" rel="prev" title="简单记录JPA自定义删除方法">
+                  <i class="fa fa-chevron-left"></i> 简单记录JPA自定义删除方法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/10/26/%E4%BD%BF%E7%94%A8rabbitmq%E6%97%B6%E5%87%BA%E7%8E%B0%E7%9A%84Channel-shutdown-channel-error/" rel="next" title="使用rabbitmq时出现的Channel shutdown: channel error;">
+                  使用rabbitmq时出现的Channel shutdown: channel error; <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

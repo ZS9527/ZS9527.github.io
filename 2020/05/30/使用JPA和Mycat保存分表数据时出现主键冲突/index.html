@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="使用JPA和Mycat保存分表数据时出现主键冲突 将一个百万数据级别的表拆分为几十万数据的表后，保存数据时出现了问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用JPA和Mycat保存分表数据时出现主键冲突">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/05/30/%E4%BD%BF%E7%94%A8JPA%E5%92%8CMycat%E4%BF%9D%E5%AD%98%E5%88%86%E8%A1%A8%E6%95%B0%E6%8D%AE%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B8%BB%E9%94%AE%E5%86%B2%E7%AA%81/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="使用JPA和Mycat保存分表数据时出现主键冲突 将一个百万数据级别的表拆分为几十万数据的表后，保存数据时出现了问题">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-30T01:14:54.000Z">
+<meta property="article:modified_time" content="2021-07-14T03:16:23.346Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="bug">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/05/30/%E4%BD%BF%E7%94%A8JPA%E5%92%8CMycat%E4%BF%9D%E5%AD%98%E5%88%86%E8%A1%A8%E6%95%B0%E6%8D%AE%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B8%BB%E9%94%AE%E5%86%B2%E7%AA%81/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/05/30/%E4%BD%BF%E7%94%A8JPA%E5%92%8CMycat%E4%BF%9D%E5%AD%98%E5%88%86%E8%A1%A8%E6%95%B0%E6%8D%AE%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B8%BB%E9%94%AE%E5%86%B2%E7%AA%81/","path":"2020/05/30/使用JPA和Mycat保存分表数据时出现主键冲突/","title":"使用JPA和Mycat保存分表数据时出现主键冲突"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用JPA和Mycat保存分表数据时出现主键冲突 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8JPA%E5%92%8CMycat%E4%BF%9D%E5%AD%98%E5%88%86%E8%A1%A8%E6%95%B0%E6%8D%AE%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B8%BB%E9%94%AE%E5%86%B2%E7%AA%81"><span class="nav-number">1.</span> <span class="nav-text">使用JPA和Mycat保存分表数据时出现主键冲突</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bug%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">bug描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">处理方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/05/30/%E4%BD%BF%E7%94%A8JPA%E5%92%8CMycat%E4%BF%9D%E5%AD%98%E5%88%86%E8%A1%A8%E6%95%B0%E6%8D%AE%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B8%BB%E9%94%AE%E5%86%B2%E7%AA%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用JPA和Mycat保存分表数据时出现主键冲突 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用JPA和Mycat保存分表数据时出现主键冲突
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-30 09:14:54" itemprop="dateCreated datePublished" datetime="2020-05-30T09:14:54+08:00">2020-05-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-07-14 11:16:23" itemprop="dateModified" datetime="2021-07-14T11:16:23+08:00">2021-07-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="使用JPA和Mycat保存分表数据时出现主键冲突"><a href="#使用JPA和Mycat保存分表数据时出现主键冲突" class="headerlink" title="使用JPA和Mycat保存分表数据时出现主键冲突"></a>使用JPA和Mycat保存分表数据时出现主键冲突</h1><blockquote>
+<p>将一个百万数据级别的表拆分为几十万数据的表后，保存数据时出现了问题</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="bug描述"><a href="#bug描述" class="headerlink" title="bug描述"></a>bug描述</h2><p><strong>A different object with the same identifier value was already associated with the session</strong> 一开始保存时出现了这个相同 id 的问题。之前调用 Jpa 的 save 方法时，有 id 为 update 没有 id 时为 insert 。尝试增加一下事务管理，错误变成了<strong>Sharding column can’t be updated 分表字段</strong>。</p>
+<h2 id="处理方式"><a href="#处理方式" class="headerlink" title="处理方式"></a>处理方式</h2><ol>
+<li><p>将主键的自增方式转换为snowflake。通过添加自增算法类，然后再添加下面的主键注解</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@GeneratedValue(generator = &quot;snowflake&quot;)</span><br><span class="line">    @GenericGenerator(name = &quot;snowflake&quot;, strategy = &quot;com.yiring.env.snowflake.GenerateId&quot;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用Jpa注解自己创建sql语句更新</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Modifying</span></span><br><span class="line">    <span class="meta">@Query(&quot;update ClimateEveryYearStationData set totalPreTwenty = ?1, avgTem = ?2, maxTem = ?3, minTem = ?4 where id = ?5&quot;)</span></span><br><span class="line">    </span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"><span class="keyword">import</span> org.hibernate.HibernateException;</span><br><span class="line"><span class="keyword">import</span> org.hibernate.MappingException;</span><br><span class="line"><span class="keyword">import</span> org.hibernate.engine.spi.SharedSessionContractImplementor;</span><br><span class="line"><span class="keyword">import</span> org.hibernate.id.Configurable;</span><br><span class="line"><span class="keyword">import</span> org.hibernate.id.IdentifierGenerator;</span><br><span class="line"><span class="keyword">import</span> org.hibernate.service.ServiceRegistry;</span><br><span class="line"><span class="keyword">import</span> org.hibernate.type.Type;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"><span class="keyword">import</span> org.springframework.transaction.annotation.Transactional;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 基于雪花算法的 ID 生成器</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Transactional(readOnly = true)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GenerateId</span> <span class="keyword">implements</span> <span class="title class_">IdentifierGenerator</span>, Configurable &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> SnowFlakeIdWorker snowFlakeIdWorker;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Serializable <span class="title function_">generate</span><span class="params">(</span></span><br><span class="line"><span class="params">        SharedSessionContractImplementor session, Object object)</span> <span class="keyword">throws</span> HibernateException &#123;</span><br><span class="line">        <span class="keyword">return</span> snowFlakeIdWorker.nextId();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">configure</span><span class="params">(</span></span><br><span class="line"><span class="params">        Type type, Properties params, ServiceRegistry serviceRegistry)</span> <span class="keyword">throws</span> MappingException &#123;</span><br><span class="line">        snowFlakeIdWorker = <span class="keyword">new</span> <span class="title class_">SnowFlakeIdWorker</span>(<span class="number">1L</span>, <span class="number">0L</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yiring.env.snowflake;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Twitter_Snowflake官网demo格式</span></span><br><span class="line"><span class="comment"> * SnowFlake的结构如下(每部分用-分开):</span></span><br><span class="line"><span class="comment"> * 1位标志位                    41位时间戳                                               5位机器+5位数据标志          12位计数器</span></span><br><span class="line"><span class="comment"> * 0 - 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000 - 000000000000</span></span><br><span class="line"><span class="comment"> * 41位时间戳是因为当前时间减去起始时间的时间戳刚好在2^41范围内</span></span><br><span class="line"><span class="comment"> * 1位标识，由于long基本类型在Java中是带符号的，最高位是符号位，正数是0，负数是1，所以id一般是正数，最高位是0</span></span><br><span class="line"><span class="comment"> * 41位时间截(毫秒级)，注意，41位时间截不是存储当前时间的时间截，而是存储时间截的差值（当前时间截 - 开始时间截)</span></span><br><span class="line"><span class="comment"> * 得到的值），这里的的开始时间截，一般是我们的id生成器开始使用的时间，由我们程序来指定的（如下下面程序IdWorker类的startTime属性）。41位的时间截，可以使用69年，年T = (1L &lt;&lt; 41) / (1000L * 60 * 60 * 24 * 365) = 69</span></span><br><span class="line"><span class="comment"> * 10位的数据机器位，可以部署在1024个节点，包括5位dataCenterId和5位workerId</span></span><br><span class="line"><span class="comment"> * 12位序列，毫秒内的计数，12位的计数顺序号支持每个节点每毫秒(同一机器，同一时间截)产生4096个ID序号</span></span><br><span class="line"><span class="comment"> * 加起来刚好64位，为一个Long型。</span></span><br><span class="line"><span class="comment"> * SnowFlake的优点是，整体上按照时间自增排序，并且整个分布式系统内不会产生ID碰撞(由数据中心ID和机器ID作区分)，并且效率较高，经测试，SnowFlake每秒能够产生26万ID左右。</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * 算法在的&lt;&lt;表示左移，左移后后面剩下部分会补0，并不是循环移位</span></span><br><span class="line"><span class="comment"> * 二进制转换运算中负数的二进制需要用补码表示</span></span><br><span class="line"><span class="comment"> * 补码 = 反码 + 1 ;   补码 = （原码 - 1）再取反码</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * 本代码对字段进行了调整，采用43位时间戳  3位机器标志、3位数据标志  14位</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SnowFlakeIdWorker</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 机器id所占的位数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">workerIdBits</span> <span class="operator">=</span> <span class="number">3L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 数据标识id所占的位数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">dataCenterIdBits</span> <span class="operator">=</span> <span class="number">3L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 工作机器ID(0~7)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">long</span> workerId;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 数据中心ID(0~7)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">long</span> dataCenterId;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 毫秒内序列(0~16383)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">long</span> <span class="variable">sequence</span> <span class="operator">=</span> <span class="number">0L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 上次生成ID的时间截</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">long</span> <span class="variable">lastTimestamp</span> <span class="operator">=</span> -<span class="number">1L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//private static String wordId = &quot;1&quot;;</span></span><br><span class="line">    <span class="comment">//private static String dataId = &quot;0&quot;;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//private static org.hibernate.snowflake.SnowFlakeIdWorker idWorker;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 构造函数</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> workerId     工作ID (0~7)</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dataCenterId 数据中心ID (0~7)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">SnowFlakeIdWorker</span><span class="params">(<span class="type">long</span> workerId, <span class="type">long</span> dataCenterId)</span> &#123;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">          支持的最大机器id，结果是7 (这个移位算法可以很快的计算出几位二进制数所能表示的最大十进制数)</span></span><br><span class="line"><span class="comment">          -1L ^ (-1L &lt;&lt; n)表示占n个bit的数字的最大值是多少。举个栗子：-1L ^ (-1L &lt;&lt; 2)等于10进制的3 ，即二进制的11表示十进制3。</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="type">long</span> <span class="variable">maxWorkerId</span> <span class="operator">=</span> ~(-<span class="number">1L</span> &lt;&lt; workerIdBits);</span><br><span class="line">        <span class="keyword">if</span> (workerId &gt; maxWorkerId || workerId &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(String.format(<span class="string">&quot;worker Id can&#x27;t be greater than %d or less than 0&quot;</span>, maxWorkerId));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">          支持的最大数据标识id，结果是7</span></span><br><span class="line"><span class="comment">          -1L 原码 1000 0001   原码是在符号位加标志  正数 0 负数1</span></span><br><span class="line"><span class="comment">          反码1111 1110   正数原码是其本身 负数是符号位不变其余位取反</span></span><br><span class="line"><span class="comment">          补码1111 1111   原码-1再取反</span></span><br><span class="line"><span class="comment">          -1L &lt;&lt; 3 1111 1000</span></span><br><span class="line"><span class="comment">          -1L ^ (1111 1000)   1111 1000 ^ 1111 1111 结果为7</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="type">long</span> <span class="variable">maxDataCenterId</span> <span class="operator">=</span> ~(-<span class="number">1L</span> &lt;&lt; dataCenterIdBits);</span><br><span class="line">        <span class="keyword">if</span> (dataCenterId &gt; maxDataCenterId || dataCenterId &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(String.format(<span class="string">&quot;datacenter Id can&#x27;t be greater than %d or less than 0&quot;</span>, maxDataCenterId));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">this</span>.workerId = workerId;</span><br><span class="line">        <span class="built_in">this</span>.dataCenterId = dataCenterId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获得下一个ID (该方法是线程安全的)</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> SnowflakeId</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="type">long</span> <span class="title function_">nextId</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">timestamp</span> <span class="operator">=</span> timeGen();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常</span></span><br><span class="line">        <span class="keyword">if</span> (timestamp &lt; lastTimestamp) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(</span><br><span class="line">                    String.format(<span class="string">&quot;Clock moved backwards.  Refusing to generate id for %d milliseconds&quot;</span>, lastTimestamp - timestamp));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果是同一时间生成的，则进行毫秒内序列</span></span><br><span class="line">        <span class="comment">//序列在id中占的位数</span></span><br><span class="line">        <span class="type">long</span> <span class="variable">sequenceBits</span> <span class="operator">=</span> <span class="number">14L</span>;</span><br><span class="line">        <span class="keyword">if</span> (lastTimestamp == timestamp) &#123;</span><br><span class="line">            <span class="comment">//序列号 = 上次序列号+1 与 生成序列的掩码</span></span><br><span class="line">            <span class="comment">//生成序列的掩码，这里为16383</span></span><br><span class="line">            <span class="type">long</span> <span class="variable">sequenceMask</span> <span class="operator">=</span> ~(-<span class="number">1L</span> &lt;&lt; sequenceBits);</span><br><span class="line">            sequence = (sequence + <span class="number">1</span>) &amp; sequenceMask;</span><br><span class="line">            <span class="comment">//毫秒内序列溢出</span></span><br><span class="line">            <span class="keyword">if</span> (sequence == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">//阻塞到下一个毫秒,获得新的时间戳</span></span><br><span class="line">                timestamp = tilNextMillis(lastTimestamp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//时间戳改变，毫秒内序列重置</span></span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            sequence = <span class="number">0L</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//上次生成ID的时间截（保存时间戳）</span></span><br><span class="line">        lastTimestamp = timestamp;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//移位并通过或运算拼到一起组成64位的ID(或运算)</span></span><br><span class="line">        <span class="comment">//当前时间戳-开始时间戳 左移22位相当于两个差的22位</span></span><br><span class="line">        <span class="comment">//机器ID向左移14位  数据标识id向左移17位(14+3)</span></span><br><span class="line">        <span class="type">long</span> <span class="variable">dataCenterIdShift</span> <span class="operator">=</span> sequenceBits + workerIdBits;</span><br><span class="line">        <span class="comment">//时间截向左移20位(3+3+14) 机器码+计数器</span></span><br><span class="line">        <span class="type">long</span> <span class="variable">timestampLeftShift</span> <span class="operator">=</span> sequenceBits + workerIdBits + dataCenterIdBits;</span><br><span class="line">        <span class="comment">//开始时间截 (2020-01-01 00:00:00)毫秒级时间戳</span></span><br><span class="line">        <span class="type">long</span> <span class="variable">startTimestamp</span> <span class="operator">=</span> <span class="number">1577808000000L</span>;</span><br><span class="line">        <span class="keyword">return</span> ((timestamp - startTimestamp) &lt;&lt; timestampLeftShift)</span><br><span class="line">                <span class="comment">//数据中心Id左移17位</span></span><br><span class="line">                | (dataCenterId &lt;&lt; dataCenterIdShift)</span><br><span class="line">                <span class="comment">// 机器id左移12位</span></span><br><span class="line">                | (workerId &lt;&lt; sequenceBits)</span><br><span class="line">                <span class="comment">//毫秒内序列</span></span><br><span class="line">                | sequence;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 阻塞到下一个毫秒，直到获得新的时间戳</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> lastTimestamp 上次生成ID的时间截</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 当前时间戳</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">long</span> <span class="title function_">tilNextMillis</span><span class="params">(<span class="type">long</span> lastTimestamp)</span> &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">timestamp</span> <span class="operator">=</span> timeGen();</span><br><span class="line">        <span class="keyword">while</span> (timestamp &lt;= lastTimestamp) &#123;</span><br><span class="line">            timestamp = timeGen();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> timestamp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回以毫秒为单位的当前时间</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 当前时间(毫秒)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">long</span> <span class="title function_">timeGen</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> System.currentTimeMillis();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/bug/" rel="tag"># bug</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/05/25/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9A%84%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B/" rel="prev" title="分布式的架构演进">
+                  <i class="fa fa-chevron-left"></i> 分布式的架构演进
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/05/30/%E8%8E%B7%E5%BE%97%E8%85%BE%E8%AE%AF%E4%BA%91%E7%A4%BE%E5%8C%BA%E5%A5%96%E5%93%81/" rel="next" title="获得腾讯云社区奖品">
+                  获得腾讯云社区奖品 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="JPA配置多数据源 本文来自多个博文的综合。主要为：https:&#x2F;&#x2F;blog.csdn.net&#x2F;blowbob_666&#x2F;article&#x2F;details&#x2F;110670713本文顺带解决一个 Jpa 不自动将驼峰（大写字母）命名转下划线的问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JPA配置多数据源">
+<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/12/05/JPA%E9%85%8D%E7%BD%AE%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/index.html">
+<meta property="og:site_name" content="blogs">
+<meta property="og:description" content="JPA配置多数据源 本文来自多个博文的综合。主要为：https:&#x2F;&#x2F;blog.csdn.net&#x2F;blowbob_666&#x2F;article&#x2F;details&#x2F;110670713本文顺带解决一个 Jpa 不自动将驼峰（大写字母）命名转下划线的问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-05T10:15:55.000Z">
+<meta property="article:modified_time" content="2021-02-26T10:34:06.160Z">
+<meta property="article:author" content="Ezio">
+<meta property="article:tag" content="jpa">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/12/05/JPA%E9%85%8D%E7%BD%AE%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/12/05/JPA%E9%85%8D%E7%BD%AE%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/","path":"2020/12/05/JPA配置多数据源/","title":"JPA配置多数据源"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JPA配置多数据源 | blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JPA%E9%85%8D%E7%BD%AE%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="nav-number">1.</span> <span class="nav-text">JPA配置多数据源</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#yml%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">yml配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="nav-number">1.2.</span> <span class="nav-text">多数据源配置类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E6%95%B0%E6%8D%AE%E6%BA%90%E7%9A%84%E8%AF%A6%E7%BB%86%E9%85%8D%E7%BD%AE%EF%BC%88%E5%85%B6%E5%AE%83%E6%95%B0%E6%8D%AE%E6%BA%90%E7%B1%BB%E6%AF%94%E9%85%8D%E7%BD%AE%E5%8D%B3%E5%8F%AF%EF%BC%8C%E4%B8%8D%E8%A6%81%E5%8A%A0-Primary%EF%BC%89%E5%8C%85%E5%90%AB%E9%A9%BC%E5%B3%B0%E8%BD%AC%E4%B8%8B%E5%88%92%E7%BA%BF%E9%85%8D%E7%BD%AE"><span class="nav-number">1.3.</span> <span class="nav-text">主数据源的详细配置（其它数据源类比配置即可，不要加@Primary）包含驼峰转下划线配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%AF%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="nav-number">1.4.</span> <span class="nav-text">副数据源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ezio</p>
+  <div class="site-description" itemprop="description">java</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/12/05/JPA%E9%85%8D%E7%BD%AE%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ezio">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blogs">
+      <meta itemprop="description" content="java">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JPA配置多数据源 | blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JPA配置多数据源
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-05 18:15:55" itemprop="dateCreated datePublished" datetime="2020-12-05T18:15:55+08:00">2020-12-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-02-26 18:34:06" itemprop="dateModified" datetime="2021-02-26T18:34:06+08:00">2021-02-26</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="JPA配置多数据源"><a href="#JPA配置多数据源" class="headerlink" title="JPA配置多数据源"></a>JPA配置多数据源</h1><blockquote>
+<p>本文来自多个博文的综合。<br>主要为：<a target="_blank" rel="noopener" href="https://blog.csdn.net/blowbob_666/article/details/110670713">https://blog.csdn.net/blowbob_666&#x2F;article&#x2F;details&#x2F;110670713</a><br>本文顺带解决一个 Jpa 不自动将驼峰（大写字母）命名转下划线的问题。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="yml配置"><a href="#yml配置" class="headerlink" title="yml配置"></a>yml配置</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  datasource:</span><br><span class="line">    druid:</span><br><span class="line">      db:</span><br><span class="line">        primary:</span><br><span class="line">          name: primary</span><br><span class="line">          url: jdbc:mysql:<span class="comment">//127.0.0.1:3307/primary?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Asia/Shanghai</span></span><br><span class="line">          username: root</span><br><span class="line">          password: <span class="number">123456</span></span><br><span class="line">          initialSize: <span class="number">5</span></span><br><span class="line">          minIdle: <span class="number">5</span></span><br><span class="line">          maxActive: <span class="number">20</span></span><br><span class="line">          maxWait: <span class="number">60000</span></span><br><span class="line">          timeBetweenEvictionRunsMillis: <span class="number">60000</span></span><br><span class="line">          minEvictableIdleTimeMillis: <span class="number">60000</span></span><br><span class="line">          validationQuery: SELECT <span class="number">1</span></span><br><span class="line">          validationQueryTimeout: <span class="number">10000</span></span><br><span class="line">          testWhileIdle: <span class="literal">true</span></span><br><span class="line">          testOnBorrow: <span class="literal">false</span></span><br><span class="line">          testOnReturn: <span class="literal">false</span></span><br><span class="line">          poolPreparedStatements: <span class="literal">true</span></span><br><span class="line">          maxPoolPreparedStatementPerConnectionSize: <span class="number">20</span></span><br><span class="line">          filters: stat,wall</span><br><span class="line">          connectionProperties: druid.stat.mergeSql=<span class="literal">true</span>;druid.stat.slowSqlMillis=<span class="number">5000</span></span><br><span class="line">          useGlobalDataSourceStat: <span class="literal">true</span></span><br><span class="line">        test:</span><br><span class="line">          name: test</span><br><span class="line">          url: jdbc:mysql:<span class="comment">//127.0.0.1:3308/test?useSSL=false</span></span><br><span class="line">          username: root</span><br><span class="line">          password: <span class="number">123456</span></span><br><span class="line">          initialSize: <span class="number">5</span></span><br><span class="line">          minIdle: <span class="number">5</span></span><br><span class="line">          maxActive: <span class="number">20</span></span><br><span class="line">          maxWait: <span class="number">60000</span></span><br><span class="line">          timeBetweenEvictionRunsMillis: <span class="number">60000</span></span><br><span class="line">          minEvictableIdleTimeMillis: <span class="number">60000</span></span><br><span class="line">          validationQuery: SELECT <span class="number">1</span></span><br><span class="line">          validationQueryTimeout: <span class="number">10000</span></span><br><span class="line">          testWhileIdle: <span class="literal">true</span></span><br><span class="line">          testOnBorrow: <span class="literal">false</span></span><br><span class="line">          testOnReturn: <span class="literal">false</span></span><br><span class="line">          poolPreparedStatements: <span class="literal">true</span></span><br><span class="line">          maxPoolPreparedStatementPerConnectionSize: <span class="number">20</span></span><br><span class="line">          filters: stat,wall</span><br><span class="line">          connectionProperties: druid.stat.mergeSql=<span class="literal">true</span>;druid.stat.slowSqlMillis=<span class="number">5000</span></span><br><span class="line">          useGlobalDataSourceStat: <span class="literal">true</span></span><br><span class="line">  jpa:</span><br><span class="line">    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect</span><br><span class="line">    show-sql: <span class="literal">false</span></span><br><span class="line">    open-in-view: <span class="literal">true</span></span><br><span class="line">    hibernate:</span><br><span class="line">      ddl-auto: update</span><br><span class="line">      primary-dialect: org.hibernate.dialect.MySQL5InnoDBDialect</span><br><span class="line">      test-dialect: org.hibernate.dialect.MySQL5InnoDBDialect</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="多数据源配置类"><a href="#多数据源配置类" class="headerlink" title="多数据源配置类"></a>多数据源配置类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;</span><br><span class="line"><span class="keyword">import</span> javax.sql.DataSource;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Qualifier;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Primary;</span><br><span class="line"><span class="keyword">import</span> org.springframework.jdbc.core.JdbcTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.transaction.annotation.EnableTransactionManagement;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 数据源管理</span></span><br><span class="line"><span class="comment"> * 1. 自动载入多数据源&lt;br&gt;</span></span><br><span class="line"><span class="comment"> * 2. 支持数据源参数重载&lt;br&gt;</span></span><br><span class="line"><span class="comment"> * &lt;br&gt;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableTransactionManagement</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DataSourceConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Bean(name = &quot;dataSource&quot;)</span></span><br><span class="line">    <span class="meta">@ConfigurationProperties(prefix = &quot;spring.datasource.druid.db.primary&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> DataSource <span class="title function_">dataSource</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> DruidDataSourceBuilder.create().build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean(name = &quot;dataSourceTest&quot;)</span></span><br><span class="line">	<span class="meta">@ConfigurationProperties(prefix = &quot;spring.datasource.druid.db.test&quot;)</span></span><br><span class="line">	<span class="keyword">public</span> DataSource <span class="title function_">dataSourceTest</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> DruidDataSourceBuilder.create().build();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> JdbcTemplate <span class="title function_">jdbcTemplate</span><span class="params">(<span class="meta">@Qualifier(&quot;dataSource&quot;)</span> DataSource ds)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">JdbcTemplate</span>(ds);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">	<span class="keyword">public</span> JdbcTemplate <span class="title function_">jdbcTemplateTest</span><span class="params">(<span class="meta">@Qualifier(&quot;dataSourceTest&quot;)</span> DataSource ds)</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">JdbcTemplate</span>(ds);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="主数据源的详细配置（其它数据源类比配置即可，不要加-Primary）包含驼峰转下划线配置"><a href="#主数据源的详细配置（其它数据源类比配置即可，不要加-Primary）包含驼峰转下划线配置" class="headerlink" title="主数据源的详细配置（其它数据源类比配置即可，不要加@Primary）包含驼峰转下划线配置"></a>主数据源的详细配置（其它数据源类比配置即可，不要加@Primary）包含驼峰转下划线配置</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.EntityManager;</span><br><span class="line"><span class="keyword">import</span> javax.sql.DataSource;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Qualifier;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Primary;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.env.Environment;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.jpa.repository.config.EnableJpaRepositories;</span><br><span class="line"><span class="keyword">import</span> org.springframework.orm.jpa.JpaTransactionManager;</span><br><span class="line"><span class="keyword">import</span> org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.transaction.PlatformTransactionManager;</span><br><span class="line"><span class="keyword">import</span> org.springframework.transaction.annotation.EnableTransactionManagement;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 主数据源配置</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableTransactionManagement</span></span><br><span class="line"><span class="meta">@EnableJpaRepositories(</span></span><br><span class="line"><span class="meta">    entityManagerFactoryRef=&quot;entityManagerFactoryPrimary&quot;,</span></span><br><span class="line"><span class="meta">    transactionManagerRef=&quot;transactionManagerPrimary&quot;,</span></span><br><span class="line"><span class="meta">    basePackages= &#123; &quot;com.yiring.primary.repository&quot; &#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PrimaryConfig</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Environment env;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;dataSource&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource primaryDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Bean(name = &quot;entityManagerPrimary&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> EntityManager <span class="title function_">entityManager</span><span class="params">(EntityManagerFactoryBuilder builder)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> entityManagerFactoryPrimary(builder).getObject().createEntityManager();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Bean(name = &quot;entityManagerFactoryPrimary&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> LocalContainerEntityManagerFactoryBean <span class="title function_">entityManagerFactoryPrimary</span> <span class="params">(EntityManagerFactoryBuilder builder)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> builder</span><br><span class="line">            .dataSource(primaryDataSource)</span><br><span class="line">            .properties(getVendorProperties())</span><br><span class="line">            .packages(<span class="string">&quot;com.yiring.primary.domain&quot;</span>)</span><br><span class="line">            .persistenceUnit(<span class="string">&quot;primaryPersistenceUnit&quot;</span>)</span><br><span class="line">            .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, String&gt; <span class="title function_">getVendorProperties</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;String, String&gt; jpaProperties = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;(<span class="number">16</span>);</span><br><span class="line">        jpaProperties.put(<span class="string">&quot;hibernate.hbm2ddl.auto&quot;</span>, <span class="string">&quot;update&quot;</span>);</span><br><span class="line">        jpaProperties.put(<span class="string">&quot;hibernate.show_sql&quot;</span>, env.getProperty(<span class="string">&quot;spring.jpa.show-sql&quot;</span>));</span><br><span class="line">        jpaProperties.put(<span class="string">&quot;hibernate.format_sql&quot;</span>, env.getProperty(<span class="string">&quot;spring.jpa.hibernate.format_sql&quot;</span>));</span><br><span class="line">        jpaProperties.put(<span class="string">&quot;hibernate.dialect&quot;</span>, env.getProperty(<span class="string">&quot;spring.jpa.hibernate.primary-dialect&quot;</span>));</span><br><span class="line">        jpaProperties.put(<span class="string">&quot;hibernate.current_session_context_class&quot;</span>, <span class="string">&quot;org.springframework.orm.hibernate5.SpringSessionContext&quot;</span>);</span><br><span class="line">        <span class="comment">//设置驼峰转下划线</span></span><br><span class="line">        jpaProperties.put(<span class="string">&quot;hibernate.physical_naming_strategy&quot;</span>, SpringPhysicalNamingStrategy.class.getName());</span><br><span class="line">        jpaProperties.put(<span class="string">&quot;hibernate.implicit_naming_strategy&quot;</span>, SpringImplicitNamingStrategy.class.getName());</span><br><span class="line">        <span class="keyword">return</span> jpaProperties;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Bean(name = &quot;transactionManagerPrimary&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> PlatformTransactionManager <span class="title function_">transactionManagerPrimary</span><span class="params">(EntityManagerFactoryBuilder builder)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">JpaTransactionManager</span>(entityManagerFactoryPrimary(builder).getObject());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="副数据源"><a href="#副数据源" class="headerlink" title="副数据源"></a>副数据源</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> javax.annotation.Resource;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.EntityManager;</span><br><span class="line"><span class="keyword">import</span> javax.sql.DataSource;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Qualifier;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.env.Environment;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.jpa.repository.config.EnableJpaRepositories;</span><br><span class="line"><span class="keyword">import</span> org.springframework.orm.jpa.JpaTransactionManager;</span><br><span class="line"><span class="keyword">import</span> org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.transaction.PlatformTransactionManager;</span><br><span class="line"><span class="keyword">import</span> org.springframework.transaction.annotation.EnableTransactionManagement;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 副数据源配置</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> zhangshuai</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2021/2/24 15:45</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableTransactionManagement</span></span><br><span class="line"><span class="meta">@EnableJpaRepositories(</span></span><br><span class="line"><span class="meta">    //实体管理</span></span><br><span class="line"><span class="meta">    entityManagerFactoryRef=&quot;entityManagerFactorySecond&quot;,</span></span><br><span class="line"><span class="meta">    //事务管理</span></span><br><span class="line"><span class="meta">    transactionManagerRef=&quot;transactionManagerSecond&quot;,</span></span><br><span class="line"><span class="meta">    //实体扫描,设置Repository所在位置</span></span><br><span class="line"><span class="meta">    basePackages= &#123; &quot;com.yiring.test.repository&quot; &#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ZjtqConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;dataSourceZjtq&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> DataSource secondDataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> Environment env;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean(name = &quot;entityManagerSecond&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> EntityManager <span class="title function_">entityManager</span><span class="params">(EntityManagerFactoryBuilder builder)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> entityManagerFactorySecond(builder).getObject().createEntityManager();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean(name = &quot;entityManagerFactorySecond&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> LocalContainerEntityManagerFactoryBean <span class="title function_">entityManagerFactorySecond</span> <span class="params">(EntityManagerFactoryBuilder builder)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> builder</span><br><span class="line">            .dataSource(secondDataSource)</span><br><span class="line">            .properties(getVendorProperties())</span><br><span class="line">            .packages(<span class="string">&quot;com.yiring.test.domain&quot;</span>)</span><br><span class="line">            .persistenceUnit(<span class="string">&quot;secondPersistenceUnit&quot;</span>)</span><br><span class="line">            .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, String&gt; <span class="title function_">getVendorProperties</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;String, String&gt; jpaProperties = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;(<span class="number">16</span>);</span><br><span class="line">        <span class="comment">//这里取消对副数据源的修改</span></span><br><span class="line">        jpaProperties.put(<span class="string">&quot;hibernate.show_sql&quot;</span>, env.getProperty(<span class="string">&quot;spring.jpa.show-sql&quot;</span>));</span><br><span class="line">        jpaProperties.put(<span class="string">&quot;hibernate.dialect&quot;</span>, env.getProperty(<span class="string">&quot;spring.jpa.hibernate.Second-dialect&quot;</span>));</span><br><span class="line">        jpaProperties.put(<span class="string">&quot;hibernate.format_sql&quot;</span>, env.getProperty(<span class="string">&quot;spring.jpa.hibernate.format_sql&quot;</span>));</span><br><span class="line">        jpaProperties.put(<span class="string">&quot;hibernate.current_session_context_class&quot;</span>, <span class="string">&quot;org.springframework.orm.hibernate5.SpringSessionContext&quot;</span>);</span><br><span class="line">        <span class="comment">//设置驼峰转下划线</span></span><br><span class="line">        jpaProperties.put(<span class="string">&quot;hibernate.physical_naming_strategy&quot;</span>, SpringPhysicalNamingStrategy.class.getName());</span><br><span class="line">        jpaProperties.put(<span class="string">&quot;hibernate.implicit_naming_strategy&quot;</span>, SpringImplicitNamingStrategy.class.getName());</span><br><span class="line">        <span class="keyword">return</span> jpaProperties;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean(name = &quot;transactionManagerSecond&quot;)</span></span><br><span class="line">    PlatformTransactionManager <span class="title function_">transactionManagerSecond</span><span class="params">(EntityManagerFactoryBuilder builder)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">JpaTransactionManager</span>(entityManagerFactorySecond(builder).getObject());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过不同的包路径读取来区分不同的数据源。尽量不要用同名类，否则在使用时注入会报错。<br>使用方法和平时的单数据源使用方法一样。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/jpa/" rel="tag"># jpa</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/28/Idea%E6%8A%A5%E9%94%99%20%E3%80%90cannot%20access%20com.xxx%E3%80%91%E7%9A%84%E3%80%90%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95%E3%80%91/" rel="prev" title="Idea报错 【cannot access com.xxx】的【解决办法】">
+                  <i class="fa fa-chevron-left"></i> Idea报错 【cannot access com.xxx】的【解决办法】
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/12/12/%E4%BD%BF%E7%94%A8show%20profile%E8%BF%9B%E8%A1%8Cmysql%E8%B0%83%E4%BC%98/" rel="next" title="使用show profile进行mysql调优">
+                  使用show profile进行mysql调优 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ezio</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"live2d":null,"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"left","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>
