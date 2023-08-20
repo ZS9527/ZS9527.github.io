@@ -18,42 +18,42 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zs9527.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="LeetCode第4题结题思路 最近开始刷起了算法题，发现在白天做完业务功能后。晚上刷刷题有种换换思路的感觉。下面全是从原文哪里搬来的，来自(wind-liang的github)[https:&#x2F;&#x2F;leetcode.wang&#x2F;leetCode-4-Median-of-Two-Sorted-Arrays.html] 。我自己的解法就是第一种的思路。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LeetCode第4题结题思路">
-<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/06/19/LeetCode%E7%AC%AC4%E9%A2%98%E7%BB%93%E9%A2%98%E6%80%9D%E8%B7%AF/index.html">
+<meta property="og:url" content="http://zs9527.github.io/2020/06/19/LeetCode%E7%AC%AC4%E9%A2%98%E7%BB%93%E9%A2%98%E6%80%9D%E8%B7%AF/index.html">
 <meta property="og:site_name" content="blogs">
 <meta property="og:description" content="LeetCode第4题结题思路 最近开始刷起了算法题，发现在白天做完业务功能后。晚上刷刷题有种换换思路的感觉。下面全是从原文哪里搬来的，来自(wind-liang的github)[https:&#x2F;&#x2F;leetcode.wang&#x2F;leetCode-4-Median-of-Two-Sorted-Arrays.html] 。我自己的解法就是第一种的思路。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b1.png">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b2.png">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b3.png">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b4.png">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b5.png">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b6.png">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b7.png">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b8.png">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b9.png">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b10.png">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b11.png">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b12.png">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b13.png">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b14.png">
+<meta property="og:image" content="http://zs9527.github.io/b1.png">
+<meta property="og:image" content="http://zs9527.github.io/b2.png">
+<meta property="og:image" content="http://zs9527.github.io/b3.png">
+<meta property="og:image" content="http://zs9527.github.io/b4.png">
+<meta property="og:image" content="http://zs9527.github.io/b5.png">
+<meta property="og:image" content="http://zs9527.github.io/b6.png">
+<meta property="og:image" content="http://zs9527.github.io/b7.png">
+<meta property="og:image" content="http://zs9527.github.io/b8.png">
+<meta property="og:image" content="http://zs9527.github.io/b9.png">
+<meta property="og:image" content="http://zs9527.github.io/b10.png">
+<meta property="og:image" content="http://zs9527.github.io/b11.png">
+<meta property="og:image" content="http://zs9527.github.io/b12.png">
+<meta property="og:image" content="http://zs9527.github.io/b13.png">
+<meta property="og:image" content="http://zs9527.github.io/b14.png">
 <meta property="article:published_time" content="2020-06-19T09:24:32.000Z">
 <meta property="article:modified_time" content="2020-06-26T09:35:31.885Z">
 <meta property="article:author" content="Ezio">
 <meta property="article:tag" content="LeetCode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.worldofwarcraftchina.cn/b1.png">
+<meta name="twitter:image" content="http://zs9527.github.io/b1.png">
 
 
-<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/06/19/LeetCode%E7%AC%AC4%E9%A2%98%E7%BB%93%E9%A2%98%E6%80%9D%E8%B7%AF/">
+<link rel="canonical" href="http://zs9527.github.io/2020/06/19/LeetCode%E7%AC%AC4%E9%A2%98%E7%BB%93%E9%A2%98%E6%80%9D%E8%B7%AF/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/06/19/LeetCode%E7%AC%AC4%E9%A2%98%E7%BB%93%E9%A2%98%E6%80%9D%E8%B7%AF/","path":"2020/06/19/LeetCode第4题结题思路/","title":"LeetCode第4题结题思路"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zs9527.github.io/2020/06/19/LeetCode%E7%AC%AC4%E9%A2%98%E7%BB%93%E9%A2%98%E6%80%9D%E8%B7%AF/","path":"2020/06/19/LeetCode第4题结题思路/","title":"LeetCode第4题结题思路"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>LeetCode第4题结题思路 | blogs</title>
@@ -145,13 +145,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-count">92</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -190,7 +190,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/06/19/LeetCode%E7%AC%AC4%E9%A2%98%E7%BB%93%E9%A2%98%E6%80%9D%E8%B7%AF/">
+    <link itemprop="mainEntityOfPage" href="http://zs9527.github.io/2020/06/19/LeetCode%E7%AC%AC4%E9%A2%98%E7%BB%93%E9%A2%98%E6%80%9D%E8%B7%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">

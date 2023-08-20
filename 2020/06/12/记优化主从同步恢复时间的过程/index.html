@@ -18,29 +18,29 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"www.worldofwarcraftchina.cn","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zs9527.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="记优化主从同步恢复时间的过程 这次再次出现了 Mysql 主从同步时，出现了主键冲突错误。当再次采用Data文件夹复制的时候。发现随着二级制日志文件的越来越多，复制的时间也越来越长。在复制恢复的时候无法启动程序，客户感觉体验极差（虽然原因是因为客户那边的服务器断电了，但是技术方面还是可以去避免这种情况的出现）。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="记优化主从同步恢复时间的过程">
-<meta property="og:url" content="http://www.worldofwarcraftchina.cn/2020/06/12/%E8%AE%B0%E4%BC%98%E5%8C%96%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E6%81%A2%E5%A4%8D%E6%97%B6%E9%97%B4%E7%9A%84%E8%BF%87%E7%A8%8B/index.html">
+<meta property="og:url" content="http://zs9527.github.io/2020/06/12/%E8%AE%B0%E4%BC%98%E5%8C%96%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E6%81%A2%E5%A4%8D%E6%97%B6%E9%97%B4%E7%9A%84%E8%BF%87%E7%A8%8B/index.html">
 <meta property="og:site_name" content="blogs">
 <meta property="og:description" content="记优化主从同步恢复时间的过程 这次再次出现了 Mysql 主从同步时，出现了主键冲突错误。当再次采用Data文件夹复制的时候。发现随着二级制日志文件的越来越多，复制的时间也越来越长。在复制恢复的时候无法启动程序，客户感觉体验极差（虽然原因是因为客户那边的服务器断电了，但是技术方面还是可以去避免这种情况的出现）。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.worldofwarcraftchina.cn/b1.png">
+<meta property="og:image" content="http://zs9527.github.io/b1.png">
 <meta property="article:published_time" content="2020-06-12T13:11:31.000Z">
 <meta property="article:modified_time" content="2020-06-15T08:10:05.563Z">
 <meta property="article:author" content="Ezio">
 <meta property="article:tag" content="Mysql">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.worldofwarcraftchina.cn/b1.png">
+<meta name="twitter:image" content="http://zs9527.github.io/b1.png">
 
 
-<link rel="canonical" href="http://www.worldofwarcraftchina.cn/2020/06/12/%E8%AE%B0%E4%BC%98%E5%8C%96%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E6%81%A2%E5%A4%8D%E6%97%B6%E9%97%B4%E7%9A%84%E8%BF%87%E7%A8%8B/">
+<link rel="canonical" href="http://zs9527.github.io/2020/06/12/%E8%AE%B0%E4%BC%98%E5%8C%96%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E6%81%A2%E5%A4%8D%E6%97%B6%E9%97%B4%E7%9A%84%E8%BF%87%E7%A8%8B/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.worldofwarcraftchina.cn/2020/06/12/%E8%AE%B0%E4%BC%98%E5%8C%96%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E6%81%A2%E5%A4%8D%E6%97%B6%E9%97%B4%E7%9A%84%E8%BF%87%E7%A8%8B/","path":"2020/06/12/记优化主从同步恢复时间的过程/","title":"记优化主从同步恢复时间的过程"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zs9527.github.io/2020/06/12/%E8%AE%B0%E4%BC%98%E5%8C%96%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E6%81%A2%E5%A4%8D%E6%97%B6%E9%97%B4%E7%9A%84%E8%BF%87%E7%A8%8B/","path":"2020/06/12/记优化主从同步恢复时间的过程/","title":"记优化主从同步恢复时间的过程"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>记优化主从同步恢复时间的过程 | blogs</title>
@@ -132,13 +132,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-count">92</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -177,7 +177,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.worldofwarcraftchina.cn/2020/06/12/%E8%AE%B0%E4%BC%98%E5%8C%96%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E6%81%A2%E5%A4%8D%E6%97%B6%E9%97%B4%E7%9A%84%E8%BF%87%E7%A8%8B/">
+    <link itemprop="mainEntityOfPage" href="http://zs9527.github.io/2020/06/12/%E8%AE%B0%E4%BC%98%E5%8C%96%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E6%81%A2%E5%A4%8D%E6%97%B6%E9%97%B4%E7%9A%84%E8%BF%87%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
